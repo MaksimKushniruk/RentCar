@@ -10,5 +10,29 @@ namespace Rent.Models
         public string Color { get; set; }
         public int Year { get; set; }
         public decimal DailyPrice { get; set; }
+
+        // Сделать конструктор через this, чтобы избежать повторения кода
+        public Car()
+        {
+            
+        }
+        public Car(string modelName, string brandName, string color, int year, decimal dailyPrice)
+        {
+            Id = Int32.MinValue;
+            ModelName = modelName;
+            BrandName = brandName;
+            Color = color;
+            Year = year;
+            DailyPrice = dailyPrice;
+        }
+        public Car(int id, string modelName, string brandName, string color, int year, decimal dailyPrice)
+        {
+            Id = id;
+            ModelName = modelName;
+            BrandName = brandName;
+            Color = color;
+            Year = year;
+            DailyPrice = dailyPrice;
+        }
     }
 }

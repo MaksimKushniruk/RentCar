@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using Rent.Models;
 
 namespace Rent.Repositories
@@ -6,8 +8,9 @@ namespace Rent.Repositories
     public interface ICarRepository
     {
         int AddCar(Car car);
-        void UpdateCar(int id, string modelName, string brandName, string color, int year, decimal dailyPrice);
-        void DeleteCar(Car car);
-        void ReadCar(int id);
+        int DeleteCar(int id);
+        Car GetCar(int id);
+        DataTable GetCar();
+        int UpdateCar(Car car);
     }
 }

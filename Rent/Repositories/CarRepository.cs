@@ -1,6 +1,5 @@
 ﻿using Rent.Models;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -8,7 +7,7 @@ namespace Rent.Repositories
 {
     public class CarRepository : ICarRepository
     {
-        // Добавляем автомобиль и возвращаем количество изммененных записей
+        // Добавляем автомобиль и возвращаем количество изммененных записей.
         public int AddCar(Car car)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -18,7 +17,7 @@ namespace Rent.Repositories
                 return command.ExecuteNonQuery();
             }
         }
-        // Удаляем автомобиль и возвращаем количество измененных записей
+        // Удаляем автомобиль и возвращаем количество измененных записей.
         public int DeleteCar(int id)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -28,7 +27,7 @@ namespace Rent.Repositories
                 return command.ExecuteNonQuery();
             }
         }
-        // Ищем автомобиль по Id, возвращаем объект Car
+        // Ищем автомобиль по Id, возвращаем объект Car.
         public Car GetCar(int id)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -43,7 +42,7 @@ namespace Rent.Repositories
                 return car;
             }
         }
-
+        // Перегрузка, ищем все автомобили, возвращаем в виде объекта DataTable.
         public DataTable GetCar()
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -55,7 +54,7 @@ namespace Rent.Repositories
                 return ds.Tables[0];
             }
         }
-        // Обновляем, если успех то вернем количество успешных изменений
+        // Принимаем объект Car, обновляем его в БД, возвращаем количество измененных записей.
         public int UpdateCar(Car car)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))

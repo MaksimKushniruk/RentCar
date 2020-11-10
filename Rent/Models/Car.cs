@@ -10,8 +10,7 @@ namespace Rent.Models
         public string Color { get; set; }
         public int Year { get; set; }
         public decimal DailyPrice { get; set; }
-
-        // Сделать конструктор через this, чтобы избежать повторения кода
+        // Сделать конструктор через this, чтобы избежать повторения кода.
         public Car()
         {
             

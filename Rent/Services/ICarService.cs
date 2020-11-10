@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Rent.Models;
 
 namespace Rent.Services
@@ -11,6 +10,6 @@ namespace Rent.Services
         string DeleteCar(int id);
         Car GetCar(int id);
         List<Car> GetCar();
-        string UpdateCar(int id, string modelName, string brandName, string color, int year, decimal dailyPrice);
+        string UpdateCar(Car car);
     }
 }

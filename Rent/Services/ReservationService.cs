@@ -4,20 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-// Попробовать выгружать из таблицы данные из связаных таблиц, через хранимые процедуры.
+// Приведение значений из DataTable для добавления в List, как обойтись без приведения?
 
 namespace Rent.Services
 {
     class ReservationService : IReservationService
     {
         private IReservationRepository ReservationRepository { get; }
-        private ICarRepository CarRepository { get; }
-        private ICustomerRepository CustomerRepository { get; }
         public ReservationService()
         {
             ReservationRepository = new ReservationRepository();
-            CarRepository = new CarRepository();
-            CustomerRepository = new CustomerRepository();
         }
         // Принимаем информацию-поля резервирования, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
         public string CreateReservation(Car car, Customer customer, DateTime startDate, DateTime finalDate, decimal price)
@@ -37,15 +33,10 @@ namespace Rent.Services
             else
                 throw new Exception("Ошибка удаления данных.");
         }
-        // Принимаем Id искомого резервирования, передаем в репозиторий для поиска, получаем Reservation где Car и Customer имеют только Id
-        // Ищем по Id эти объекты и перезаписываем их в Reservation, проверяем успешность через возвращаемый результат.
+        // Принимаем Id искомого резервирования, передаем в репозиторий для поиска, получаем Reservation, проверяем успешность через возвращаемый результат.
         public Reservation GetReservation(int id)
         {
             Reservation reservation = ReservationRepository.GetReservation(id);
-            Car car = CarRepository.GetCar(reservation.Car.Id);
-            Customer customer = CustomerRepository.GetCustomer(reservation.Customer.Id);
-            reservation.Customer = customer;
-            reservation.Car = car;
             if (reservation != null)
                 return reservation;
             else
@@ -58,7 +49,7 @@ namespace Rent.Services
             DataTable dataTable = ReservationRepository.GetReservation();
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                reservations.Add(new Reservation((int)dataRow.ItemArray[0], CarRepository.GetCar((int)dataRow.ItemArray[1]), CustomerRepository.GetCustomer((int)dataRow.ItemArray[2]), (DateTime)dataRow.ItemArray[3], (DateTime)dataRow.ItemArray[4], (decimal)dataRow.ItemArray[5]));
+                reservations.Add(new Reservation((int)dataRow.ItemArray[0], new Car((int)dataRow.ItemArray[6], (string)dataRow.ItemArray[7], (string)dataRow.ItemArray[8], (string)dataRow.ItemArray[9], (int)dataRow.ItemArray[10], (decimal)dataRow.ItemArray[11]), new Customer((int)dataRow.ItemArray[12], (string)dataRow.ItemArray[13], (string)dataRow.ItemArray[14], (string)dataRow.ItemArray[15]), (DateTime)dataRow.ItemArray[3], (DateTime)dataRow.ItemArray[4], (decimal)dataRow.ItemArray[5]));
             }
             if (reservations.Count > 0)
                 return reservations;

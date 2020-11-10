@@ -40,7 +40,7 @@ namespace Rent.Services
             else
                 throw new Exception("Не удалось найти объект.");
         }
-        // Перегрузка методы, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
+        // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
         public List<Customer> GetCustomer()
         {
             List<Customer> customers = new List<Customer>();

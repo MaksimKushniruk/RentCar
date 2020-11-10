@@ -60,7 +60,7 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);                    // добавить
+                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);
                 return command.ExecuteNonQuery();
             }
         }

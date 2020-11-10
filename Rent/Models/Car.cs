@@ -15,6 +15,10 @@ namespace Rent.Models
         {
             
         }
+        public Car(int id)
+        {
+            Id = id;
+        }
         public Car(string modelName, string brandName, string color, int year, decimal dailyPrice)
         {
             Id = Int32.MinValue;

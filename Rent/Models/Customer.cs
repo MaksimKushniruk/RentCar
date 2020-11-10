@@ -13,6 +13,10 @@ namespace Rent.Models
         {
 
         }
+        public Customer(int id)
+        {
+            Id = id;
+        }
         public Customer(string firstName, string lastName, string phoneNumber)
         {
             Id = Int32.MinValue;

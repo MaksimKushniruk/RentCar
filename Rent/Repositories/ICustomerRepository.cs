@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using Rent.Models;
 
@@ -9,7 +10,7 @@ namespace Rent.Repositories
         int AddCustomer(Customer customer);
         int DeleteCustomer(int id);
         Customer GetCustomer(int id);
-        DataTable GetCustomer();
+        List<Customer> GetCustomer();
         int UpdateCustomer(Customer customer);
     }
 }

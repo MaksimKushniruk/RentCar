@@ -1,5 +1,6 @@
 ﻿using Rent.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -30,29 +31,66 @@ namespace Rent.Repositories
         // Ищем резервирование по Id, возвращаем объект Reservation.
         public Reservation GetReservation(int id)
         {
+            DataTable dataTable;
+            Reservation reservation = null;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"SELECT * FROM Reservations, Customers, Cars WHERE Reservations.Id = {id} AND Customers.Id = Reservations.CustomerId AND Cars.Id = Reservations.CarId;", connection);
-                SqlDataReader reader = command.ExecuteReader();
-                Reservation reservation = null;
-                if (reader.HasRows)
-                    reservation = new Reservation(reader.GetInt32(0), new Car(reader.GetInt32(6), reader.GetString(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetDecimal(11)), new Customer(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15)), reader.GetDateTime(3), reader.GetDateTime(4), reader.GetDecimal(5));
-                reader.Close();
-                return reservation;
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT r.Id ReservationId, r.StartDate, r.FinalDate, r.Price, ca.Id CarId, ca.ModelName, ca.BrandName, ca.Color, ca.[Year], ca.DailyPrice, cu.Id CustomerId, cu.FirstName, cu.LastName, cu.PhoneNumber FROM Reservations r, Customers cu, Cars ca WHERE r.Id = {id} AND cu.Id = r.CustomerId AND ca.Id = r.CarId", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
             }
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                reservation = new Reservation(dataRow["ReservationId"].CastDbValue<int>(),
+                                              new Car(dataRow["CarId"].CastDbValue<int>(),
+                                                      dataRow["ModelName"].CastDbValue<string>(),
+                                                      dataRow["BrandName"].CastDbValue<string>(),
+                                                      dataRow["Color"].CastDbValue<string>(),
+                                                      dataRow["Year"].CastDbValue<int>(),
+                                                      dataRow["DailyPrice"].CastDbValue<decimal>()),
+                                              new Customer(dataRow["CustomerId"].CastDbValue<int>(),
+                                                           dataRow["FirstName"].CastDbValue<string>(),
+                                                           dataRow["LastName"].CastDbValue<string>(),
+                                                           dataRow["PhoneNumber"].CastDbValue<string>()),
+                                              dataRow["StartDate"].CastDbValue<DateTime>(),
+                                              dataRow["FinalDate"].CastDbValue<DateTime>(),
+                                              dataRow["Price"].CastDbValue<decimal>());
+            }
+            return reservation;
         }
-        // Перегрузка, ищем все резервирования, возвращаем в виде объекта DataTable.
-        public DataTable GetReservation()
+        // Перегрузка, ищем все резервирования, возвращаем в виде объекта List<Reservation>.
+        public List<Reservation> GetReservation()
         {
+            List<Reservation> reservations = new List<Reservation>();
+            DataTable dataTable;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT * FROM Reservations, Customers, Cars WHERE Customers.Id = Reservations.CustomerId AND Cars.Id = Reservations.CarId;", connection);
-                DataSet ds = new DataSet();
-                adapter.Fill(ds);
-                return ds.Tables[0];
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT r.Id ReservationId, r.StartDate, r.FinalDate, r.Price, ca.Id CarId, ca.ModelName, ca.BrandName, ca.Color, ca.[Year], ca.DailyPrice, cu.Id CustomerId, cu.FirstName, cu.LastName, cu.PhoneNumber FROM Reservations r, Customers cu, Cars ca WHERE cu.Id = r.CustomerId AND ca.Id = r.CarId", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
             }
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                reservations.Add(new Reservation(dataRow["ReservationId"].CastDbValue<int>(), 
+                                                 new Car(dataRow["CarId"].CastDbValue<int>(),
+                                                         dataRow["ModelName"].CastDbValue<string>(),
+                                                         dataRow["BrandName"].CastDbValue<string>(),
+                                                         dataRow["Color"].CastDbValue<string>(),
+                                                         dataRow["Year"].CastDbValue<int>(),
+                                                         dataRow["DailyPrice"].CastDbValue<decimal>()),
+                                                 new Customer(dataRow["CustomerId"].CastDbValue<int>(),
+                                                              dataRow["FirstName"].CastDbValue<string>(),
+                                                              dataRow["LastName"].CastDbValue<string>(),
+                                                              dataRow["PhoneNumber"].CastDbValue<string>()),
+                                                 dataRow["StartDate"].CastDbValue<DateTime>(),
+                                                 dataRow["FinalDate"].CastDbValue<DateTime>(),
+                                                 dataRow["Price"].CastDbValue<decimal>()));
+            }
+            return reservations;
         }
         // Принимаем объект Reservation, обновляем его в БД, возвращаем количество измененных записей.
         public int UpdateReservation(Reservation reservation)

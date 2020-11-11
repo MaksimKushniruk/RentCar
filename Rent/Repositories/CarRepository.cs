@@ -1,5 +1,6 @@
 ﻿using Rent.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -30,29 +31,50 @@ namespace Rent.Repositories
         // Ищем автомобиль по Id, возвращаем объект Car.
         public Car GetCar(int id)
         {
-            using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
+            Car car = null;
+            DataTable dataTable;
+            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"SELECT * FROM Cars WHERE id = {id}", connection);
-                SqlDataReader reader = command.ExecuteReader();
-                Car car = null;
-                if (reader.HasRows)
-                    car = new Car(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetDecimal(5));
-                reader.Close();
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.ModelName, c.BrandName, c.Color, c.[Year], c.DailyPrice FROM Cars c WHERE c.Id = {id}", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
+            }
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                car = new Car(dataRow["Id"].CastDbValue<int>(),
+                              dataRow["ModelName"].CastDbValue<string>(),
+                              dataRow["BrandName"].CastDbValue<string>(),
+                              dataRow["Color"].CastDbValue<string>(),
+                              dataRow["Year"].CastDbValue<int>(),
+                              dataRow["DailyPrice"].CastDbValue<decimal>());
+            }
                 return car;
-            }
         }
-        // Перегрузка, ищем все автомобили, возвращаем в виде объекта DataTable.
-        public DataTable GetCar()
+        // Перегрузка, ищем все автомобили, возвращаем в виде объекта List<Car>.
+        public List<Car> GetCar()
         {
+            List<Car> cars = new List<Car>();
+            DataTable dataTable;
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Cars", connection);
-                DataSet ds = new DataSet();
-                adapter.Fill(ds);
-                return ds.Tables[0];
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT c.Id, c.ModelName, c.BrandName, c.Color, c.[Year], c.DailyPrice FROM Cars c", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
             }
+            foreach(DataRow dataRow in dataTable.Rows)
+            {
+                cars.Add(new Car(dataRow["Id"].CastDbValue<int>(),
+                                 dataRow["ModelName"].CastDbValue<string>(),
+                                 dataRow["BrandName"].CastDbValue<string>(),
+                                 dataRow["Color"].CastDbValue<string>(),
+                                 dataRow["Year"].CastDbValue<int>(),
+                                 dataRow["DailyPrice"].CastDbValue<decimal>()));
+            }
+            return cars;
         }
         // Принимаем объект Car, обновляем его в БД, возвращаем количество измененных записей.
         public int UpdateCar(Car car)

@@ -10,7 +10,7 @@ namespace Rent.Repositories
         int AddCar(Car car);
         int DeleteCar(int id);
         Car GetCar(int id);
-        DataTable GetCar();
+        public List<Car> GetCar();
         int UpdateCar(Car car);
     }
 }

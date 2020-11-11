@@ -4,6 +4,6 @@ namespace Rent
 {
     public class Constantes
     {
-        public const string connectionString = "Server=localhost;Database=master;Trusted_Connection=True";
+        public const string connectionString = "Server=localhost;Database=rentcardb;Trusted_Connection=True";
     }
 }

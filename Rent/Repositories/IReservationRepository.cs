@@ -1,6 +1,7 @@
 ﻿using System;
 using Rent.Models;
 using System.Data;
+using System.Collections.Generic;
 
 namespace Rent.Repositories
 {
@@ -9,7 +10,7 @@ namespace Rent.Repositories
         int AddReservation(Reservation reservation);
         int DeleteReservation(int id);
         Reservation GetReservation(int id);
-        DataTable GetReservation();
+        List<Reservation> GetReservation();
         int UpdateReservation(Reservation reservation);
     }
 }

@@ -14,34 +14,29 @@ namespace Rent.Services
             CustomerRepository = new CustomerRepository();
         }
         // Принимаем информацию-поля клиента, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
-        public string CreateCustomer(string firstName, string lastName, string phoneNumber)
+        public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
         {
-            CustomerRepository.AddCustomer(new Customer(firstName, lastName, phoneNumber));
-            return "Успешно добавлено";
+            return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
         }
         // Принимаем Id удаляемого клиента, передаем в репозиторий, проверяем успешность через возвращаемый результат.
-        public string DeleteCustomer(int id)
+        public int DeleteCustomer(int id)
         {
-            CustomerRepository.DeleteCustomer(id);
-            return "Успешно удалено";
+            return CustomerRepository.DeleteCustomer(id);
         }
         // Принимаем Id искомого автомобиля, передаем в репозиторий для поиска, проверяем успешность через возвращаемый результат.
         public Customer GetCustomer(int id)
         {
-            Customer customer = CustomerRepository.GetCustomer(id);
-            return customer;
+            return CustomerRepository.GetCustomer(id);
         }
         // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
         public List<Customer> GetCustomer()
         {
-            List<Customer> customers = CustomerRepository.GetCustomer();
-            return customers;
+            return CustomerRepository.GetCustomer();
         }
         // Получаем из UI уже измененный объект и передаем его в репозиторий.
-        public string UpdateCustomer(Customer customer)
+        public int UpdateCustomer(Customer customer)
         {
-            CustomerRepository.UpdateCustomer(customer);
-            return "Успешно изменено";
+            return CustomerRepository.UpdateCustomer(customer);
         }
     }
 }

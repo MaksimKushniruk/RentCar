@@ -50,7 +50,7 @@ namespace Rent.Repositories
                               dataRow["Year"].CastDbValue<int>(),
                               dataRow["DailyPrice"].CastDbValue<decimal>());
             }
-                return car;
+            return car;
         }
         // Перегрузка, ищем все автомобили, возвращаем в виде объекта List<Car>.
         public List<Car> GetCar()

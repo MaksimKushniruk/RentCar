@@ -4,12 +4,12 @@ using Rent.Models;
 
 namespace Rent.Services
 {
-    interface IReservationService
+    public interface IReservationService
     {
-        string CreateReservation(Car car, Customer customer, DateTime startDate, DateTime finalDate, decimal price);
-        string DeleteReservation(int id);
+        int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price);
+        int DeleteReservation(int id);
         Reservation GetReservation(int id);
         List<Reservation> GetReservation();
-        string UpdateReservation(Reservation reservation);
+        int UpdateReservation(Reservation reservation);
     }
 }

@@ -14,9 +14,9 @@ namespace Rent.Services
             CarRepository = new CarRepository();
         }
         // Принимаем информацию-поля автомобиля, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
-        public int CreateCar(string modelName, string brandName, string color, int year, decimal dailyPrice)
+        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
         {
-            return CarRepository.AddCar(new Car(modelName, brandName, color, year, dailyPrice));
+            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, dailyPrice));
         }
         // Принимаем Id удаляемого автомобиля, передаем в репозиторий, проверяем успешность через возвращаемый результат.
         public int DeleteCar(int id)

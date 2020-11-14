@@ -51,6 +51,30 @@ namespace Rent.Repositories
             }
             return customer;
         }
+
+        public List<Customer> GetCustomer(string city)
+        {
+            List<Customer> customers = new List<Customer>();
+            DataTable dataTable;
+            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
+            {
+                connection.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c WHERE c.City = {city}", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
+            }
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                customers.Add(new Customer(dataRow["Id"].CastDbValue<int>(),
+                                           dataRow["FirstName"].CastDbValue<string>(),
+                                           dataRow["LastName"].CastDbValue<string>(),
+                                           dataRow["City"].CastDbValue<string>(),
+                                           dataRow["PhoneNumber"].CastDbValue<string>()));
+            }
+            return customers;
+
+        }
         // Перегрузка, ищем всех клиентов, возвращаем в виде объекта List<Customer>.
         public List<Customer> GetCustomer()
         {

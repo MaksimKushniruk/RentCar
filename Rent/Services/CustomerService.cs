@@ -28,6 +28,11 @@ namespace Rent.Services
         {
             return CustomerRepository.GetCustomer(id);
         }
+
+        public List<Customer> GetCustomer(string city)
+        {
+            return CustomerRepository.GetCustomer(city);
+        }
         // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
         public List<Customer> GetCustomer()
         {

@@ -9,17 +9,14 @@ namespace ConsoleUI
     {
         static void Main()
         {
-            IReservationService reservationService = new ReservationService();
-            Reservation reservation = reservationService.GetReservation(1);
-            if(reservation == null)
+            while (true)
             {
-                Console.WriteLine("Объект не найден");
+                Console.WriteLine("\tДобро пожаловать!\nВыберите действие:");
+                Console.WriteLine("");
+
+
+                Console.ReadKey();
             }
-            else
-            {
-                Console.WriteLine($"{reservation.Id} {reservation.Customer.FirstName} {reservation.Car.ModelName}");
-            }
-            Console.ReadKey();
         }
     }
 }

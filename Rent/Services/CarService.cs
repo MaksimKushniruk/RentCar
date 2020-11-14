@@ -14,34 +14,29 @@ namespace Rent.Services
             CarRepository = new CarRepository();
         }
         // Принимаем информацию-поля автомобиля, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
-        public string CreateCar(string modelName, string brandName, string color, int year, decimal dailyPrice)
+        public int CreateCar(string modelName, string brandName, string color, int year, decimal dailyPrice)
         {
-            CarRepository.AddCar(new Car(modelName, brandName, color, year, dailyPrice));
-            return "Успешно добавлено";
+            return CarRepository.AddCar(new Car(modelName, brandName, color, year, dailyPrice));
         }
         // Принимаем Id удаляемого автомобиля, передаем в репозиторий, проверяем успешность через возвращаемый результат.
-        public string DeleteCar(int id)
+        public int DeleteCar(int id)
         {
-            CarRepository.DeleteCar(id);
-            return "Успешно удалено";
+            return CarRepository.DeleteCar(id);
         }
         // Принимаем Id искомого автомобиля, передаем в репозиторий для поиска, проверяем успешность через возвращаемый результат.
         public Car GetCar(int id)
         {
-            Car car = CarRepository.GetCar(id);
-            return car;
+            return CarRepository.GetCar(id);
         }
         // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
         public List<Car> GetCar()
         {
-            List<Car> cars = CarRepository.GetCar();
-            return cars;
+            return CarRepository.GetCar();
         }
         // Получаем из UI уже измененный объект и передаем его в репозиторий.
-        public string UpdateCar(Car car)
+        public int UpdateCar(Car car)
         {
-            CarRepository.UpdateCar(car);
-            return "Успешно изменено";
+            return CarRepository.UpdateCar(car);
         }
     }
 }

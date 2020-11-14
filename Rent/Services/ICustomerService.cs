@@ -6,10 +6,11 @@ namespace Rent.Services
 {
     public interface ICustomerService
     {
-        string CreateCustomer(string firstName, string lastName, string phoneNumber);
-        string DeleteCustomer(int id);
+        int CreateCustomer(string firstName, string lastName, string city, string phoneNumber);
+        int DeleteCustomer(int id);
         Customer GetCustomer(int id);
+        List<Customer> GetCustomer(string city);
         List<Customer> GetCustomer();
-        string UpdateCustomer(Customer customer);
+        int UpdateCustomer(Customer customer);
     }
 }

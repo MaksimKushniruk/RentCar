@@ -14,7 +14,7 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO Customers (FirstName, LastName, PhoneNumber) VALUES ('{customer.FirstName}', '{customer.LastName}', '{customer.PhoneNumber}')", connection);
+                SqlCommand command = new SqlCommand($"INSERT INTO Customers (FirstName, LastName, City, PhoneNumber) VALUES ('{customer.FirstName}', '{customer.LastName}', '{customer.City}', '{customer.PhoneNumber}')", connection);
                 return command.ExecuteNonQuery();
             }
         }
@@ -36,7 +36,7 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.PhoneNumber FROM Customers c WHERE id = {id}", connection);
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c WHERE id = {id}", connection);
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
                 dataTable = dataSet.Tables[0];
@@ -46,19 +46,20 @@ namespace Rent.Repositories
                 customer = new Customer(dataRow["Id"].CastDbValue<int>(),
                                         dataRow["FirstName"].CastDbValue<string>(),
                                         dataRow["LastName"].CastDbValue<string>(),
+                                        dataRow["City"].CastDbValue<string>(),
                                         dataRow["PhoneNumber"].CastDbValue<string>());
             }
             return customer;
         }
-        // Перегрузка, ищем всех клиентов, возвращаем в виде объекта List<Customer>.
-        public List<Customer> GetCustomer()
+
+        public List<Customer> GetCustomer(string city)
         {
             List<Customer> customers = new List<Customer>();
             DataTable dataTable;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.PhoneNumber FROM Customers c", connection);
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c WHERE c.City = {city}", connection);
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
                 dataTable = dataSet.Tables[0];
@@ -68,6 +69,31 @@ namespace Rent.Repositories
                 customers.Add(new Customer(dataRow["Id"].CastDbValue<int>(),
                                            dataRow["FirstName"].CastDbValue<string>(),
                                            dataRow["LastName"].CastDbValue<string>(),
+                                           dataRow["City"].CastDbValue<string>(),
+                                           dataRow["PhoneNumber"].CastDbValue<string>()));
+            }
+            return customers;
+
+        }
+        // Перегрузка, ищем всех клиентов, возвращаем в виде объекта List<Customer>.
+        public List<Customer> GetCustomer()
+        {
+            List<Customer> customers = new List<Customer>();
+            DataTable dataTable;
+            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
+            {
+                connection.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c", connection);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
+            }
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                customers.Add(new Customer(dataRow["Id"].CastDbValue<int>(),
+                                           dataRow["FirstName"].CastDbValue<string>(),
+                                           dataRow["LastName"].CastDbValue<string>(),
+                                           dataRow["City"].CastDbValue<string>(),
                                            dataRow["PhoneNumber"].CastDbValue<string>()));
             }
             return customers;
@@ -78,7 +104,7 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);
+                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, City = {customer.City}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);
                 return command.ExecuteNonQuery();
             }
         }

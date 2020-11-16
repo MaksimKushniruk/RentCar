@@ -13,7 +13,15 @@ namespace Rent.Repositories
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO Cars (RegistrationNumber, ModelName, BrandName, Color, [Year], DailyPrice, RentStatus) VALUES ('{car.RegistrationNumber}', '{car.ModelName}', '{car.BrandName}', '{car.Color}', {car.Year}, {car.DailyPrice}, {(int)car.Status})", connection);
+                SqlCommand command = new SqlCommand("sp_AddCar", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.RegistrationNumber));
+                command.Parameters.Add(new SqlParameter("@ModelName", car.ModelName));
+                command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
+                command.Parameters.Add(new SqlParameter("@Color", car.Color));
+                command.Parameters.Add(new SqlParameter("@Year", car.Year));
+                command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
+                command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
                 return command.ExecuteNonQuery();
             }
         }
@@ -34,17 +42,17 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("sp_GetCars", connection);            
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@Id", request.Id));
-                command.Parameters.Add(new SqlParameter("@RegistrationNumber", request.RegistrationNumber));
-                command.Parameters.Add(new SqlParameter("@ModelName", request.ModelName));
-                command.Parameters.Add(new SqlParameter("@BrandName", request.BrandName));
-                command.Parameters.Add(new SqlParameter("@Color", request.Color));
-                command.Parameters.Add(new SqlParameter("@Year", request.Year));
-                command.Parameters.Add(new SqlParameter("@MinPrice", request.MinPrice));
-                command.Parameters.Add(new SqlParameter("@MaxPrice", request.MaxPrice));
-                command.Parameters.Add(new SqlParameter("@RentStatus", request.Status));
+                SqlCommand command = new SqlCommand("sp_GetCar", connection);            
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", (object)request.Id ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", (object)request.RegistrationNumber ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@ModelName", (object)request.ModelName ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@BrandName", (object)request.BrandName ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@Color", (object)request.Color ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@Year", (object)request.Year ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@MinPrice", (object)request.MinPrice ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@MaxPrice", (object)request.MaxPrice ?? DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@RentStatus", (object)request.Status ?? DBNull.Value));
 
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
 

@@ -11,10 +11,13 @@ namespace ConsoleUI
         {
             ICarService carService = new CarService();
 
-            //int num = carService.CreateCar("a111bb777", "c300", "Chrysler", "Black", 2020, 4000);
+            //int num = carService.CreateCar("H777HH777", "s600", "Mercedes-Benz", "Black", 2020, 10000);
             //Console.WriteLine($"{num} добавлено машин");
-            List<Car> cars = carService.GetCar(new Request { BrandName = "Mercedes"});
-            Console.WriteLine(cars[0].Id);
+            List<Car> cars = carService.GetCar(new Request { Status = Rent.CarRentStatus.Свободен });
+            foreach (Car car in cars)
+            {
+                Console.WriteLine($"{car.Id}\t{car.ModelName}\t{car.BrandName}\t{car.Color}\t{car.Year}\t{car.DailyPrice}");
+            }
 
             Console.ReadKey();
         }

@@ -30,7 +30,9 @@ namespace Rent.Repositories
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"DELETE FROM Cars WHERE id = {id}", connection);
+                SqlCommand command = new SqlCommand("sp_DeleteCar", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", id));
                 return command.ExecuteNonQuery();
             }
         }
@@ -78,7 +80,16 @@ namespace Rent.Repositories
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE Cars SET RegistrationNumber = {car.RegistrationNumber}, ModelName = {car.ModelName}, BrandName = {car.BrandName}, Color = {car.Color}, [Year] = {car.Year}, DailyPrice = {car.DailyPrice} WHERE Cars.Id = {car.Id}", connection);
+                SqlCommand command = new SqlCommand("sp_UpdateCar", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", car.Id));
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.RegistrationNumber));
+                command.Parameters.Add(new SqlParameter("@ModelName", car.ModelName));
+                command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
+                command.Parameters.Add(new SqlParameter("@Color", car.Color));
+                command.Parameters.Add(new SqlParameter("@Year", car.Year));
+                command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
+                command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
                 return command.ExecuteNonQuery();
             }
         }

@@ -13,7 +13,7 @@ namespace Rent.Repositories
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO Cars (RegistrationNumber, ModelName, BrandName, Color, [Year], DailyPrice) VALUES ('{car.RegistrationNumber}', '{car.ModelName}', '{car.BrandName}', '{car.Color}', {car.Year}, {car.DailyPrice})", connection);
+                SqlCommand command = new SqlCommand($"INSERT INTO Cars (RegistrationNumber, ModelName, BrandName, Color, [Year], DailyPrice, RentStatus) VALUES ('{car.RegistrationNumber}', '{car.ModelName}', '{car.BrandName}', '{car.Color}', {car.Year}, {car.DailyPrice}, {(int)car.Status})", connection);
                 return command.ExecuteNonQuery();
             }
         }
@@ -26,43 +26,33 @@ namespace Rent.Repositories
                 return command.ExecuteNonQuery();
             }
         }
-        public Car GetCar(int id)
+
+        public List<Car> GetCar(Request request)
         {
-            Car car = null;
+            List<Car> cars = new List<Car>();
             DataTable dataTable;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.RegistrationNumber, c.ModelName, c.BrandName, c.Color, c.[Year], c.DailyPrice FROM Cars c WHERE c.Id = {id}", connection);
+                SqlCommand command = new SqlCommand("sp_GetCars", connection);            
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", request.Id));
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", request.RegistrationNumber));
+                command.Parameters.Add(new SqlParameter("@ModelName", request.ModelName));
+                command.Parameters.Add(new SqlParameter("@BrandName", request.BrandName));
+                command.Parameters.Add(new SqlParameter("@Color", request.Color));
+                command.Parameters.Add(new SqlParameter("@Year", request.Year));
+                command.Parameters.Add(new SqlParameter("@MinPrice", request.MinPrice));
+                command.Parameters.Add(new SqlParameter("@MaxPrice", request.MaxPrice));
+                command.Parameters.Add(new SqlParameter("@RentStatus", request.Status));
+
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
                 dataTable = dataSet.Tables[0];
             }
             foreach (DataRow dataRow in dataTable.Rows)
-            {
-                car = new Car(dataRow["Id"].CastDbValue<int>(),
-                              dataRow["RegistrationNumber"].CastDbValue<string>(),
-                              dataRow["ModelName"].CastDbValue<string>(),
-                              dataRow["BrandName"].CastDbValue<string>(),
-                              dataRow["Color"].CastDbValue<string>(),
-                              dataRow["Year"].CastDbValue<int>(),
-                              dataRow["DailyPrice"].CastDbValue<decimal>());
-            }
-            return car;
-        }
-        public List<Car> GetCar()
-        {
-            List<Car> cars = new List<Car>();
-            DataTable dataTable;
-            using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter("SELECT c.Id, c.ModelName, c.BrandName, c.Color, c.[Year], c.DailyPrice FROM Cars c", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-            }
-            foreach(DataRow dataRow in dataTable.Rows)
             {
                 cars.Add(new Car(dataRow["Id"].CastDbValue<int>(),
                                  dataRow["RegistrationNumber"].CastDbValue<string>(),
@@ -70,7 +60,8 @@ namespace Rent.Repositories
                                  dataRow["BrandName"].CastDbValue<string>(),
                                  dataRow["Color"].CastDbValue<string>(),
                                  dataRow["Year"].CastDbValue<int>(),
-                                 dataRow["DailyPrice"].CastDbValue<decimal>()));
+                                 dataRow["DailyPrice"].CastDbValue<decimal>(),
+                                 dataRow["RentStatus"].CastDbValue<CarRentStatus>()));
             }
             return cars;
         }

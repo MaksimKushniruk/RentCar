@@ -9,8 +9,7 @@ namespace Rent.Repositories
     {
         int AddCar(Car car);
         int DeleteCar(int id);
-        Car GetCar(int id);
-        public List<Car> GetCar();
+        List<Car> GetCar(Request request);
         int UpdateCar(Car car);
     }
 }

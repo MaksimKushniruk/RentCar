@@ -8,7 +8,7 @@ namespace Rent.Models
         public string RegistrationNumber { get; set; }
         public string ModelName { get; set; }
         public string BrandName { get; set; }
-        public CarColor Color { get; set; }
+        public string Color { get; set; }
         public int Year { get; set; }
         public decimal DailyPrice { get; set; }
         public CarRentStatus Status { get; set; }

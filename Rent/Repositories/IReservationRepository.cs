@@ -9,8 +9,7 @@ namespace Rent.Repositories
     {
         int AddReservation(Reservation reservation);
         int DeleteReservation(int id);
-        Reservation GetReservation(int id);
-        List<Reservation> GetReservation();
+        List<Reservation> GetReservation(ReservationRequest request);
         int UpdateReservation(Reservation reservation);
     }
 }

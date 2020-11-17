@@ -27,7 +27,9 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"DELETE FROM Customers WHERE id = {id}", connection);
+                SqlCommand command = new SqlCommand("sp_DeleteCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", id));
                 return command.ExecuteNonQuery();
             }
         }

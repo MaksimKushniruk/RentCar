@@ -65,7 +65,13 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, City = {customer.City}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);
+                SqlCommand command = new SqlCommand("sp_UpdateCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", customer.Id));
+                command.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                command.Parameters.Add(new SqlParameter("@City", customer.City));
+                command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
                 return command.ExecuteNonQuery();
             }
         }

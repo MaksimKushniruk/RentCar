@@ -56,7 +56,6 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@RentStatus", request.Status));
 
                 SqlDataReader reader = command.ExecuteReader();
-
                 while (reader.Read())
                 {
                     cars.Add(new Car(reader["Id"].CastDbValue<int>(), 
@@ -68,6 +67,7 @@ namespace Rent.Repositories
                                      reader["DailyPrice"].CastDbValue<decimal>(), 
                                      reader["RentStatus"].CastDbValue<CarRentStatus>()));
                 }
+                reader.Close();
             }
             return cars;
         }

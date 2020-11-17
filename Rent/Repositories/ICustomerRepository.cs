@@ -9,9 +9,7 @@ namespace Rent.Repositories
     {
         int AddCustomer(Customer customer);
         int DeleteCustomer(int id);
-        Customer GetCustomer(int id);
-        List<Customer> GetCustomer(string city);
-        List<Customer> GetCustomer();
+        List<Customer> GetCustomer(CustomerRequest request);
         int UpdateCustomer(Customer customer);
     }
 }

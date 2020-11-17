@@ -2,7 +2,7 @@
 
 namespace Rent.Models
 {
-    public class Request
+    public class CarRequest
     {
         public int? Id { get; set; }
         public string RegistrationNumber { get; set; }

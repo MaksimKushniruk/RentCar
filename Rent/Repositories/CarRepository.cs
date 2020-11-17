@@ -37,7 +37,7 @@ namespace Rent.Repositories
             }
         }
 
-        public List<Car> GetCar(Request request)
+        public List<Car> GetCar(CarRequest request)
         {
             List<Car> cars = new List<Car>();
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))

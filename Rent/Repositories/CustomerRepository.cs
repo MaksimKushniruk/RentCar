@@ -8,17 +8,20 @@ namespace Rent.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        // Добавляем клиента и возвращаем количество изммененных записей.
         public int AddCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO Customers (FirstName, LastName, City, PhoneNumber) VALUES ('{customer.FirstName}', '{customer.LastName}', '{customer.City}', '{customer.PhoneNumber}')", connection);
+                SqlCommand command = new SqlCommand("sp_AddCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                command.Parameters.Add(new SqlParameter("@City", customer.City));
+                command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
                 return command.ExecuteNonQuery();
             }
         }
-        // Удаляем клиента и возвращаем количество измененных записей.
         public int DeleteCustomer(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -28,7 +31,6 @@ namespace Rent.Repositories
                 return command.ExecuteNonQuery();
             }
         }
-        // Ищем клиента по Id, возвращаем объект Customer.
         public Customer GetCustomer(int id)
         {
             Customer customer = null;
@@ -75,7 +77,6 @@ namespace Rent.Repositories
             return customers;
 
         }
-        // Перегрузка, ищем всех клиентов, возвращаем в виде объекта List<Customer>.
         public List<Customer> GetCustomer()
         {
             List<Customer> customers = new List<Customer>();
@@ -98,7 +99,6 @@ namespace Rent.Repositories
             }
             return customers;
         }
-        // Принимаем объект Customer, обновляем его в БД, возвращаем количество измененных записей.
         public int UpdateCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))

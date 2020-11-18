@@ -8,8 +8,7 @@ namespace Rent.Repositories
     {
         int AddDiscountCoupon(DiscountCoupon discountCoupon);
         int DeleteDiscountCoupon(int id);
-        DiscountCoupon GetDiscountCoupon(int id);
-        public List<DiscountCoupon> GetDiscountCoupon();
+        public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request);
         int UpdateDiscountCoupon(DiscountCoupon discountCoupon);
     }
 }

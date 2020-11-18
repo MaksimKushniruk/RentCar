@@ -8,103 +8,70 @@ namespace Rent.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        // Добавляем клиента и возвращаем количество изммененных записей.
         public int AddCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO Customers (FirstName, LastName, City, PhoneNumber) VALUES ('{customer.FirstName}', '{customer.LastName}', '{customer.City}', '{customer.PhoneNumber}')", connection);
+                SqlCommand command = new SqlCommand("sp_AddCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                command.Parameters.Add(new SqlParameter("@City", customer.City));
+                command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
                 return command.ExecuteNonQuery();
             }
         }
-        // Удаляем клиента и возвращаем количество измененных записей.
         public int DeleteCustomer(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"DELETE FROM Customers WHERE id = {id}", connection);
+                SqlCommand command = new SqlCommand("sp_DeleteCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", id));
                 return command.ExecuteNonQuery();
             }
         }
-        // Ищем клиента по Id, возвращаем объект Customer.
-        public Customer GetCustomer(int id)
-        {
-            Customer customer = null;
-            DataTable dataTable;
-            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c WHERE id = {id}", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-            }
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                customer = new Customer(dataRow["Id"].CastDbValue<int>(),
-                                        dataRow["FirstName"].CastDbValue<string>(),
-                                        dataRow["LastName"].CastDbValue<string>(),
-                                        dataRow["City"].CastDbValue<string>(),
-                                        dataRow["PhoneNumber"].CastDbValue<string>());
-            }
-            return customer;
-        }
-
-        public List<Customer> GetCustomer(string city)
+        public List<Customer> GetCustomer(CustomerRequest request)
         {
             List<Customer> customers = new List<Customer>();
-            DataTable dataTable;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c WHERE c.City = {city}", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-            }
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                customers.Add(new Customer(dataRow["Id"].CastDbValue<int>(),
-                                           dataRow["FirstName"].CastDbValue<string>(),
-                                           dataRow["LastName"].CastDbValue<string>(),
-                                           dataRow["City"].CastDbValue<string>(),
-                                           dataRow["PhoneNumber"].CastDbValue<string>()));
-            }
-            return customers;
+                SqlCommand command = new SqlCommand("sp_GetCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", request.Id));
+                command.Parameters.Add(new SqlParameter("@FirstName", request.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", request.LastName));
+                command.Parameters.Add(new SqlParameter("@City", request.City));
+                command.Parameters.Add(new SqlParameter("@PhoneNumber", request.PhoneNumber));
 
-        }
-        // Перегрузка, ищем всех клиентов, возвращаем в виде объекта List<Customer>.
-        public List<Customer> GetCustomer()
-        {
-            List<Customer> customers = new List<Customer>();
-            DataTable dataTable;
-            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT c.Id, c.FirstName, c.LastName, c.City, c.PhoneNumber FROM Customers c", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-            }
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                customers.Add(new Customer(dataRow["Id"].CastDbValue<int>(),
-                                           dataRow["FirstName"].CastDbValue<string>(),
-                                           dataRow["LastName"].CastDbValue<string>(),
-                                           dataRow["City"].CastDbValue<string>(),
-                                           dataRow["PhoneNumber"].CastDbValue<string>()));
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    customers.Add(new Customer(reader["Id"].CastDbValue<int>(),
+                                               reader["FirstName"].CastDbValue<string>(),
+                                               reader["LastName"].CastDbValue<string>(),
+                                               reader["City"].CastDbValue<string>(),
+                                               reader["PhoneNumber"].CastDbValue<string>()));
+                }
+                reader.Close();
             }
             return customers;
         }
-        // Принимаем объект Customer, обновляем его в БД, возвращаем количество измененных записей.
         public int UpdateCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE Customers SET FirstName = {customer.FirstName}, LastName = {customer.LastName}, City = {customer.City}, PhoneNumber = {customer.PhoneNumber} WHERE Customers.Id = {customer.Id}", connection);
+                SqlCommand command = new SqlCommand("sp_UpdateCustomer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", customer.Id));
+                command.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
+                command.Parameters.Add(new SqlParameter("@City", customer.City));
+                command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
                 return command.ExecuteNonQuery();
             }
         }

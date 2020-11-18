@@ -21,7 +21,7 @@ namespace Rent.Services
         {
             return CarRepository.DeleteCar(id);
         }
-        public List<Car> GetCar(Request request)
+        public List<Car> GetCar(CarRequest request)
         {
             return CarRepository.GetCar(request);
         }

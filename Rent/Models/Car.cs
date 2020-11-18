@@ -22,7 +22,7 @@ namespace Rent.Models
             Color = color;
             Year = year;
             DailyPrice = dailyPrice;
-            Status = CarRentStatus.Свободен;
+            Status = CarRentStatus.Free;
         }
         public Car(int id, string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice, CarRentStatus carRentStatus)
         {

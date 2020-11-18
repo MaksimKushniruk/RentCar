@@ -4,7 +4,7 @@ namespace Rent
 {
     public enum CarRentStatus
     {
-        Свободен = 0,
-        Арендован = 1
+        Free = 0,
+        InRent = 1
     }
 }

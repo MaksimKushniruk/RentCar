@@ -13,7 +13,10 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"INSERT INTO DiscountCoupons (Coupon, Discount) VALUES ('{discountCoupon.Coupon}', {discountCoupon.Discount})", connection);
+                SqlCommand command = new SqlCommand("sp_AddDiscountCoupon", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Coupon", discountCoupon.Coupon));
+                command.Parameters.Add(new SqlParameter("@Discount", discountCoupon.Discount));
                 return command.ExecuteNonQuery();
             }
         }
@@ -23,50 +26,35 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"DELETE FROM DiscountCoupons WHERE id = {id}", connection);
+                SqlCommand command = new SqlCommand("sp_DeleteDiscountCoupon", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", id));
                 return command.ExecuteNonQuery();
             }
         }
-
-        public DiscountCoupon GetDiscountCoupon(int id)
-        {
-            DiscountCoupon discountCoupon = null;
-            DataTable dataTable;
-            using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT dc.Id, dc.Coupon, dc.Discount FROM DiscountCoupons dc WHERE dc.Id = {id}", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
-            }
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                discountCoupon = new DiscountCoupon(dataRow["Id"].CastDbValue<int>(),
-                                                    dataRow["Coupon"].CastDbValue<string>(),
-                                                    dataRow["Discount"].CastDbValue<int>());
-            }
-            return discountCoupon;
-        }
-
-        public List<DiscountCoupon> GetDiscountCoupon()
+        public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request)
         {
             List<DiscountCoupon> discountCoupons = new List<DiscountCoupon>();
-            DataTable dataTable;
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT dc.Id, dc.Coupon, dc.Discount FROM DiscountCoupons dc", connection);
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet);
-                dataTable = dataSet.Tables[0];
+                SqlCommand command = new SqlCommand("sp_GetDiscountCoupon", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", request.Id));
+                command.Parameters.Add(new SqlParameter("@Coupon", request.Coupon));
+                command.Parameters.Add(new SqlParameter("@MinDiscount", request.MinDiscount));
+                command.Parameters.Add(new SqlParameter("@MaxDiscount", request.MaxDiscount));
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    discountCoupons.Add(new DiscountCoupon(reader["Id"].CastDbValue<int>(),
+                                                           reader["Coupon"].CastDbValue<string>(),
+                                                           reader["Discount"].CastDbValue<int>()));
+                }
+                reader.Close();
             }
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                discountCoupons.Add(new DiscountCoupon(dataRow["Id"].CastDbValue<int>(),
-                                                       dataRow["Coupon"].CastDbValue<string>(),
-                                                       dataRow["Discount"].CastDbValue<int>()));
-            }
+                
             return discountCoupons;
         }
 
@@ -75,7 +63,11 @@ namespace Rent.Repositories
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"UPDATE DiscountCoupons SET Coupon = {discountCoupon.Coupon}, Discount = {discountCoupon.Discount} WHERE Cars.Id = {discountCoupon.Id}", connection);
+                SqlCommand command = new SqlCommand("sp_UpdateDiscountCoupon", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", discountCoupon.Id));
+                command.Parameters.Add(new SqlParameter("@Coupon", discountCoupon.Coupon));
+                command.Parameters.Add(new SqlParameter("@Discount", discountCoupon.Discount));
                 return command.ExecuteNonQuery();
             }
         }

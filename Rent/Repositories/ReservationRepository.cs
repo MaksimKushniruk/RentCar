@@ -47,33 +47,32 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@CarId", request.CarId));
                 command.Parameters.Add(new SqlParameter("@CustomerId", request.CustomerId));
                 command.Parameters.Add(new SqlParameter("@DiscountCouponId", request.DiscountCouponId));
-                command.Parameters.Add(new SqlParameter("@StartDate", request.StartDate));
-                command.Parameters.Add(new SqlParameter("@FinalDate", request.FinalDate));
-                command.Parameters.Add(new SqlParameter("@Price", request.Price));
+                command.Parameters.Add(new SqlParameter("@StartDate", request.MinDate));
+                command.Parameters.Add(new SqlParameter("@FinalDate", request.MaxDate));
 
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    reservations.Add(new Reservation(reader[""].CastDbValue<int>(),
-                                                     new Car(reader[""].CastDbValue<int>(),
-                                                             reader[""].CastDbValue<string>(),
-                                                             reader[""].CastDbValue<string>(),
-                                                             reader[""].CastDbValue<string>(),
-                                                             reader[""].CastDbValue<string>(),
-                                                             reader[""].CastDbValue<int>(),
-                                                             reader[""].CastDbValue<decimal>(),
-                                                             reader[""].CastDbValue<CarRentStatus>()),
-                                                     new Customer(reader[""].CastDbValue<int>(),
-                                                                  reader[""].CastDbValue<string>(),
-                                                                  reader[""].CastDbValue<string>(),
-                                                                  reader[""].CastDbValue<string>(),
-                                                                  reader[""].CastDbValue<string>()),
-                                                     new DiscountCoupon(reader[""].CastDbValue<int>(),
-                                                                        reader[""].CastDbValue<string>(),
-                                                                        reader[""].CastDbValue<int>()),
-                                                     reader[""].CastDbValue<DateTime>(),
-                                                     reader[""].CastDbValue<DateTime>(),
-                                                     reader[""].CastDbValue<decimal>()));
+                    reservations.Add(new Reservation(reader["ReservationId"].CastDbValue<int>(),
+                                                     new Car(reader["CarId"].CastDbValue<int>(),
+                                                             reader["RegistrationNumber"].CastDbValue<string>(),
+                                                             reader["ModelName"].CastDbValue<string>(),
+                                                             reader["BrandName"].CastDbValue<string>(),
+                                                             reader["Color"].CastDbValue<string>(),
+                                                             reader["[Year]"].CastDbValue<int>(),
+                                                             reader["DailyPrice"].CastDbValue<decimal>(),
+                                                             reader["RentStatus"].CastDbValue<CarRentStatus>()),
+                                                     new Customer(reader["CustomerId"].CastDbValue<int>(),
+                                                                  reader["FirstName"].CastDbValue<string>(),
+                                                                  reader["LastName"].CastDbValue<string>(),
+                                                                  reader["City"].CastDbValue<string>(),
+                                                                  reader["PhoneNumber"].CastDbValue<string>()),
+                                                     new DiscountCoupon(reader["DiscountCouponId"].CastDbValue<int>(),
+                                                                        reader["Coupon"].CastDbValue<string>(),
+                                                                        reader["Discount"].CastDbValue<int>()),
+                                                     reader["StartDate"].CastDbValue<DateTime>(),
+                                                     reader["FinalDate"].CastDbValue<DateTime>(),
+                                                     reader["Price"].CastDbValue<decimal>()));
                 }
             }
             return reservations;

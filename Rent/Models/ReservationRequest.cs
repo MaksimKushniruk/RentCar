@@ -8,8 +8,7 @@ namespace Rent.Models
         public int CarId { get; set; }
         public int CustomerId { get; set; }
         public int  DiscountCouponId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FinalDate { get; set; }
-        public decimal Price { get; set; }
+        public DateTime MinDate { get; set; }
+        public DateTime MaxDate { get; set; }
     }
 }

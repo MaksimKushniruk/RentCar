@@ -25,40 +25,40 @@ namespace Rent.Services
         {
             return CarRepository.GetCar(request);
         }
+        
         public int UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            Car cars = CarRepository.GetCar(new CarRequest { Id = id });
+            List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("RegistrationNumber"))
             {
-                cars.RegistrationNumber = fieldsForUpdate["RegistrationNumber"];
+                cars[0].RegistrationNumber = fieldsForUpdate["RegistrationNumber"];
             }
             if (fieldsForUpdate.ContainsKey("ModelName"))
             {
-                cars.ModelName = fieldsForUpdate["ModelName"];
+                cars[0].ModelName = fieldsForUpdate["ModelName"];
             }
             if (fieldsForUpdate.ContainsKey("BrandName"))
             {
-                cars.BrandName = fieldsForUpdate["BrandName"];
+                cars[0].BrandName = fieldsForUpdate["BrandName"];
             }
             if (fieldsForUpdate.ContainsKey("Color"))
             {
-                cars.Color = fieldsForUpdate["Color"];
+                cars[0].Color = fieldsForUpdate["Color"];
             }
             if (fieldsForUpdate.ContainsKey("Year"))
             {
-                cars.Year = int.Parse(fieldsForUpdate["Year"]);
+                cars[0].Year = int.Parse(fieldsForUpdate["Year"]);
             }
             if (fieldsForUpdate.ContainsKey("DailyPrice"))
             {
-                cars.DailyPrice = decimal.Parse(fieldsForUpdate["DailyPrice"]);
+                cars[0].DailyPrice = decimal.Parse(fieldsForUpdate["DailyPrice"]);
             }
             if (fieldsForUpdate.ContainsKey("Status"))
             {
-                cars.Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
+                cars[0].Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
             }
 
-
-            return CarRepository.UpdateCar(cars);
+            return CarRepository.UpdateCar(cars[0]);
         }
     }
 }

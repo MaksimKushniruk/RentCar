@@ -9,6 +9,10 @@ namespace Rent.Models
         public string LastName { get; set; }
         public string City { get; set; }
         public string PhoneNumber { get; set; }
+        public CustomerRequest()
+        {
+
+        }
         public CustomerRequest(int? id, string firstName, string lastName, string city, string phoneNumber)
         {
             Id = id;

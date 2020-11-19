@@ -21,14 +21,30 @@ namespace Rent.Services
         {
             return CustomerRepository.DeleteCustomer(id);
         }
-        public List<Customer> GetCustomer(int? id, string firstName, string lastName, string city, string phoneNumber)
+        public List<Customer> GetCustomer(CustomerRequest request)
         {
-            return CustomerRepository.GetCustomer(new CustomerRequest(id, firstName, lastName, city, phoneNumber));
+            return CustomerRepository.GetCustomer(request);
         }
-        // Принимать дикшинари параметров которые надо изменить и менять даже если будет налл.
-        public int UpdateCustomer(Dictionary<string, string> fields)           
+        public int UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {
-            return CustomerRepository.UpdateCustomer(customer);
+            List<Customer> customers = CustomerRepository.GetCustomer(new CustomerRequest { Id = id });
+            if (fieldsForUpdate.ContainsKey("FirstName"))
+            {
+                customers[0].FirstName = fieldsForUpdate["FirstName"];
+            }
+            if (fieldsForUpdate.ContainsKey("LastName"))
+            {
+                customers[0].LastName = fieldsForUpdate["LastName"];
+            }
+            if (fieldsForUpdate.ContainsKey("City"))
+            {
+                customers[0].City = fieldsForUpdate["City"];
+            }
+            if (fieldsForUpdate.ContainsKey("PhoneNumber"))
+            {
+                customers[0].PhoneNumber = fieldsForUpdate["PhoneNumber"];
+            }
+            return CustomerRepository.UpdateCustomer(customers[0]);
         }
     }
 }

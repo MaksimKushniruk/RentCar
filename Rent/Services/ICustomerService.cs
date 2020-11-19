@@ -8,9 +8,7 @@ namespace Rent.Services
     {
         int CreateCustomer(string firstName, string lastName, string city, string phoneNumber);
         int DeleteCustomer(int id);
-        Customer GetCustomer(int id);
-        List<Customer> GetCustomer(string city);
-        List<Customer> GetCustomer();
-        int UpdateCustomer(Customer customer);
+        List<Customer> GetCustomer(CustomerRequest request);
+        int UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

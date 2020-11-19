@@ -13,6 +13,10 @@ namespace Rent.Models
         public decimal DailyPrice { get; set; }
         public CarRentStatus Status { get; set; }
         // Сделать конструктор через this, чтобы избежать повторения кода.
+        public Car()
+        {
+
+        }
         public Car(string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
         {
             Id = Int32.MinValue;

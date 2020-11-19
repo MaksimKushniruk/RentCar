@@ -8,13 +8,14 @@ namespace Rent.Repositories
 {
     public class CarRepository : ICarRepository
     {
-        public int AddCar(Car car)
+        public bool AddCar(Car car, out int id)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand("sp_AddCar", connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.RegistrationNumber));
                 command.Parameters.Add(new SqlParameter("@ModelName", car.ModelName));
                 command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
@@ -22,7 +23,17 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@Year", car.Year));
                 command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
                 command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
-                return command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+                // Возвращаем Id созданного объекта
+                id = command.Parameters["@Id"].Value.CastDbValue<int>();
+                if (id > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public int DeleteCar(int id)

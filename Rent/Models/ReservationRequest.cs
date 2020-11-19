@@ -10,5 +10,9 @@ namespace Rent.Models
         public int  DiscountCouponId { get; set; }
         public DateTime MinDate { get; set; }
         public DateTime MaxDate { get; set; }
+        public ReservationRequest()
+        {
+
+        }
     }
 }

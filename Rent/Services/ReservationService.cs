@@ -13,31 +13,46 @@ namespace Rent.Services
         {
             ReservationRepository = new ReservationRepository();
         }
-        // Принимаем информацию-поля резервирования, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
         public int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
         {
             return ReservationRepository.AddReservation(new Reservation(car, customer, discountCoupon, startDate, finalDate, price));
         }
-        // Принимаем Id удаляемого резервирования, передаем в репозиторий, проверяем успешность через возвращаемый результат.
         public int DeleteReservation(int id)
         {
             return ReservationRepository.DeleteReservation(id);
         }
-        // Принимаем Id искомого резервирования, передаем в репозиторий для поиска, получаем Reservation, проверяем успешность через возвращаемый результат.
-        public Reservation GetReservation(int id)
+        public List<Reservation> GetReservation(ReservationRequest request)
         {
-            return ReservationRepository.GetReservation(id);
+            return ReservationRepository.GetReservation(request);
         }
-        // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
-        public List<Reservation> GetReservation()
+        public int UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            // Проверить на null
-            return ReservationRepository.GetReservation();
-        }
-        // Получаем из UI уже измененный объект и передаем его в репозиторий.
-        public int UpdateReservation(Reservation reservation)
-        {
-            return ReservationRepository.UpdateReservation(reservation);
+            List<Reservation> reservations = ReservationRepository.GetReservation(new ReservationRequest { Id = id });
+            if (fieldsForUpdate.ContainsKey("CarId"))
+            {
+                reservations[0].Car.Id = int.Parse(fieldsForUpdate["CarId"]);
+            }
+            if (fieldsForUpdate.ContainsKey("CustomerId"))
+            {
+                reservations[0].Customer.Id = int.Parse(fieldsForUpdate["CustomerId"]);
+            }
+            if (fieldsForUpdate.ContainsKey("DiscountCouponId"))
+            {
+                reservations[0].DiscountCoupon.Id = int.Parse(fieldsForUpdate["DiscountCouponId"]);
+            }
+            if (fieldsForUpdate.ContainsKey("StartDate"))
+            {
+                reservations[0].StartDate = DateTime.Parse(fieldsForUpdate["StartDate"]);
+            }
+            if (fieldsForUpdate.ContainsKey("FinalDate"))
+            {
+                reservations[0].FinalDate = DateTime.Parse(fieldsForUpdate["FinalDate"]);
+            }
+            if (fieldsForUpdate.ContainsKey("Price"))
+            {
+                reservations[0].Price = decimal.Parse(fieldsForUpdate["Price"]);
+            }
+            return ReservationRepository.UpdateReservation(reservations[0]);
         }
     }
 }

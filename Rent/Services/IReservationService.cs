@@ -8,8 +8,7 @@ namespace Rent.Services
     {
         int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price);
         int DeleteReservation(int id);
-        Reservation GetReservation(int id);
-        List<Reservation> GetReservation();
-        int UpdateReservation(Reservation reservation);
+        List<Reservation> GetReservation(ReservationRequest request);
+        int UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

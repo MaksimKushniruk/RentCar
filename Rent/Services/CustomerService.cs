@@ -13,35 +13,38 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
-        // Принимаем информацию-поля клиента, создаем новый объект, передаем в репозиторий для записи, проверяем успешность через возвращаемый результат.
         public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
         {
             return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
         }
-        // Принимаем Id удаляемого клиента, передаем в репозиторий, проверяем успешность через возвращаемый результат.
         public int DeleteCustomer(int id)
         {
             return CustomerRepository.DeleteCustomer(id);
         }
-        // Принимаем Id искомого автомобиля, передаем в репозиторий для поиска, проверяем успешность через возвращаемый результат.
-        public Customer GetCustomer(int id)
+        public List<Customer> GetCustomer(CustomerRequest request)
         {
-            return CustomerRepository.GetCustomer(id);
+            return CustomerRepository.GetCustomer(request);
         }
-
-        public List<Customer> GetCustomer(string city)
+        public int UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {
-            return CustomerRepository.GetCustomer(city);
-        }
-        // Перегрузка метода, не принимаем параметры, получаем из репозитория объект DataTable, конвертируем его в List и возвращаем его.
-        public List<Customer> GetCustomer()
-        {
-            return CustomerRepository.GetCustomer();
-        }
-        // Получаем из UI уже измененный объект и передаем его в репозиторий.
-        public int UpdateCustomer(Customer customer)
-        {
-            return CustomerRepository.UpdateCustomer(customer);
+            List<Customer> customers = CustomerRepository.GetCustomer(new CustomerRequest { Id = id });
+            if (fieldsForUpdate.ContainsKey("FirstName"))
+            {
+                customers[0].FirstName = fieldsForUpdate["FirstName"];
+            }
+            if (fieldsForUpdate.ContainsKey("LastName"))
+            {
+                customers[0].LastName = fieldsForUpdate["LastName"];
+            }
+            if (fieldsForUpdate.ContainsKey("City"))
+            {
+                customers[0].City = fieldsForUpdate["City"];
+            }
+            if (fieldsForUpdate.ContainsKey("PhoneNumber"))
+            {
+                customers[0].PhoneNumber = fieldsForUpdate["PhoneNumber"];
+            }
+            return CustomerRepository.UpdateCustomer(customers[0]);
         }
     }
 }

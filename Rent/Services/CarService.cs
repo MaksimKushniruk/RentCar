@@ -25,9 +25,40 @@ namespace Rent.Services
         {
             return CarRepository.GetCar(request);
         }
-        public int UpdateCar(Car car)
+        public int UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            return CarRepository.UpdateCar(car);
+            Car cars = CarRepository.GetCar(new CarRequest { Id = id });
+            if (fieldsForUpdate.ContainsKey("RegistrationNumber"))
+            {
+                cars.RegistrationNumber = fieldsForUpdate["RegistrationNumber"];
+            }
+            if (fieldsForUpdate.ContainsKey("ModelName"))
+            {
+                cars.ModelName = fieldsForUpdate["ModelName"];
+            }
+            if (fieldsForUpdate.ContainsKey("BrandName"))
+            {
+                cars.BrandName = fieldsForUpdate["BrandName"];
+            }
+            if (fieldsForUpdate.ContainsKey("Color"))
+            {
+                cars.Color = fieldsForUpdate["Color"];
+            }
+            if (fieldsForUpdate.ContainsKey("Year"))
+            {
+                cars.Year = int.Parse(fieldsForUpdate["Year"]);
+            }
+            if (fieldsForUpdate.ContainsKey("DailyPrice"))
+            {
+                cars.DailyPrice = decimal.Parse(fieldsForUpdate["DailyPrice"]);
+            }
+            if (fieldsForUpdate.ContainsKey("Status"))
+            {
+                cars.Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
+            }
+
+
+            return CarRepository.UpdateCar(cars);
         }
     }
 }

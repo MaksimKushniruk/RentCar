@@ -4,7 +4,7 @@ namespace Rent.Models
 {
     public class Customer
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string City { get; set; }
@@ -13,7 +13,7 @@ namespace Rent.Models
         // Сделать конструктор через this, чтобы избежать повторения кода.
         public Customer(string firstName, string lastName, string city, string phoneNumber)
         {
-            Id = Int32.MinValue;
+            Id = null;
             FirstName = firstName;
             LastName = lastName;
             City = city;

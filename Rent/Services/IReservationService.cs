@@ -6,9 +6,9 @@ namespace Rent.Services
 {
     public interface IReservationService
     {
-        int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price);
-        int DeleteReservation(int id);
+        bool CreateReservation(out int reservationId, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price);
+        bool DeleteReservation(int id);
         List<Reservation> GetReservation(ReservationRequest request);
-        int UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate);
+        bool UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

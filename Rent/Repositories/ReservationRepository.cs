@@ -8,23 +8,34 @@ namespace Rent.Repositories
 {
     class ReservationRepository : IReservationRepository
     {
-        public int AddReservation(Reservation reservation)
+        public bool AddReservation(Reservation reservation, out int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand("sp_AddReservation", connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@CarId", reservation.Car.Id));
                 command.Parameters.Add(new SqlParameter("@CustomerId", reservation.Customer.Id));
                 command.Parameters.Add(new SqlParameter("@DiscountCouponId", reservation.DiscountCoupon.Id));
                 command.Parameters.Add(new SqlParameter("@StartDate", reservation.StartDate));
                 command.Parameters.Add(new SqlParameter("@FinalDate", reservation.FinalDate));
                 command.Parameters.Add(new SqlParameter("@Price", reservation.Price));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                // Возвращаем Id созданного объекта
+                id = command.Parameters["@Id"].Value.CastDbValue<int>();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-        public int DeleteReservation(int id)
+        public bool DeleteReservation(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -32,7 +43,15 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_DeleteReservation", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Id", id));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public List<Reservation> GetReservation(ReservationRequest request)
@@ -74,10 +93,11 @@ namespace Rent.Repositories
                                                      reader["FinalDate"].CastDbValue<DateTime>(),
                                                      reader["Price"].CastDbValue<decimal>()));
                 }
+                reader.Close();
             }
             return reservations;
         }
-        public int UpdateReservation(Reservation reservation)
+        public bool UpdateReservation(Reservation reservation)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -91,7 +111,15 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@StartDate", reservation.StartDate));
                 command.Parameters.Add(new SqlParameter("@FinalDate", reservation.FinalDate));
                 command.Parameters.Add(new SqlParameter("@Price", reservation.Price));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

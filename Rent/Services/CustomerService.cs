@@ -13,11 +13,13 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
-        public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
+        public bool CreateCustomer(out int customerId, string firstName, string lastName, string city, string phoneNumber)
         {
-            return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
+            bool result =  CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber), out int id);
+            customerId = id;
+            return result;
         }
-        public int DeleteCustomer(int id)
+        public bool DeleteCustomer(int id)
         {
             return CustomerRepository.DeleteCustomer(id);
         }
@@ -25,7 +27,7 @@ namespace Rent.Services
         {
             return CustomerRepository.GetCustomer(request);
         }
-        public int UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
+        public bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {
             List<Customer> customers = CustomerRepository.GetCustomer(new CustomerRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("FirstName"))

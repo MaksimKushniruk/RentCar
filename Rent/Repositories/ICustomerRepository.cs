@@ -7,9 +7,9 @@ namespace Rent.Repositories
 {
     public interface ICustomerRepository
     {
-        int AddCustomer(Customer customer);
-        int DeleteCustomer(int id);
+        bool AddCustomer(Customer customer, out int id);
+        bool DeleteCustomer(int id);
         List<Customer> GetCustomer(CustomerRequest request);
-        int UpdateCustomer(Customer customer);
+        bool UpdateCustomer(Customer customer);
     }
 }

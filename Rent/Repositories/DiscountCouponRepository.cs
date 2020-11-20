@@ -8,20 +8,31 @@ namespace Rent.Repositories
 {
     public class DiscountCouponRepository : IDiscountCouponRepository
     {
-        public int AddDiscountCoupon(DiscountCoupon discountCoupon)
+        public bool AddDiscountCoupon(DiscountCoupon discountCoupon, out int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand("sp_AddDiscountCoupon", connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@Coupon", discountCoupon.Coupon));
                 command.Parameters.Add(new SqlParameter("@Discount", discountCoupon.Discount));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                // Возвращаем Id созданного объекта
+                id = command.Parameters["@Id"].Value.CastDbValue<int>();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
-        public int DeleteDiscountCoupon(int id)
+        public bool DeleteDiscountCoupon(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -29,7 +40,15 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_DeleteDiscountCoupon", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Id", id));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request)
@@ -58,7 +77,7 @@ namespace Rent.Repositories
             return discountCoupons;
         }
 
-        public int UpdateDiscountCoupon(DiscountCoupon discountCoupon)
+        public bool UpdateDiscountCoupon(DiscountCoupon discountCoupon)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -68,7 +87,15 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@Id", discountCoupon.Id));
                 command.Parameters.Add(new SqlParameter("@Coupon", discountCoupon.Coupon));
                 command.Parameters.Add(new SqlParameter("@Discount", discountCoupon.Discount));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

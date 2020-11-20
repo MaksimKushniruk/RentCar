@@ -6,9 +6,9 @@ namespace Rent.Services
 {
     public interface ICustomerService
     {
-        int CreateCustomer(string firstName, string lastName, string city, string phoneNumber);
-        int DeleteCustomer(int id);
+        bool CreateCustomer(out int customerId, string firstName, string lastName, string city, string phoneNumber);
+        bool DeleteCustomer(int id);
         List<Customer> GetCustomer(CustomerRequest request);
-        int UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate);
+        bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

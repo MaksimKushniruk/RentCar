@@ -8,21 +8,32 @@ namespace Rent.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public int AddCustomer(Customer customer)
+        public bool AddCustomer(Customer customer, out int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand("sp_AddCustomer", connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@FirstName", customer.FirstName));
                 command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
                 command.Parameters.Add(new SqlParameter("@City", customer.City));
                 command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                // Возвращаем Id созданного объекта
+                id = command.Parameters["@Id"].Value.CastDbValue<int>();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-        public int DeleteCustomer(int id)
+        public bool DeleteCustomer(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -30,7 +41,15 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_DeleteCustomer", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Id", id));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public List<Customer> GetCustomer(CustomerRequest request)
@@ -60,7 +79,7 @@ namespace Rent.Repositories
             }
             return customers;
         }
-        public int UpdateCustomer(Customer customer)
+        public bool UpdateCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -72,7 +91,15 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
                 command.Parameters.Add(new SqlParameter("@City", customer.City));
                 command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
-                return command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

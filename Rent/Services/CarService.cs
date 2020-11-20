@@ -13,11 +13,13 @@ namespace Rent.Services
         {
             CarRepository = new CarRepository();
         }
-        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
+        public bool CreateCar(out int carId, string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
         {
-            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, dailyPrice));
+            bool result = CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, dailyPrice), out int id);
+            carId = id;
+            return result;
         }
-        public int DeleteCar(int id)
+        public bool DeleteCar(int id)
         {
             return CarRepository.DeleteCar(id);
         }
@@ -26,7 +28,7 @@ namespace Rent.Services
             return CarRepository.GetCar(request);
         }
         
-        public int UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
+        public bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("RegistrationNumber"))

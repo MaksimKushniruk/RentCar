@@ -13,11 +13,13 @@ namespace Rent.Services
         {
             ReservationRepository = new ReservationRepository();
         }
-        public int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
+        public bool CreateReservation(out int reservationId, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
         {
-            return ReservationRepository.AddReservation(new Reservation(car, customer, discountCoupon, startDate, finalDate, price));
+            bool result =  ReservationRepository.AddReservation(new Reservation(car, customer, discountCoupon, startDate, finalDate, price), out int id);
+            reservationId = id;
+            return result;
         }
-        public int DeleteReservation(int id)
+        public bool DeleteReservation(int id)
         {
             return ReservationRepository.DeleteReservation(id);
         }
@@ -25,7 +27,7 @@ namespace Rent.Services
         {
             return ReservationRepository.GetReservation(request);
         }
-        public int UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate)
+        public bool UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<Reservation> reservations = ReservationRepository.GetReservation(new ReservationRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("CarId"))

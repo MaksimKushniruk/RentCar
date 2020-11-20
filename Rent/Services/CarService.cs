@@ -19,7 +19,7 @@ namespace Rent.Services
             carId = id;
             return result;
         }
-        public int DeleteCar(int id)
+        public bool DeleteCar(int id)
         {
             return CarRepository.DeleteCar(id);
         }
@@ -28,7 +28,7 @@ namespace Rent.Services
             return CarRepository.GetCar(request);
         }
         
-        public int UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
+        public bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("RegistrationNumber"))

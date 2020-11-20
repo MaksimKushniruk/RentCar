@@ -23,10 +23,10 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@Year", car.Year));
                 command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
                 command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
-                command.ExecuteNonQuery();
+                int result = command.ExecuteNonQuery();
                 // Возвращаем Id созданного объекта
                 id = command.Parameters["@Id"].Value.CastDbValue<int>();
-                if (id > 0)
+                if (result > 0)
                 {
                     return true;
                 }
@@ -36,7 +36,7 @@ namespace Rent.Repositories
                 }
             }
         }
-        public int DeleteCar(int id)
+        public bool DeleteCar(int id)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -44,7 +44,15 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_DeleteCar", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Id", id));
-                return command.ExecuteNonQuery();
+                int result =  command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -82,7 +90,7 @@ namespace Rent.Repositories
             }
             return cars;
         }
-        public int UpdateCar(Car car)
+        public bool UpdateCar(Car car)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -97,7 +105,15 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@Year", car.Year));
                 command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
                 command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
-                return command.ExecuteNonQuery();
+                int result =  command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

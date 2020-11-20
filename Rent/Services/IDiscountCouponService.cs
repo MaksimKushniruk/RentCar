@@ -6,10 +6,9 @@ namespace Rent.Services
 {
     public interface IDiscountCouponService
     {
-        int CreateDiscountCoupon(string coupon, int discount);
-        int DeleteDiscountCoupon(int id);
-        DiscountCoupon GetDiscountCoupon(int id);
-        List<DiscountCoupon> GetDiscountCoupon();
-        int UpdateDiscountCoupon(DiscountCoupon discountCoupon);
+        bool CreateDiscountCoupon(out int discountCouponId, string coupon, int discount);
+        bool DeleteDiscountCoupon(int id);
+        List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request);
+        bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

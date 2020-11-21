@@ -6,7 +6,7 @@ namespace Rent.Services
 {
     public interface ICarService
     {
-        bool CreateCar(out int carId, string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice);
+        int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour);
         bool DeleteCar(int id);
         List<Car> GetCar(CarRequest request);
         bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate);

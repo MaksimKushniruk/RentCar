@@ -8,7 +8,7 @@ namespace Rent.Repositories
 {
     public class DiscountCouponRepository : IDiscountCouponRepository
     {
-        public bool AddDiscountCoupon(DiscountCoupon discountCoupon, out int id)
+        public int AddDiscountCoupon(DiscountCoupon discountCoupon)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -18,17 +18,9 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
                 command.Parameters.Add(new SqlParameter("@Coupon", discountCoupon.Coupon));
                 command.Parameters.Add(new SqlParameter("@Discount", discountCoupon.Discount));
-                int result = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
                 // Возвращаем Id созданного объекта
-                id = command.Parameters["@Id"].Value.CastDbValue<int>();
-                if (result > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
 

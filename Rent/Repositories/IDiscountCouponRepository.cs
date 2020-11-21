@@ -6,7 +6,7 @@ namespace Rent.Repositories
 {
     public interface IDiscountCouponRepository
     {
-        bool AddDiscountCoupon(DiscountCoupon discountCoupon, out int id);
+        int AddDiscountCoupon(DiscountCoupon discountCoupon);
         bool DeleteDiscountCoupon(int id);
         public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request);
         bool UpdateDiscountCoupon(DiscountCoupon discountCoupon);

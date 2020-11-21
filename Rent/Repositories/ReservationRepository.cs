@@ -8,7 +8,7 @@ namespace Rent.Repositories
 {
     class ReservationRepository : IReservationRepository
     {
-        public bool AddReservation(Reservation reservation, out int id)
+        public int AddReservation(Reservation reservation)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -22,17 +22,9 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@StartDate", reservation.StartDate));
                 command.Parameters.Add(new SqlParameter("@FinalDate", reservation.FinalDate));
                 command.Parameters.Add(new SqlParameter("@Price", reservation.Price));
-                int result = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
                 // Возвращаем Id созданного объекта
-                id = command.Parameters["@Id"].Value.CastDbValue<int>();
-                if (result > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
         public bool DeleteReservation(int id)
@@ -79,7 +71,7 @@ namespace Rent.Repositories
                                                              reader["BrandName"].CastDbValue<string>(),
                                                              reader["Color"].CastDbValue<string>(),
                                                              reader["[Year]"].CastDbValue<int>(),
-                                                             reader["DailyPrice"].CastDbValue<decimal>(),
+                                                             reader["PricePerHour"].CastDbValue<decimal>(),
                                                              reader["RentStatus"].CastDbValue<CarRentStatus>()),
                                                      new Customer(reader["CustomerId"].CastDbValue<int>(),
                                                                   reader["FirstName"].CastDbValue<string>(),

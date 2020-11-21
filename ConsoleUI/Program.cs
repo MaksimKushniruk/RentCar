@@ -9,6 +9,7 @@ namespace ConsoleUI
     {
         static void Main()
         {
+
             while (true)
             {
                 Console.Clear();

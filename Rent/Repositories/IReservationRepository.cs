@@ -7,7 +7,7 @@ namespace Rent.Repositories
 {
     interface IReservationRepository
     {
-        bool AddReservation(Reservation reservation, out int id);
+        int AddReservation(Reservation reservation);
         bool DeleteReservation(int id);
         List<Reservation> GetReservation(ReservationRequest request);
         bool UpdateReservation(Reservation reservation);

@@ -11,10 +11,6 @@ namespace Rent.Models
         public DateTime StartDate { get; set; }
         public DateTime FinalDate { get; set; }
         public decimal Price { get; set; }
-        public Reservation()
-        {
-
-        }
         public Reservation(int id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
         {
             Id = id;
@@ -25,7 +21,7 @@ namespace Rent.Models
             DiscountCoupon = discountCoupon;
             Price = price;
         }
-        public Reservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
+        public Reservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate)
         {
             Id = Int32.MinValue;
             Car = car;
@@ -33,7 +29,14 @@ namespace Rent.Models
             StartDate = startDate;
             FinalDate = finalDate;
             DiscountCoupon = discountCoupon;
-            Price = price;
+            if (discountCoupon != null)
+            {
+                Price = (((car.PricePerHour * (decimal)Math.Round(finalDate.Subtract(startDate).TotalHours, MidpointRounding.ToPositiveInfinity))) / 100) * (100 - discountCoupon.Discount);
+            }
+            else
+            {
+                Price = car.PricePerHour * (decimal)Math.Round(finalDate.Subtract(startDate).TotalHours, MidpointRounding.ToPositiveInfinity);
+            }
         }
     }
 }

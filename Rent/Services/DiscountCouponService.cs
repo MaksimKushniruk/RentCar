@@ -13,11 +13,9 @@ namespace Rent.Services
             DiscountCouponRepository = new DiscountCouponRepository();
         }
 
-        public bool CreateDiscountCoupon(out int discountCouponId, string coupon, int discount)
+        public int CreateDiscountCoupon(string coupon, int discount)
         {
-            bool result = DiscountCouponRepository.AddDiscountCoupon(new DiscountCoupon(coupon, discount), out int id);
-            discountCouponId = id;
-            return result;
+            return DiscountCouponRepository.AddDiscountCoupon(new DiscountCoupon(coupon, discount));
         }
 
         public bool DeleteDiscountCoupon(int id)

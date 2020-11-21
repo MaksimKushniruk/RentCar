@@ -13,11 +13,9 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
-        public bool CreateCustomer(out int customerId, string firstName, string lastName, string city, string phoneNumber)
+        public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
         {
-            bool result =  CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber), out int id);
-            customerId = id;
-            return result;
+            return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
         }
         public bool DeleteCustomer(int id)
         {

@@ -13,9 +13,9 @@ namespace Rent.Services
         {
             ReservationRepository = new ReservationRepository();
         }
-        public int CreateReservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
+        public int CreateReservation(Reservation reservation)
         {
-            return ReservationRepository.AddReservation(new Reservation(car, customer, discountCoupon, startDate, finalDate, price));
+            return ReservationRepository.AddReservation(reservation);
         }
         public bool DeleteReservation(int id)
         {

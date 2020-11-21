@@ -8,7 +8,7 @@ namespace Rent.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public bool AddCustomer(Customer customer, out int id)
+        public int AddCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
             {
@@ -20,17 +20,9 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@LastName", customer.LastName));
                 command.Parameters.Add(new SqlParameter("@City", customer.City));
                 command.Parameters.Add(new SqlParameter("@PhoneNumber", customer.PhoneNumber));
-                int result = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
                 // Возвращаем Id созданного объекта
-                id = command.Parameters["@Id"].Value.CastDbValue<int>();
-                if (result > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
         public bool DeleteCustomer(int id)

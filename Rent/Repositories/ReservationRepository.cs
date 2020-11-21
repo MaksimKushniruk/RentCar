@@ -71,7 +71,7 @@ namespace Rent.Repositories
                                                              reader["BrandName"].CastDbValue<string>(),
                                                              reader["Color"].CastDbValue<string>(),
                                                              reader["[Year]"].CastDbValue<int>(),
-                                                             reader["DailyPrice"].CastDbValue<decimal>(),
+                                                             reader["PricePerHour"].CastDbValue<decimal>(),
                                                              reader["RentStatus"].CastDbValue<CarRentStatus>()),
                                                      new Customer(reader["CustomerId"].CastDbValue<int>(),
                                                                   reader["FirstName"].CastDbValue<string>(),

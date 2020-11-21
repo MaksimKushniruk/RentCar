@@ -16,7 +16,7 @@ namespace ConsoleUI
             List<Car> cars = carService.GetCar(new CarRequest { BrandName = "Mercedes-Benz" });
             foreach (Car car in cars)
             {
-                Console.WriteLine($"{car.Id}\t{car.ModelName}\t{car.BrandName}\t{car.Color}\t{car.Year}\t{car.DailyPrice}");
+                Console.WriteLine($"{car.Id}\t{car.ModelName}\t{car.BrandName}\t{car.Color}\t{car.Year}\t{car.PricePerHour}");
             }
             
             Console.ReadKey();

@@ -10,14 +10,14 @@ namespace Rent.Models
         public string BrandName { get; set; }
         public string Color { get; set; }
         public int Year { get; set; }
-        public decimal DailyPrice { get; set; }
+        public decimal PricePerHour { get; set; }
         public CarRentStatus Status { get; set; }
         // Сделать конструктор через this, чтобы избежать повторения кода.
         public Car()
         {
 
         }
-        public Car(string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
+        public Car(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour)
         {
             Id = Int32.MinValue;
             RegistrationNumber = registrationNumber;
@@ -25,10 +25,10 @@ namespace Rent.Models
             BrandName = brandName;
             Color = color;
             Year = year;
-            DailyPrice = dailyPrice;
+            PricePerHour = pricePerHour;
             Status = CarRentStatus.Free;
         }
-        public Car(int id, string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice, CarRentStatus carRentStatus)
+        public Car(int id, string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour, CarRentStatus carRentStatus)
         {
             Id = id;
             RegistrationNumber = registrationNumber;
@@ -36,7 +36,7 @@ namespace Rent.Models
             BrandName = brandName;
             Color = color;
             Year = year;
-            DailyPrice = dailyPrice;
+            PricePerHour = pricePerHour;
             Status = carRentStatus;
         }
     }

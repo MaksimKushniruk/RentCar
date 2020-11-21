@@ -13,9 +13,9 @@ namespace Rent.Services
         {
             CarRepository = new CarRepository();
         }
-        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal dailyPrice)
+        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour)
         {
-            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, dailyPrice));
+            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, pricePerHour));
         }
         public bool DeleteCar(int id)
         {
@@ -49,9 +49,9 @@ namespace Rent.Services
             {
                 cars[0].Year = int.Parse(fieldsForUpdate["Year"]);
             }
-            if (fieldsForUpdate.ContainsKey("DailyPrice"))
+            if (fieldsForUpdate.ContainsKey("PricePerHour"))
             {
-                cars[0].DailyPrice = decimal.Parse(fieldsForUpdate["DailyPrice"]);
+                cars[0].PricePerHour = decimal.Parse(fieldsForUpdate["PricePerHour"]);
             }
             if (fieldsForUpdate.ContainsKey("Status"))
             {

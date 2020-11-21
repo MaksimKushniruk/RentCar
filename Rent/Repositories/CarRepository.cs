@@ -21,7 +21,7 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
                 command.Parameters.Add(new SqlParameter("@Color", car.Color));
                 command.Parameters.Add(new SqlParameter("@Year", car.Year));
-                command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
+                command.Parameters.Add(new SqlParameter("@PricePerHour", car.PricePerHour));
                 command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
                 command.ExecuteNonQuery();
                 // Возвращаем Id созданного объекта
@@ -75,7 +75,7 @@ namespace Rent.Repositories
                                      reader["BrandName"].CastDbValue<string>(), 
                                      reader["Color"].CastDbValue<string>(), 
                                      reader["Year"].CastDbValue<int>(), 
-                                     reader["DailyPrice"].CastDbValue<decimal>(), 
+                                     reader["PricePerHour"].CastDbValue<decimal>(), 
                                      reader["RentStatus"].CastDbValue<CarRentStatus>()));
                 }
                 reader.Close();
@@ -95,7 +95,7 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
                 command.Parameters.Add(new SqlParameter("@Color", car.Color));
                 command.Parameters.Add(new SqlParameter("@Year", car.Year));
-                command.Parameters.Add(new SqlParameter("@DailyPrice", car.DailyPrice));
+                command.Parameters.Add(new SqlParameter("@PricePerHour", car.PricePerHour));
                 command.Parameters.Add(new SqlParameter("@RentStatus", (int)car.Status));
                 int result =  command.ExecuteNonQuery();
                 if (result > 0)

@@ -7,7 +7,7 @@ namespace Rent.Repositories
 {
     public interface ICarRepository
     {
-        bool AddCar(Car car, out int id);
+        int AddCar(Car car);
         bool DeleteCar(int id);
         List<Car> GetCar(CarRequest request);
         bool UpdateCar(Car car);

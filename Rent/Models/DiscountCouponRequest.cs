@@ -10,5 +10,10 @@ namespace Rent.Models
         public string Coupon { get; set; }
         public int MinDiscount { get; set; }
         public int MaxDiscount { get; set; }
+
+        public DiscountCouponRequest()
+        {
+
+        }
     }
 }

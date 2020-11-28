@@ -6,7 +6,7 @@ namespace Rent.Services
 {
     public interface ICustomerService
     {
-        int CreateCustomer(string firstName, string lastName, string city, string phoneNumber);
+        Customer CreateCustomer(Dictionary<string, string> fields);
         bool DeleteCustomer(int id);
         List<Customer> GetCustomer(CustomerRequest request);
         bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate);

@@ -13,9 +13,10 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
-        public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
+        public Customer CreateCustomer(Dictionary<string, string> fields)
         {
-            return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
+            int id = CustomerRepository.AddCustomer(new Customer(fields["Имя"], fields["Фамилия"], fields["Город"], fields["Телефон"]));
+            return new Customer(id, fields["Имя"], fields["Фамилия"], fields["Город"], fields["Телефон"]);
         }
         public bool DeleteCustomer(int id)
         {

@@ -34,9 +34,17 @@ namespace ConsoleUI
                         {
                             case '1':
                                 customer = Client.CreateClient();
-                                if (customer != null)
+                                ConsoleMenu.Logo("Хотите выбрать текущего клиента?");
+                                ConsoleMenu.MainMenu(new List<string> { "Да", "Нет" });
+                                switch (Console.ReadKey().KeyChar)
                                 {
-                                    rentFields["Клиент"] = $"{customer.FirstName} {customer.LastName}";
+                                    case '1':
+                                        rentFields["Клиент"] = $"{customer.FirstName} {customer.LastName}";
+                                        break;
+                                    case '2':
+                                        break;
+                                    default:
+                                        break;
                                 }
                                 break;
                             case '2':

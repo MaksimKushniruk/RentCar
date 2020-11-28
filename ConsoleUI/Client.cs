@@ -22,18 +22,7 @@ namespace ConsoleUI
                         Customer customer = customerService.CreateCustomer(fields);
                         Console.SetCursorPosition(0, Console.CursorTop);
                         Console.WriteLine($"Id нового клиента: {customer.Id}");
-                        ConsoleMenu.Logo("Хотите выбрать текущего клиента?");
-                        ConsoleMenu.MainMenu(new List<string> { "Да", "Нет" });
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                return customer;
-                            case '2':
-                                return null;
-                            default:
-                                break;
-                        }
-                        break;
+                        return customer;
                     case '2':
                         return null;
                     default:

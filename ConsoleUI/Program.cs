@@ -50,6 +50,37 @@ namespace ConsoleUI
                         }
                         break;
                     case '2':
+                        Console.Clear();
+                        ConsoleMenu.Logo("Администрирование");
+                        ConsoleMenu.Menu(new List<string> { "Автомобили", "Клиенты", "Промокоды" });
+                        Console.Write("\nДля продолжения сделайте свой выбор...");
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                // метод для автомобиля
+                                break;
+                            case '2':
+                                Console.Clear();
+                                ConsoleMenu.Logo("Клиент");
+                                ConsoleMenu.Menu(new List<string> { "Создать", "Редактировать", "Удалить" });
+                                Console.Write("\nДля продолжения сделайте свой выбор...");
+                                switch (Console.ReadKey().KeyChar)
+                                {
+                                    case '1':
+                                        Client.CreateClient();
+                                        break;
+                                    case '2':
+                                        // Редактировать
+                                        break;
+                                    case '3':
+                                        // Удалить
+                                        break;
+                                }
+                                break;
+                            case '3':
+                                // метод для промокода
+                                break;
+                        }
                         break;
                     default:
                         break;
@@ -57,5 +88,9 @@ namespace ConsoleUI
                 Console.ReadKey();
             }
         }
+    }
+    public class Administratin // придумать нормальное название
+    {
+
     }
 }

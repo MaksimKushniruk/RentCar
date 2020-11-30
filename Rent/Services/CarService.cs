@@ -13,9 +13,21 @@ namespace Rent.Services
         {
             CarRepository = new CarRepository();
         }
-        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour)
+        public Car CreateCar(Dictionary<string, string> fields)
         {
-            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, pricePerHour));
+            int id = CarRepository.AddCar(new Car(fields["License plate"], 
+                                                  fields["Model"], 
+                                                  fields["Brand"], 
+                                                  fields["Color"], 
+                                                  Int32.Parse(fields["Year"]), 
+                                                  decimal.Parse(fields["Price"])));
+            return new Car(id,
+                           fields["License plate"],
+                           fields["Model"],
+                           fields["Brand"],
+                           fields["Color"],
+                           Int32.Parse(fields["Year"]),
+                           decimal.Parse(fields["Price"]));
         }
         public bool DeleteCar(int id)
         {

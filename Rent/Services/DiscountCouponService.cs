@@ -7,25 +7,29 @@ namespace Rent.Services
 {
     public class DiscountCouponService : IDiscountCouponService
     {
-        private IDiscountCouponRepository DiscountCouponRepository = new DiscountCouponRepository();
+        private IDiscountCouponRepository discountCouponRepository = new DiscountCouponRepository();
         public DiscountCouponService()
         {
-            DiscountCouponRepository = new DiscountCouponRepository();
+            discountCouponRepository = new DiscountCouponRepository();
         }
 
-        public int CreateDiscountCoupon(string coupon, int discount)
+        public DiscountCoupon CreateDiscountCoupon(Dictionary<string, string> fields)
         {
-            return DiscountCouponRepository.AddDiscountCoupon(new DiscountCoupon(coupon, discount));
+            int id = discountCouponRepository.AddDiscountCoupon(new DiscountCoupon(fields["Coupon"], 
+                                                                                   Int32.Parse(fields["Discount"])));
+            return new DiscountCoupon(id, 
+                                      fields["Coupon"], 
+                                      Int32.Parse(fields["Discount"]));
         }
 
         public bool DeleteDiscountCoupon(int id)
         {
-            return DiscountCouponRepository.DeleteDiscountCoupon(id);
+            return discountCouponRepository.DeleteDiscountCoupon(id);
         }
 
         public List<DiscountCoupon> GetDiscountCoupon(Dictionary<string, string> fields)
         {
-            return DiscountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(Int32.Parse(fields["Id"]),
+            return discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(Int32.Parse(fields["Id"]),
                                                                                         fields["Coupon"],
                                                                                         Int32.Parse(fields["Minimal discount"]),
                                                                                         Int32.Parse(fields["Maximal discount"])));
@@ -33,7 +37,7 @@ namespace Rent.Services
 
         public bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            List<DiscountCoupon> discountCoupons = DiscountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest { Id = id });
+            List<DiscountCoupon> discountCoupons = discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("Coupon"))
             {
                 discountCoupons[0].Coupon = fieldsForUpdate["Coupon"];
@@ -42,7 +46,7 @@ namespace Rent.Services
             {
                 discountCoupons[0].Discount = int.Parse(fieldsForUpdate["Discount"]);
             }
-            return DiscountCouponRepository.UpdateDiscountCoupon(discountCoupons[0]);
+            return discountCouponRepository.UpdateDiscountCoupon(discountCoupons[0]);
         }
     }
 }

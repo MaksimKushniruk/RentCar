@@ -207,7 +207,7 @@ namespace ConsoleUI
         }
 
         // Get Object
-        //
+        // Enter the data
         // Enter customer details
         // new List<string> { "Id", "First name", "Last name", "City", "Phone number" }
         //
@@ -221,7 +221,7 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Header("Enter the data");
+                ConsoleMenu.Header(headerText);
                 Dictionary<string, string> fields = ConsoleMenu.InputData(fieldKeys);
                 
                 ConsoleMenu.MainMenu(new List<string> { "Find", "Cancel" });

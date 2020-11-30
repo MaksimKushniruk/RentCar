@@ -15,8 +15,15 @@ namespace Rent.Services
         }
         public Customer CreateCustomer(Dictionary<string, string> fields)
         {
-            int id = CustomerRepository.AddCustomer(new Customer(fields["Имя"], fields["Фамилия"], fields["Город"], fields["Телефон"]));
-            return new Customer(id, fields["Имя"], fields["Фамилия"], fields["Город"], fields["Телефон"]);
+            int id = CustomerRepository.AddCustomer(new Customer(fields["Имя"], 
+                                                                 fields["Фамилия"], 
+                                                                 fields["Город"], 
+                                                                 fields["Телефон"]));
+            return new Customer(id, 
+                                fields["Имя"], 
+                                fields["Фамилия"], 
+                                fields["Город"], 
+                                fields["Телефон"]);
         }
         public bool DeleteCustomer(int id)
         {
@@ -24,7 +31,11 @@ namespace Rent.Services
         }
         public List<Customer> GetCustomer(Dictionary<string, string> fields)
         {
-            return CustomerRepository.GetCustomer(new CustomerRequest(Int32.Parse(fields["Id"]), fields["First name"], fields["Last name"], fields["City"], fields["Phone number"]));
+            return CustomerRepository.GetCustomer(new CustomerRequest(Int32.Parse(fields["Id"]), 
+                                                                                  fields["First name"], 
+                                                                                  fields["Last name"], 
+                                                                                  fields["City"], 
+                                                                                  fields["Phone number"]));
         }
         public bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {

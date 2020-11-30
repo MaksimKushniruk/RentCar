@@ -150,7 +150,8 @@ namespace ConsoleUI
     {
         // Delegate 
         public delegate T ObjectCreationHandler<T>(Dictionary<string, string> fields);
-        public delegate T ObjectLookupHandler<T>(Dictionary<string, string> fields);                
+        public delegate T ObjectLookupHandler<T>(Dictionary<string, string> fields);
+        public delegate T ObjectEditingHandler<T>(T value);
 
         // Method for creating objects
         //
@@ -323,6 +324,35 @@ namespace ConsoleUI
             }
         }
 
+        // Edit Objects
+        // Edit customer
+        // Edit car
+        // Edit promo code
 
+        public static T Edit<T>(ObjectEditingHandler<T> objectEditingHandler, string headerText, T value)
+        {
+            Console.Clear();
+            ConsoleMenu.Header(headerText);
+            return objectEditingHandler.Invoke(value);
+        }
+
+        public static Customer EditCustomer(Customer customer)
+        {
+            while (true)
+            {
+                ICustomerService customerService = new CustomerService();
+                Dictionary<string, string> fieldsForUpdate = ConsoleMenu.UpdateData(customer.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Apply", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return customerService.UpdateCustomer((int)customer.Id, fieldsForUpdate);
+                    case '2':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using Rent.Services;
 
 namespace ConsoleUI
 {
-    public static class Rent
+    public static class Rent    // RentConsoleController
     {
         public static void CreateRent()
         {
@@ -21,20 +21,20 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Logo("Новый заказ");
+                ConsoleMenu.Header("Новый заказ");
                 ConsoleMenu.Menu(rentFields);
                 Console.Write("\nДля продолжения сделайте свой выбор...");
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
                         Console.Clear();
-                        ConsoleMenu.Logo("Клиент");
+                        ConsoleMenu.Header("Клиент");
                         ConsoleMenu.Menu(new List<string> { "Новый клиент", "Выбрать клиента" });
                         switch (Console.ReadKey().KeyChar)
                         {
                             case '1':
                                 customer = Client.CreateClient();
-                                ConsoleMenu.Logo("Хотите выбрать текущего клиента?");
+                                ConsoleMenu.Header("Хотите выбрать текущего клиента?");
                                 ConsoleMenu.MainMenu(new List<string> { "Да", "Нет" });
                                 switch (Console.ReadKey().KeyChar)
                                 {
@@ -60,7 +60,7 @@ namespace ConsoleUI
                         break;
                     case '2':
                         Console.Clear();
-                        ConsoleMenu.Logo("Автомобиль");
+                        ConsoleMenu.Header("Автомобиль");
                         ConsoleMenu.Menu(new List<string> { "Выбрать автомобиль" });
                         switch (Console.ReadKey().KeyChar)
                         {
@@ -77,7 +77,7 @@ namespace ConsoleUI
                         break;
                     case '3':
                         Console.Clear();
-                        ConsoleMenu.Logo("Промокод");
+                        ConsoleMenu.Header("Промокод");
                         ConsoleMenu.Menu(new List<string> { "Введите промокод" });
                         switch (Console.ReadKey().KeyChar)
                         {
@@ -94,11 +94,11 @@ namespace ConsoleUI
                         break;
                     case '4':
                         Console.Clear();
-                        ConsoleMenu.Logo("Дата начала");
+                        ConsoleMenu.Header("Дата начала");
                         break;
                     case '5':
                         Console.Clear();
-                        ConsoleMenu.Logo("Дата окончания");
+                        ConsoleMenu.Header("Дата окончания");
                         break;
                     default:
                         break;

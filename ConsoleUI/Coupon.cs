@@ -13,7 +13,7 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Logo("Введите данные");
+                ConsoleMenu.Header("Введите данные");
                 List<string> keys = new List<string> { "Купон" };
                 Dictionary<string, string> fields = ConsoleMenu.InputData(keys);
                 DiscountCouponRequest request = new DiscountCouponRequest { Coupon = fields["Купон"] };
@@ -30,7 +30,7 @@ namespace ConsoleUI
                         discountCoupon.Add("Купон", discountCoupons[0].Coupon);
                         discountCoupon.Add("Скидка", discountCoupons[0].Discount.ToString());
                         Console.Clear();
-                        ConsoleMenu.Logo("Хотите выбрать текущий купон?");
+                        ConsoleMenu.Header("Хотите выбрать текущий купон?");
                         ConsoleMenu.Menu(discountCoupon);
                         ConsoleMenu.MainMenu(new List<string> { "Да", "Нет", "Назад" });
                         switch (Console.ReadKey().KeyChar)

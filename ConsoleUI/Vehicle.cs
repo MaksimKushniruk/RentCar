@@ -15,7 +15,7 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Logo("Введите данные");
+                ConsoleMenu.Header("Введите данные");
                 List<string> keys = new List<string> { "Id", "Гос. Номер", "Модель", "Бренд", "Цвет", "Год", "Минимальная цена", "Максимальная цена" };
                 Dictionary<string, string> fields = ConsoleMenu.InputData(keys);
                 int? id = string.IsNullOrEmpty(fields["Id"]) ? (int?)null : Int32.Parse(fields["Id"]);
@@ -31,7 +31,7 @@ namespace ConsoleUI
                     case '1':
                         Console.SetCursorPosition(0, Console.CursorTop);
                         Console.Clear();
-                        ConsoleMenu.Logo("Введите Id автомобиля");
+                        ConsoleMenu.Header("Введите Id автомобиля");
                         ConsoleMenu.Print<Car>(cars);
                         cars = carService.GetCar(new CarRequest { Id = Int32.Parse(Console.ReadLine()) });
                         car.Add("Id", cars[0].Id.ToString());
@@ -42,7 +42,7 @@ namespace ConsoleUI
                         car.Add("Год", cars[0].Year.ToString());
                         car.Add("Цена", cars[0].PricePerHour.ToString());
                         Console.Clear();
-                        ConsoleMenu.Logo("Хотите выбрать текущий автомобиль?");
+                        ConsoleMenu.Header("Хотите выбрать текущий автомобиль?");
                         ConsoleMenu.Menu(car);
                         ConsoleMenu.MainMenu(new List<string> { "Да", "Нет", "Назад" });
                         switch (Console.ReadKey().KeyChar)

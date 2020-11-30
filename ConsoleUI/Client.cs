@@ -13,7 +13,7 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Logo("Новый клиент");
+                ConsoleMenu.Header("Новый клиент");
                 Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Имя", "Фамилия", "Город", "Телефон" });
                 ConsoleMenu.MainMenu(new List<string> { "Создать клиента", "Отменить" });
                 switch (Console.ReadKey().KeyChar)
@@ -37,7 +37,7 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Logo("Введите данные");
+                ConsoleMenu.Header("Введите данные");
                 List<string> keys = new List<string> { "Id", "Имя", "Фамилия", "Город", "Телефон" };
                 Dictionary<string, string> fields = ConsoleMenu.InputData(keys);
                 int? id = string.IsNullOrEmpty(fields["Id"]) ? (int?)null : Int32.Parse(fields["Id"]);
@@ -50,7 +50,7 @@ namespace ConsoleUI
                     case '1':
                         Console.SetCursorPosition(0, Console.CursorTop);
                         Console.Clear();
-                        ConsoleMenu.Logo("Введите Id нужного клиента");
+                        ConsoleMenu.Header("Введите Id нужного клиента");
                         ConsoleMenu.Print<Customer>(customers);
                         customers = customerService.GetCustomer(new CustomerRequest { Id = Int32.Parse(Console.ReadLine()) });
                         client.Add(keys[0], customers[0].Id.ToString());
@@ -59,7 +59,7 @@ namespace ConsoleUI
                         client.Add(keys[3], customers[0].City);
                         client.Add(keys[4], customers[0].PhoneNumber);
                         Console.Clear();
-                        ConsoleMenu.Logo("Хотите выбрать текущего клиента?");
+                        ConsoleMenu.Header("Хотите выбрать текущего клиента?");
                         ConsoleMenu.Menu(client);
                         ConsoleMenu.MainMenu(new List<string> { "Да", "Нет", "Назад" });
                         switch (Console.ReadKey().KeyChar)

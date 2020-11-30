@@ -7,6 +7,14 @@ namespace ConsoleUI
 {
     public class ConsoleMenu
     {
+        public static void Header(string message)
+        {
+            Console.WriteLine(new string('-', Console.WindowWidth));
+            Console.Write(new string(' ', (Console.WindowWidth - message.Length) / 2));
+            Console.WriteLine(message);
+            Console.WriteLine(new string('-', Console.WindowWidth));
+        }
+
         public static void MainMenu(List<string> menu)
         {
             for (int i = 0; i < menu.Count; i++)
@@ -29,14 +37,6 @@ namespace ConsoleUI
                     Console.Write("|");
             }
             Console.WriteLine("\n" + new string('-', Console.WindowWidth));
-        }
-
-        public static void Logo(string message)
-        {
-            Console.WriteLine(new string('-', Console.WindowWidth));
-            Console.Write(new string(' ', (Console.WindowWidth - message.Length) / 2));
-            Console.WriteLine(message);
-            Console.WriteLine(new string('-', Console.WindowWidth));
         }
 
         public static void Menu(List<string> menu)
@@ -112,7 +112,9 @@ namespace ConsoleUI
                 Console.WriteLine(new string('-', Console.WindowWidth));
                 Console.SetCursorPosition(Console.WindowWidth / 2 + 1, i * 2 + 3);
                 // Валидировать
+                // TODO: to validate
                 string input = Console.ReadLine();
+                // проверить почему default а не null
                 fields[menu[i]] = string.IsNullOrEmpty(input) ? default : input;
                 Console.SetCursorPosition(0, i * 2 + 5);
             }

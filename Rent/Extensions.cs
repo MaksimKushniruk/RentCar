@@ -1,9 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
+using Rent.Models;
 
 namespace Rent
 {
     public static class Extensions
     {
+        public static Dictionary<string, string> ToDictionary(this Customer value)
+        {
+            Dictionary<string, string> customerDictionary = new Dictionary<string, string>();
+            customerDictionary["Id"] = value.Id.ToString();
+            customerDictionary["First name"] = value.FirstName;
+            customerDictionary["Last name"] = value.LastName;
+            customerDictionary["City"] = value.City;
+            customerDictionary["Phone number"] = value.PhoneNumber;
+            return customerDictionary;
+        }
+        public static Dictionary<string, string> ToDictionary(this Car value)
+        {
+            Dictionary<string, string> carDictionary = new Dictionary<string, string>();
+            carDictionary["Id"] = value.Id.ToString();
+            carDictionary["License plate"] = value.LicensePlate;
+            carDictionary["Model"] = value.ModelName;
+            carDictionary["Brand"] = value.BrandName;
+            carDictionary["Color"] = value.Color;
+            carDictionary["Year"] = value.Year.ToString();
+            carDictionary["Price per hour"] = value.PricePerHour.ToString();
+            carDictionary["Status"] = value.Status.ToString();
+            return carDictionary;
+        }
+        public static Dictionary<string, string> ToDictionary(this DiscountCoupon value)
+        {
+            Dictionary<string, string> discountCouponDictionary = new Dictionary<string, string>();
+            discountCouponDictionary["Id"] = value.Id.ToString();
+            discountCouponDictionary["Coupon"] = value.Coupon;
+            discountCouponDictionary["Discount"] = value.Discount.ToString();
+            return discountCouponDictionary;
+        }
         // Приводит к нужному типу объект, возвращаемый из БД, если объект null, возвращает значение по умолчанию
         public static T CastDbValue<T>(this object value)
         {

@@ -8,7 +8,7 @@ namespace Rent.Services
     {
         int CreateDiscountCoupon(string coupon, int discount);
         bool DeleteDiscountCoupon(int id);
-        List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request);
+        List<DiscountCoupon> GetDiscountCoupon(Dictionary<string, string> fields);
         bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

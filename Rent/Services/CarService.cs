@@ -21,9 +21,17 @@ namespace Rent.Services
         {
             return CarRepository.DeleteCar(id);
         }
-        public List<Car> GetCar(CarRequest request)
+        public List<Car> GetCar(Dictionary<string, string> fields)
         {
-            return CarRepository.GetCar(request);
+            return CarRepository.GetCar(new CarRequest(Int32.Parse(fields["Id"]), 
+                                                       fields["License plate"], 
+                                                       fields["Model"], 
+                                                       fields["Brand"], 
+                                                       fields["Color"], 
+                                                       Int32.Parse(fields["Year"]), 
+                                                       decimal.Parse(fields["Minimal price"]), 
+                                                       decimal.Parse(fields["Maximal price"]), 
+                                                       (CarRentStatus)Enum.Parse(typeof(CarRentStatus), fields["Status"], false)));
         }
         
         public bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
@@ -31,7 +39,7 @@ namespace Rent.Services
             List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
             if (fieldsForUpdate.ContainsKey("RegistrationNumber"))
             {
-                cars[0].RegistrationNumber = fieldsForUpdate["RegistrationNumber"];
+                cars[0].LicensePlate = fieldsForUpdate["RegistrationNumber"];
             }
             if (fieldsForUpdate.ContainsKey("ModelName"))
             {

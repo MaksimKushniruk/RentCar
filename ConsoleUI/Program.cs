@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rent.Models;
 using Rent.Services;
+using Rent;
 
 namespace ConsoleUI
 {
@@ -22,69 +24,10 @@ namespace ConsoleUI
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        Console.Clear();
-                        ConsoleMenu.Header("Аренда");
-                        ConsoleMenu.Menu(new List<string> { "Новый заказ", "Редактировать заказ", "Отменить заказ", "Найти заказ" });
-                        Console.Write("\nДля продолжения сделайте свой выбор...");
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                Rent.CreateRent();
-                                break;
-                            case '2':
-                                Console.Clear();
-                                ConsoleMenu.Header("Редактировать заказ");
-                                ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
-                                break;
-                            case '3':
-                                Console.Clear();
-                                ConsoleMenu.Header("Отменить заказ ");
-                                ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
-                                break;
-                            case '4':
-                                Console.Clear();
-                                ConsoleMenu.Header("Найти заказ");
-                                ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
-                                break;
-                            default:
-                                // сделать, чтобы не возвращало в главное меню
-                                break;
-                        }
+                        RentConsoleController.Menu();
                         break;
                     case '2':
-                        Console.Clear();
-                        ConsoleMenu.Header("Администрирование");
-                        ConsoleMenu.Menu(new List<string> { "Автомобили", "Клиенты", "Промокоды" });
-                        Console.Write("\nДля продолжения сделайте свой выбор...");
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                // метод для автомобиля
-                                break;
-                            case '2':
-                                Console.Clear();
-                                ConsoleMenu.Header("Клиент");
-                                ConsoleMenu.Menu(new List<string> { "Создать", "Редактировать", "Удалить" });
-                                Console.Write("\nДля продолжения сделайте свой выбор...");
-                                switch (Console.ReadKey().KeyChar)
-                                {
-                                    case '1':
-                                        Client.CreateClient();
-                                        return;
-                                    case '2':
-                                        // Редактировать
-                                        break;
-                                    case '3':
-                                        // Удалить
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                break;
-                            case '3':
-                                // метод для промокода
-                                break;
-                        }
+                        AdministrationConsoleController.Menu();
                         break;
                     default:
                         break;
@@ -93,13 +36,122 @@ namespace ConsoleUI
             }
         }
     }
-    public class AdministrationConsoleController 
-    {
 
+    public static class RentConsoleController
+    {
+        public static void Menu()
+        {
+            Console.Clear();
+            ConsoleMenu.Header("Rent");
+            ConsoleMenu.Menu(new List<string> { "New rent", "Edit rent", "Cancel rent", "Find rent" });
+            Console.Write("\nPlease make your choice to continue...");
+            switch (Console.ReadKey().KeyChar)
+            {
+                case '1':
+                    Rent.CreateRent();
+                    break;
+                case '2':
+                    Console.Clear();
+                    ConsoleMenu.Header("Редактировать заказ");
+                    ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
+                    break;
+                case '3':
+                    Console.Clear();
+                    ConsoleMenu.Header("Отменить заказ ");
+                    ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
+                    break;
+                case '4':
+                    Console.Clear();
+                    ConsoleMenu.Header("Найти заказ");
+                    ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
+                    break;
+                default:
+                    // сделать, чтобы не возвращало в главное меню
+                    break;
+            }
+        }
+    }
+    public static class AdministrationConsoleController 
+    {
+        public static void Menu()
+        {
+
+            Console.Clear();
+            ConsoleMenu.Header("Administration");
+            ConsoleMenu.Menu(new List<string> { "Customers", "Cars", "Promo codes" });
+            Console.Write("\nPlease make your choice to continue...");
+            switch (Console.ReadKey().KeyChar)
+            {
+                case '1':
+                    Console.Clear();
+                    ConsoleMenu.Header("Customer");
+                    ConsoleMenu.Menu(new List<string> { "Create", "Edit", "Delete" });
+                    Console.Write("\nPlease make your choice to continue...");
+                    switch (Console.ReadKey().KeyChar)
+                    {
+                        case '1':
+                            Operation.Create<Customer>(Operation.CreateCustomer, "New customer", new List<string> { "First name", "Last name", "City", "Phone number" });
+                            return;
+                        case '2':
+                            // Редактировать
+                            break;
+                        case '3':
+                            // Удалить
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case '2':
+                    Console.Clear();
+                    ConsoleMenu.Header("Car");
+                    ConsoleMenu.Menu(new List<string> { "Create", "Edit", "Delete" });
+                    Console.Write("\nPlease make your choice to continue...");
+                    switch (Console.ReadKey().KeyChar)
+                    {
+                        case '1':
+                            Operation.Create<Car>(Operation.CreateCar, "New car", new List<string> { "License plate", "Model", "Brand", "Color", "Year", "Price" });
+                            return;
+                        case '2':
+                            // Редактировать
+                            break;
+                        case '3':
+                            // Удалить
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case '3':
+                    Console.Clear();
+                    ConsoleMenu.Header("Promo code");
+                    ConsoleMenu.Menu(new List<string> { "Create", "Edit", "Delete" });
+                    Console.Write("\nPlease make your choice to continue...");
+                    switch (Console.ReadKey().KeyChar)
+                    {
+                        case '1':
+                            Operation.Create<DiscountCoupon>(Operation.CreateDiscountCoupon, "New promo code", new List<string> { "Coupon", "Discount" });
+                            return;
+                        case '2':
+                            // Редактировать
+                            break;
+                        case '3':
+                            // Удалить
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
+        }
     }
 
     public static class Operation
     {
+        // Delegate 
+        public delegate T ObjectCreationHandler<T>(Dictionary<string, string> fields);
+        public delegate T ObjectLookupHandler<T>(Dictionary<string, string> fields);                
+
         // Method for creating objects
         //
         // New customer
@@ -129,8 +181,7 @@ namespace ConsoleUI
                 }
             }
         }
-        public delegate T ObjectCreationHandler<T>(Dictionary<string, string> fields);  
-        private static Customer CreateCustomer(Dictionary<string, string> fields)
+        public static Customer CreateCustomer(Dictionary<string, string> fields)
         {
             ICustomerService customerService = new CustomerService();
             Customer customer = customerService.CreateCustomer(fields);
@@ -138,54 +189,140 @@ namespace ConsoleUI
             Console.WriteLine($"New customer Id: {customer.Id}");
             return customer;
         }
-
-        // overloading
-        public static Car Create(string licensePlate, string model, string brand, string color, string year, string price)
+        public static Car CreateCar(Dictionary<string, string> fields)
         {
             ICarService carService = new CarService();
-            while (true)
-            {
-                Console.Clear();
-                ConsoleMenu.Header("New car");
-                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { licensePlate, model, brand, color, year, price });
-                ConsoleMenu.MainMenu(new List<string> { "Create", "Cancel" });
-                switch (Console.ReadKey().KeyChar)
-                {
-                    case '1':
-                        Car car = carService.CreateCar(fields);
-                        Console.SetCursorPosition(0, Console.CursorTop);
-                        Console.WriteLine($"New car Id: {car.Id}");
-                        return car;
-                    case '2':
-                        return null;
-                    default:
-                        break;
-                }
-            }
+            Car car = carService.CreateCar(fields);
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine($"New car Id: {car.Id}");
+            return car;
         }
-        // overloading
-        public static DiscountCoupon Create(string coupon, string discount)
+        public static DiscountCoupon CreateDiscountCoupon(Dictionary<string, string> fields)
         {
             IDiscountCouponService discountCouponService = new DiscountCouponService();
+            DiscountCoupon discountCoupon = discountCouponService.CreateDiscountCoupon(fields);
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine($"New promo code Id: {discountCoupon.Id}");
+            return discountCoupon;
+        }
+
+        // Get Object
+        //
+        // Enter customer details
+        // new List<string> { "Id", "First name", "Last name", "City", "Phone number" }
+        //
+        // Enter car details
+        // new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" }
+        //
+        // Enter promo code details
+        // new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" }
+        public static T Get<T>(ObjectLookupHandler<T> objectLookupHandler, string headerText, List<string> fieldKeys)
+        {
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Header("New promo code");
-                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { coupon, discount });
-                ConsoleMenu.MainMenu(new List<string> { "Create", "Cancel" });
+                ConsoleMenu.Header("Enter the data");
+                Dictionary<string, string> fields = ConsoleMenu.InputData(fieldKeys);
+                
+                ConsoleMenu.MainMenu(new List<string> { "Find", "Cancel" });
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        DiscountCoupon discountCoupon = discountCouponService.CreateDiscountCoupon(fields);
-                        Console.SetCursorPosition(0, Console.CursorTop);
-                        Console.WriteLine($"New promo code Id: {discountCoupon.Id}");
-                        return discountCoupon;
+                        objectLookupHandler.Invoke(fields);
+                        break;
                     case '2':
+                        return default;
+                    default:
+                        continue;
+
+                }
+            }
+        }
+        public static Customer GetCustomer(Dictionary<string, string> fields)
+        {
+            while (true)
+            {
+                ICustomerService customerService = new CustomerService();
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Clear();
+                ConsoleMenu.Header("Enter the Id of the required client");
+                List<Customer> customers = customerService.GetCustomer(fields);
+                ConsoleMenu.Print<Customer>(customers);
+                customers = customerService.GetCustomer(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                Console.Clear();
+                ConsoleMenu.Header("Want to select current client?");
+                ConsoleMenu.Menu(customers.FirstOrDefault().ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return customers.FirstOrDefault();
+                    case '2':
+                        continue;
+                    case '3':
                         return null;
                     default:
                         break;
                 }
             }
         }
+        public static Car GetCar(Dictionary<string, string> fields)
+        {
+            while (true)
+            {
+                ICarService carService = new CarService();
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Clear();
+                ConsoleMenu.Header("Enter the Id of the required car");
+                List<Car> cars = carService.GetCar(fields);
+                ConsoleMenu.Print<Car>(cars);
+                cars = carService.GetCar(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                Console.Clear();
+                ConsoleMenu.Header("Want to select current car?");
+                ConsoleMenu.Menu(cars.FirstOrDefault().ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return cars.FirstOrDefault();
+                    case '2':
+                        continue;
+                    case '3':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static DiscountCoupon GetDiscountCoupon(Dictionary<string, string> fields)
+        {
+            while (true)
+            {
+                IDiscountCouponService discountCouponService = new DiscountCouponService();
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Clear();
+                ConsoleMenu.Header("Enter the Id of the required promo code");
+                List<DiscountCoupon> discountCoupons = discountCouponService.GetDiscountCoupon(fields);
+                ConsoleMenu.Print<DiscountCoupon>(discountCoupons);
+                discountCoupons = discountCouponService.GetDiscountCoupon(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                Console.Clear();
+                ConsoleMenu.Header("Want to select current promo code?");
+                ConsoleMenu.Menu(discountCoupons.FirstOrDefault().ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return discountCoupons.FirstOrDefault();
+                    case '2':
+                        continue;
+                    case '3':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
     }
 }

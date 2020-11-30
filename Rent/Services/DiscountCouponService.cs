@@ -23,9 +23,12 @@ namespace Rent.Services
             return DiscountCouponRepository.DeleteDiscountCoupon(id);
         }
 
-        public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request)
+        public List<DiscountCoupon> GetDiscountCoupon(Dictionary<string, string> fields)
         {
-            return DiscountCouponRepository.GetDiscountCoupon(request);
+            return DiscountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(Int32.Parse(fields["Id"]),
+                                                                                        fields["Coupon"],
+                                                                                        Int32.Parse(fields["Minimal discount"]),
+                                                                                        Int32.Parse(fields["Maximal discount"])));
         }
 
         public bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)

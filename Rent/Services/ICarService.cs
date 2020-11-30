@@ -8,7 +8,7 @@ namespace Rent.Services
     {
         int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour);
         bool DeleteCar(int id);
-        List<Car> GetCar(CarRequest request);
+        List<Car> GetCar(Dictionary<string, string> fields);
         bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

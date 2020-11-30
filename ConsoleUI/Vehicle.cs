@@ -35,7 +35,7 @@ namespace ConsoleUI
                         ConsoleMenu.Print<Car>(cars);
                         cars = carService.GetCar(new CarRequest { Id = Int32.Parse(Console.ReadLine()) });
                         car.Add("Id", cars[0].Id.ToString());
-                        car.Add("Гос. Номер", cars[0].RegistrationNumber);
+                        car.Add("Гос. Номер", cars[0].LicensePlate);
                         car.Add("Модель", cars[0].ModelName);
                         car.Add("Бренд", cars[0].BrandName);
                         car.Add("Цвет", cars[0].Color);

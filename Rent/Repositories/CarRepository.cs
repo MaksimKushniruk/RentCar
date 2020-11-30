@@ -16,7 +16,7 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_AddCar", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter { ParameterName = "@Id", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output });
-                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.RegistrationNumber));
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.LicensePlate));
                 command.Parameters.Add(new SqlParameter("@ModelName", car.ModelName));
                 command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
                 command.Parameters.Add(new SqlParameter("@Color", car.Color));
@@ -90,7 +90,7 @@ namespace Rent.Repositories
                 SqlCommand command = new SqlCommand("sp_UpdateCar", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Id", car.Id));
-                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.RegistrationNumber));
+                command.Parameters.Add(new SqlParameter("@RegistrationNumber", car.LicensePlate));
                 command.Parameters.Add(new SqlParameter("@ModelName", car.ModelName));
                 command.Parameters.Add(new SqlParameter("@BrandName", car.BrandName));
                 command.Parameters.Add(new SqlParameter("@Color", car.Color));

@@ -22,9 +22,9 @@ namespace Rent.Services
         {
             return CustomerRepository.DeleteCustomer(id);
         }
-        public List<Customer> GetCustomer(CustomerRequest request)
+        public List<Customer> GetCustomer(Dictionary<string, string> fields)
         {
-            return CustomerRepository.GetCustomer(request);
+            return CustomerRepository.GetCustomer(new CustomerRequest(Int32.Parse(fields["Id"]), fields["First name"], fields["Last name"], fields["City"], fields["Phone number"]));
         }
         public bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {

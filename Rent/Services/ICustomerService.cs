@@ -8,7 +8,7 @@ namespace Rent.Services
     {
         Customer CreateCustomer(Dictionary<string, string> fields);
         bool DeleteCustomer(int id);
-        List<Customer> GetCustomer(CustomerRequest request);
+        List<Customer> GetCustomer(Dictionary<string, string> fields);
         bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

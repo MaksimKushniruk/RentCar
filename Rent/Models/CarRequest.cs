@@ -29,5 +29,17 @@ namespace Rent.Models
             MaxPrice = maxPrice;
             Status = CarRentStatus.Free;
         }
+        public CarRequest(int? id, string registrationNumber, string modelName, string brandName, string color, int? year, decimal? minPrice, decimal? maxPrice, CarRentStatus carRentStatus)
+        {
+            Id = id;
+            RegistrationNumber = registrationNumber;
+            ModelName = modelName;
+            BrandName = brandName;
+            Color = color;
+            Year = year;
+            MinPrice = minPrice;
+            MaxPrice = maxPrice;
+            Status = carRentStatus;
+        }
     }
 }

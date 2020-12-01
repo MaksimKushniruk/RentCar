@@ -58,8 +58,8 @@ namespace Rent.Repositories
                 command.Parameters.Add(new SqlParameter("@CarId", request.CarId));
                 command.Parameters.Add(new SqlParameter("@CustomerId", request.CustomerId));
                 command.Parameters.Add(new SqlParameter("@DiscountCouponId", request.DiscountCouponId));
-                command.Parameters.Add(new SqlParameter("@StartDate", request.MinDate));
-                command.Parameters.Add(new SqlParameter("@FinalDate", request.MaxDate));
+                command.Parameters.Add(new SqlParameter("@MinDate", request.MinDate));
+                command.Parameters.Add(new SqlParameter("@MaxDate", request.MaxDate));
 
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -70,7 +70,7 @@ namespace Rent.Repositories
                                                              reader["ModelName"].CastDbValue<string>(),
                                                              reader["BrandName"].CastDbValue<string>(),
                                                              reader["Color"].CastDbValue<string>(),
-                                                             reader["[Year]"].CastDbValue<int>(),
+                                                             reader["Year"].CastDbValue<int>(),
                                                              reader["PricePerHour"].CastDbValue<decimal>(),
                                                              reader["RentStatus"].CastDbValue<CarRentStatus>()),
                                                      new Customer(reader["CustomerId"].CastDbValue<int>(),

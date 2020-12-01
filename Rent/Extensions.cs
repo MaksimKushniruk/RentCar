@@ -19,14 +19,12 @@ namespace Rent
         }
         public static int? ToNullableInt(this string s)
         {
-            int i;
-            if (int.TryParse(s, out i)) return i;
+            if (int.TryParse(s, out int i)) return i;
             return null;
         }
         public static decimal? ToNullableDecimal(this string s)
         {
-            decimal i;
-            if (decimal.TryParse(s, out i)) return i;
+            if (decimal.TryParse(s, out decimal i)) return i;
             return null;
         }
         public static Dictionary<string, string> ToDictionary(this Reservation value)

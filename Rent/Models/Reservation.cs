@@ -11,7 +11,7 @@ namespace Rent.Models
         public DateTime StartDate { get; set; }
         public DateTime FinalDate { get; set; }
         public decimal? Price { get; set; }
-        public Reservation(int id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal price)
+        public Reservation(int id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal? price)
         {
             Id = id;
             Car = car;

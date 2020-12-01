@@ -186,5 +186,12 @@ namespace ConsoleUI
                 Console.WriteLine("\n" + new string('-', Console.WindowWidth));
             }
         }
+        public static void PrintReservation(List<Reservation> resevations)
+        {
+            foreach(Reservation reservation in resevations)
+            {
+                Console.WriteLine($"{reservation.Id}\t{reservation.Car.Id} {reservation.Car.BrandName} {reservation.Car.ModelName}\t\t{reservation.Customer.Id} {reservation.Customer.FirstName} {reservation.Customer.LastName}\t{reservation.DiscountCoupon.Id} {reservation.DiscountCoupon.Discount}%\t{reservation.StartDate}\t{reservation.FinalDate}");
+            }
+        }
     }
 }

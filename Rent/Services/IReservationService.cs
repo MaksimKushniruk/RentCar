@@ -9,6 +9,6 @@ namespace Rent.Services
         int CreateReservation(Reservation reservation);
         bool DeleteReservation(int id);
         List<Reservation> GetReservation(Dictionary<string, string> fields);
-        bool UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate);
+        Reservation UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate);
     }
 }

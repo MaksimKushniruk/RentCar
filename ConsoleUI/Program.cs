@@ -93,7 +93,8 @@ namespace ConsoleUI
                             Operation.Create<Customer>(Operation.CreateCustomer, "New customer", new List<string> { "First name", "Last name", "City", "Phone number" });
                             return;
                         case '2':
-                            // Редактировать
+                            Customer customer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
+                            Operation.Edit<Customer>(Operation.EditCustomer, "Edit customer", customer);
                             break;
                         case '3':
                             // Удалить
@@ -113,7 +114,8 @@ namespace ConsoleUI
                             Operation.Create<Car>(Operation.CreateCar, "New car", new List<string> { "License plate", "Model", "Brand", "Color", "Year", "Price" });
                             return;
                         case '2':
-                            // Редактировать
+                            Car car = Operation.Get<Car>(Operation.GetCar, "Enter car details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
+                            Operation.Edit<Car>(Operation.EditCar, "Edit car", car);
                             break;
                         case '3':
                             // Удалить
@@ -133,7 +135,8 @@ namespace ConsoleUI
                             Operation.Create<DiscountCoupon>(Operation.CreateDiscountCoupon, "New promo code", new List<string> { "Coupon", "Discount" });
                             return;
                         case '2':
-                            // Редактировать
+                            DiscountCoupon discountCoupon = Operation.Get<DiscountCoupon>(Operation.GetDiscountCoupon, "Enter promo code details", new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" });
+                            Operation.Edit<DiscountCoupon>(Operation.EditDiscountCoupon, "Edit promo code", discountCoupon);
                             break;
                         case '3':
                             // Удалить
@@ -229,8 +232,7 @@ namespace ConsoleUI
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        objectLookupHandler.Invoke(fields);
-                        break;
+                        return objectLookupHandler.Invoke(fields);
                     case '2':
                         return default;
                     default:
@@ -249,7 +251,11 @@ namespace ConsoleUI
                 ConsoleMenu.Header("Enter the Id of the required client");
                 List<Customer> customers = customerService.GetCustomer(fields);
                 ConsoleMenu.Print<Customer>(customers);
-                customers = customerService.GetCustomer(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                customers = customerService.GetCustomer(new Dictionary<string, string> { ["Id"] = Console.ReadLine(),
+                                                                                         ["First name"] = null,
+                                                                                         ["Last name"] = null,
+                                                                                         ["City"] = null,
+                                                                                         ["Phone number"] = null});
                 Console.Clear();
                 ConsoleMenu.Header("Want to select current client?");
                 ConsoleMenu.Menu(customers.FirstOrDefault().ToDictionary());
@@ -277,7 +283,15 @@ namespace ConsoleUI
                 ConsoleMenu.Header("Enter the Id of the required car");
                 List<Car> cars = carService.GetCar(fields);
                 ConsoleMenu.Print<Car>(cars);
-                cars = carService.GetCar(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                cars = carService.GetCar(new Dictionary<string, string> { ["Id"] = Console.ReadLine(),
+                                                                          ["License plate"] = null, 
+                                                                          ["Model"] = null, 
+                                                                          ["Brand"] = null, 
+                                                                          ["Color"] = null, 
+                                                                          ["Year"] = null, 
+                                                                          ["Minimal price"] = null, 
+                                                                          ["Maximal price"] = null, 
+                                                                          ["Status"] = null});
                 Console.Clear();
                 ConsoleMenu.Header("Want to select current car?");
                 ConsoleMenu.Menu(cars.FirstOrDefault().ToDictionary());
@@ -305,7 +319,10 @@ namespace ConsoleUI
                 ConsoleMenu.Header("Enter the Id of the required promo code");
                 List<DiscountCoupon> discountCoupons = discountCouponService.GetDiscountCoupon(fields);
                 ConsoleMenu.Print<DiscountCoupon>(discountCoupons);
-                discountCoupons = discountCouponService.GetDiscountCoupon(new Dictionary<string, string> { ["Id"] = Console.ReadLine() });
+                discountCoupons = discountCouponService.GetDiscountCoupon(new Dictionary<string, string> { ["Id"] = Console.ReadLine(),
+                                                                                                           ["Coupon"] = null,
+                                                                                                           ["Minimal discount"] = null,
+                                                                                                           ["Maximal discount"] = null});
                 Console.Clear();
                 ConsoleMenu.Header("Want to select current promo code?");
                 ConsoleMenu.Menu(discountCoupons.FirstOrDefault().ToDictionary());
@@ -341,12 +358,49 @@ namespace ConsoleUI
             while (true)
             {
                 ICustomerService customerService = new CustomerService();
-                Dictionary<string, string> fieldsForUpdate = ConsoleMenu.UpdateData(customer.ToDictionary());
+                Dictionary<string, string> fieldsForUpdate = new Dictionary<string, string>();
+                ConsoleMenu.UpdateData(customer.ToDictionary());
                 ConsoleMenu.MainMenu(new List<string> { "Apply", "Cancel" });
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
                         return customerService.UpdateCustomer((int)customer.Id, fieldsForUpdate);
+                    case '2':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static Car EditCar(Car car)
+        {
+            while (true)
+            {
+                ICarService carService = new CarService();
+                Dictionary<string, string> fieldsForUpdate = ConsoleMenu.UpdateData(car.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Apply", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return carService.UpdateCar((int)car.Id, fieldsForUpdate);
+                    case '2':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static DiscountCoupon EditDiscountCoupon(DiscountCoupon discountCoupon)
+        {
+            while (true)
+            {
+                IDiscountCouponService discountCouponService = new DiscountCouponService();
+                Dictionary<string, string> fieldsForUpdate = ConsoleMenu.UpdateData(discountCoupon.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Apply", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return discountCouponService.UpdateDiscountCoupon((int)discountCoupon.Id, fieldsForUpdate);
                     case '2':
                         return null;
                     default:

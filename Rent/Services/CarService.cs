@@ -2,7 +2,7 @@
 using Rent.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 
 namespace Rent.Services
 {
@@ -46,39 +46,18 @@ namespace Rent.Services
                                                        (CarRentStatus)Enum.Parse(typeof(CarRentStatus), fields["Status"], false)));
         }
         
-        public bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
+        public Car UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
-            if (fieldsForUpdate.ContainsKey("RegistrationNumber"))
-            {
-                cars[0].LicensePlate = fieldsForUpdate["RegistrationNumber"];
-            }
-            if (fieldsForUpdate.ContainsKey("ModelName"))
-            {
-                cars[0].ModelName = fieldsForUpdate["ModelName"];
-            }
-            if (fieldsForUpdate.ContainsKey("BrandName"))
-            {
-                cars[0].BrandName = fieldsForUpdate["BrandName"];
-            }
-            if (fieldsForUpdate.ContainsKey("Color"))
-            {
-                cars[0].Color = fieldsForUpdate["Color"];
-            }
-            if (fieldsForUpdate.ContainsKey("Year"))
-            {
-                cars[0].Year = int.Parse(fieldsForUpdate["Year"]);
-            }
-            if (fieldsForUpdate.ContainsKey("PricePerHour"))
-            {
-                cars[0].PricePerHour = decimal.Parse(fieldsForUpdate["PricePerHour"]);
-            }
-            if (fieldsForUpdate.ContainsKey("Status"))
-            {
-                cars[0].Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
-            }
-
-            return CarRepository.UpdateCar(cars[0]);
+            cars.FirstOrDefault().LicensePlate = fieldsForUpdate["License plate"];
+            cars.FirstOrDefault().ModelName = fieldsForUpdate["Model"];
+            cars.FirstOrDefault().BrandName = fieldsForUpdate["Brand"];
+            cars.FirstOrDefault().Color = fieldsForUpdate["Color"];
+            cars.FirstOrDefault().Year = Int32.Parse(fieldsForUpdate["Year"]);
+            cars.FirstOrDefault().PricePerHour = decimal.Parse(fieldsForUpdate["Price per hour"]);
+            cars.FirstOrDefault().Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
+            CarRepository.UpdateCar(cars.FirstOrDefault());
+            return cars.FirstOrDefault();
         }
     }
 }

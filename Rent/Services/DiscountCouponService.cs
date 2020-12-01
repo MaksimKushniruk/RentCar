@@ -2,6 +2,7 @@
 using Rent.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rent.Services
 {
@@ -35,18 +36,13 @@ namespace Rent.Services
                                                                                         Int32.Parse(fields["Maximal discount"])));
         }
 
-        public bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)
+        public DiscountCoupon UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<DiscountCoupon> discountCoupons = discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest { Id = id });
-            if (fieldsForUpdate.ContainsKey("Coupon"))
-            {
-                discountCoupons[0].Coupon = fieldsForUpdate["Coupon"];
-            }
-            if (fieldsForUpdate.ContainsKey("Discount"))
-            {
-                discountCoupons[0].Discount = int.Parse(fieldsForUpdate["Discount"]);
-            }
-            return discountCouponRepository.UpdateDiscountCoupon(discountCoupons[0]);
+            discountCoupons.FirstOrDefault().Coupon = fieldsForUpdate["Coupon"];
+            discountCoupons.FirstOrDefault().Discount = Int32.Parse(fieldsForUpdate["Discount"]);
+            discountCouponRepository.UpdateDiscountCoupon(discountCoupons.FirstOrDefault());
+            return discountCoupons.FirstOrDefault();
         }
     }
 }

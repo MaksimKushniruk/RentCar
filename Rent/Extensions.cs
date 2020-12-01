@@ -6,6 +6,12 @@ namespace Rent
 {
     public static class Extensions
     {
+        public static int? ToNullableInt(this string s)
+        {
+            int i;
+            if (int.TryParse(s, out i)) return i;
+            return null;
+        }
         public static Dictionary<string, string> ToDictionary(this Customer value)
         {
             Dictionary<string, string> customerDictionary = new Dictionary<string, string>();

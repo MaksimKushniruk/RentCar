@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Rent.Models;
 using Rent.Services;
+using System.Linq;
 
 namespace ConsoleUI
 {
@@ -122,10 +123,14 @@ namespace ConsoleUI
         }
         public static Dictionary<string, string> UpdateData(Dictionary<string, string> fields)
         {
-            int i = 1;
-            foreach (KeyValuePair<string, string> pair in fields)
+            for (int i = 0; i < fields.Count; i++)
             {
-                Console.Write(i + ".");
+                var pair = fields.ElementAt(i);
+                if(pair.Key == "Id")
+                {
+                    continue;
+                }
+                Console.Write(i + 1 + ".");
                 if (pair.Key.Length % 2 == 0)
                 {
                     Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Key.Length) / 2) - 3));
@@ -139,22 +144,59 @@ namespace ConsoleUI
                 Console.Write("|");
                 if (pair.Value.Length % 2 == 0)
                 {
-                    Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Key.Length) / 2) - 1));
+                    Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Value.Length) / 2) - 1));
                 }
                 else
                 {
-                    Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Key.Length) / 2));
+                    Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
                 }
                 Console.Write(pair.Value);
                 Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
                 Console.WriteLine("|");
                 Console.WriteLine(new string('-', Console.WindowWidth));
-                Console.SetCursorPosition(Console.WindowWidth / 2 + 1, i * 2 + 3);
+                Console.SetCursorPosition(Console.WindowWidth / 3 * 2 + 1, i * 2 + 1);
                 string input = Console.ReadLine();
                 fields[pair.Key] = string.IsNullOrEmpty(input) ? default : input;
-                Console.SetCursorPosition(0, i * 2 + 5);
-                i++;
+                Console.SetCursorPosition(0, i * 2 + 3);
             }
+
+            //int i = 1;
+            //foreach (KeyValuePair<string, string> pair in fields)
+            //{
+            //    if (pair.Key == "Id")
+            //    {
+            //        continue;
+            //    }
+            //    Console.Write(i + ".");
+            //    if (pair.Key.Length % 2 == 0)
+            //    {
+            //        Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Key.Length) / 2) - 3));
+            //    }
+            //    else
+            //    {
+            //        Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Key.Length) / 2) - 2));
+            //    }
+            //    Console.Write(pair.Key);
+            //    Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Key.Length) / 2));
+            //    Console.Write("|");
+            //    if (pair.Value.Length % 2 == 0)
+            //    {
+            //        Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Key.Length) / 2) - 1));
+            //    }
+            //    else
+            //    {
+            //        Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Key.Length) / 2));
+            //    }
+            //    Console.Write(pair.Value);
+            //    Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
+            //    Console.WriteLine("|");
+            //    Console.WriteLine(new string('-', Console.WindowWidth));
+            //    Console.SetCursorPosition(Console.WindowWidth / 3 * 2 + 1, i * 2 + 1);
+            //    string input = Console.ReadLine();
+            //    fields[pair.Key] = string.IsNullOrEmpty(input) ? default : input;
+            //    Console.SetCursorPosition(0, i * 2 + 5);
+            //    i++;
+            //}
             return fields;
         }
 

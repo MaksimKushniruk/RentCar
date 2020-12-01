@@ -358,13 +358,15 @@ namespace ConsoleUI
             while (true)
             {
                 ICustomerService customerService = new CustomerService();
-                Dictionary<string, string> fieldsForUpdate = new Dictionary<string, string>();
-                ConsoleMenu.UpdateData(customer.ToDictionary());
+                Dictionary<string, string> fieldsForUpdate = ConsoleMenu.UpdateData(customer.ToDictionary());
                 ConsoleMenu.MainMenu(new List<string> { "Apply", "Cancel" });
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        return customerService.UpdateCustomer((int)customer.Id, fieldsForUpdate);
+                        Customer client = customerService.UpdateCustomer((int)customer.Id, fieldsForUpdate);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Customer with Id {client.Id} was updated.");
+                        return client;
                     case '2':
                         return null;
                     default:
@@ -382,7 +384,10 @@ namespace ConsoleUI
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        return carService.UpdateCar((int)car.Id, fieldsForUpdate);
+                        Car vehicle =  carService.UpdateCar((int)car.Id, fieldsForUpdate);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Car with Id {vehicle.Id} was updated.");
+                        return vehicle;
                     case '2':
                         return null;
                     default:
@@ -400,7 +405,10 @@ namespace ConsoleUI
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
-                        return discountCouponService.UpdateDiscountCoupon((int)discountCoupon.Id, fieldsForUpdate);
+                        DiscountCoupon promoCode =  discountCouponService.UpdateDiscountCoupon((int)discountCoupon.Id, fieldsForUpdate);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Promo code with Id {promoCode.Id} was updated.");
+                        return promoCode;
                     case '2':
                         return null;
                     default:

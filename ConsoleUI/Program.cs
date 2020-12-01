@@ -14,13 +14,13 @@ namespace ConsoleUI
             while (true)
             {
                 Console.Clear();
-                ConsoleMenu.Header("Вас приветствует сервис аренды машин.");
-                Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
+                ConsoleMenu.Header("You are welcomed by the car rental service.");
+                Console.WriteLine("\nPress any key to continue...");
                 Console.ReadKey();
                 Console.Clear();
-                ConsoleMenu.Header("Выберите действие.");
-                ConsoleMenu.MainMenu(new List<string> { "Аренда", "Администрирование" });
-                Console.Write("\nДля продолжения сделайте свой выбор...");
+                ConsoleMenu.Header("Select an action.");
+                ConsoleMenu.MainMenu(new List<string> { "Rent", "Administration" });
+                Console.Write("\nPlease make your choice to continue...");
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
@@ -43,7 +43,7 @@ namespace ConsoleUI
         {
             Console.Clear();
             ConsoleMenu.Header("Rent");
-            ConsoleMenu.Menu(new List<string> { "New rent", "Edit rent", "Close rent", "Find rent" });
+            ConsoleMenu.Menu(new List<string> { "New rent", "Edit rent", "Close rent" });
             Console.Write("\nPlease make your choice to continue...");
             switch (Console.ReadKey().KeyChar)
             {
@@ -55,9 +55,6 @@ namespace ConsoleUI
                     break;
                 case '3':
                     RentConsoleController.CloseRent();
-                    break;
-                case '4':
-                    RentConsoleController.FindRent();
                     break;
                 default:
                     break;
@@ -371,11 +368,41 @@ namespace ConsoleUI
         }
         public static void CloseRent()
         {
-
-        }
-        public static void FindRent()
-        {
-            // а надо ли он?
+            Dictionary<string, string> rentFields = new Dictionary<string, string>();
+            Reservation reservation = Operation.Get<Reservation>(Operation.GetReservation, "Find Reservation", new List<string> { "Id", "Car Id", "Customer Id", "Discount Coupon Id", "MinDate", "MaxDate" });
+            Customer customer = reservation.Customer;
+            Car car = reservation.Car;
+            DiscountCoupon discountCoupon = reservation.DiscountCoupon;
+            DateTime? startDate = reservation.StartDate;
+            DateTime? finalDate = reservation.FinalDate;
+            rentFields.Add("Customer", $"{customer.FirstName} {customer.LastName}");
+            rentFields.Add("Car", $"{car.BrandName} {car.ModelName}");
+            rentFields.Add("Promo code", $"Discount {discountCoupon.Discount}%");
+            rentFields.Add("Start date", $"Start date is {startDate}");
+            rentFields.Add("Final date", $"Final date is {finalDate}");
+            while (true)
+            {
+                Console.Clear();
+                ConsoleMenu.Header("Close Reservation");
+                ConsoleMenu.Menu(new List<string> { "Close", "Back"});
+                Console.Write("\nPlease make your choice to continue...");
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        IReservationService reservationService = new ReservationService();
+                        bool result = reservationService.DeleteReservation(reservation.Id);
+                        if (result)
+                        {
+                            Console.SetCursorPosition(0, Console.CursorTop);
+                            Console.WriteLine("Reservation successfully closed...       ");
+                        }
+                        return;
+                    case '2':
+                        return;
+                    default:
+                        break;
+                }
+            }
         }
     }
     public static class AdministrationConsoleController 

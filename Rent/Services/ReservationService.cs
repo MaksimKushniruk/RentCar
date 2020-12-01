@@ -21,9 +21,15 @@ namespace Rent.Services
         {
             return ReservationRepository.DeleteReservation(id);
         }
-        public List<Reservation> GetReservation(ReservationRequest request)
+        public List<Reservation> GetReservation(Dictionary<string, string> fields)
         {
-            return ReservationRepository.GetReservation(request);
+            return ReservationRepository.GetReservation(new ReservationRequest(
+                    fields["Id"].ToNullableInt(),
+                    fields["Car Id"].ToNullableInt(),
+                    fields["Customer Id"].ToNullableInt(),
+                    fields["DiscountCoupon Id"].ToNullableInt(),
+                    DateTime.Parse(fields["MinDate"]),
+                    DateTime.Parse(fields["MaxDate"])));
         }
         public bool UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate)
         {

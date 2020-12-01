@@ -15,6 +15,7 @@ namespace Rent.Models
         {
             Id = id;
             Car = car;
+            Car.Status = CarRentStatus.InRent;
             Customer = customer;
             StartDate = startDate;
             FinalDate = finalDate;
@@ -25,6 +26,7 @@ namespace Rent.Models
         {
             Id = Int32.MinValue;
             Car = car;
+            Car.Status = CarRentStatus.InRent;
             Customer = customer;
             StartDate = startDate;
             FinalDate = finalDate;

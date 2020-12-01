@@ -35,15 +35,15 @@ namespace Rent.Services
         }
         public List<Car> GetCar(Dictionary<string, string> fields)
         {
-            return CarRepository.GetCar(new CarRequest(Int32.Parse(fields["Id"]), 
+            return CarRepository.GetCar(new CarRequest(fields["Id"].ToNullableInt(), 
                                                        fields["License plate"], 
                                                        fields["Model"], 
                                                        fields["Brand"], 
                                                        fields["Color"], 
-                                                       Int32.Parse(fields["Year"]), 
-                                                       decimal.Parse(fields["Minimal price"]), 
-                                                       decimal.Parse(fields["Maximal price"]), 
-                                                       (CarRentStatus)Enum.Parse(typeof(CarRentStatus), fields["Status"], false)));
+                                                       fields["Year"].ToNullableInt(), 
+                                                       fields["Minimal price"].ToNullableDecimal(), 
+                                                       fields["Maximal price"].ToNullableDecimal(), 
+                                                       fields["Status"].ToCarRentStatus()));
         }
         
         public Car UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)

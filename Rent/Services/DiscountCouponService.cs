@@ -30,10 +30,10 @@ namespace Rent.Services
 
         public List<DiscountCoupon> GetDiscountCoupon(Dictionary<string, string> fields)
         {
-            return discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(Int32.Parse(fields["Id"]),
+            return discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(fields["Id"].ToNullableInt(),
                                                                                         fields["Coupon"],
-                                                                                        Int32.Parse(fields["Minimal discount"]),
-                                                                                        Int32.Parse(fields["Maximal discount"])));
+                                                                                        fields["Minimal discount"].ToNullableInt(),
+                                                                                        fields["Maximal discount"].ToNullableInt()));
         }
 
         public DiscountCoupon UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)

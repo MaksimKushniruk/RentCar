@@ -116,7 +116,7 @@ namespace ConsoleUI
                 // TODO: to validate
                 string input = Console.ReadLine();
                 // проверить почему default а не null
-                fields[menu[i]] = string.IsNullOrEmpty(input) ? default : input;
+                fields[menu[i]] = string.IsNullOrEmpty(input) ? null : input;
                 Console.SetCursorPosition(0, i * 2 + 5);
             }
             return fields;

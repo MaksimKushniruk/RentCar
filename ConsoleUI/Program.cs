@@ -43,32 +43,205 @@ namespace ConsoleUI
         {
             Console.Clear();
             ConsoleMenu.Header("Rent");
-            ConsoleMenu.Menu(new List<string> { "New rent", "Edit rent", "Cancel rent", "Find rent" });
+            ConsoleMenu.Menu(new List<string> { "New rent", "Edit rent", "Close rent", "Find rent" });
             Console.Write("\nPlease make your choice to continue...");
             switch (Console.ReadKey().KeyChar)
             {
                 case '1':
-                    Rent.CreateRent();
+                    RentConsoleController.CreateRent();
                     break;
                 case '2':
                     Console.Clear();
-                    ConsoleMenu.Header("Редактировать заказ");
+                    ConsoleMenu.Header("Edit rent");
                     ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
                     break;
                 case '3':
                     Console.Clear();
-                    ConsoleMenu.Header("Отменить заказ ");
+                    ConsoleMenu.Header("Close rent");
                     ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
                     break;
                 case '4':
                     Console.Clear();
-                    ConsoleMenu.Header("Найти заказ");
+                    ConsoleMenu.Header("Find rent");
                     ConsoleMenu.Menu(new List<string> { "Меню 1 ", "Меню 2 ", "Меню 3 ", "меню 4 " });
                     break;
                 default:
-                    // сделать, чтобы не возвращало в главное меню
                     break;
             }
+        }
+
+        public static void CreateRent()
+        {
+            Dictionary<string, string> rentFields = new Dictionary<string, string>();
+            rentFields.Add("Customer", null);
+            rentFields.Add("Car", null);
+            rentFields.Add("Promo code", null);
+            rentFields.Add("Start date", null);
+            rentFields.Add("Final date", null);
+            Reservation reservation = null;
+            Customer customer = null;
+            Car car = null;
+            DiscountCoupon discountCoupon = null;
+            DateTime? startDate = null;
+            DateTime? finalDate = null;
+            while (true)
+            {
+                if(customer != null && car != null && discountCoupon != null && startDate != null && finalDate != null)
+                {
+                        Console.Clear();
+                        ConsoleMenu.Header("Do you want to create new rent?");
+                        ConsoleMenu.Menu(rentFields);
+                        ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                        Console.Write("\nPlease make your choice to continue...");
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                IReservationService reservationService = new ReservationService();
+                                reservation = new Reservation(car, customer, discountCoupon, (DateTime)startDate, (DateTime)finalDate);
+                                int id = reservationService.CreateReservation(reservation);
+                                Console.SetCursorPosition(0, Console.CursorTop);
+                                Console.WriteLine($"New reservation successfully created with Id {id}");
+                                return;
+                            case '2':
+                                break;
+                            case '3':
+                                return;
+                            default:
+                                return;
+                        }
+                }
+                Console.Clear();
+                ConsoleMenu.Header("New Rent");
+                ConsoleMenu.Menu(rentFields);
+                Console.Write("\nPlease make your choice to continue...");
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        Console.Clear();
+                        ConsoleMenu.Header("Customer");
+                        ConsoleMenu.Menu(new List<string> { "New customer", "Choose customer" });
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                customer = Operation.Create<Customer>(Operation.CreateCustomer, "New Customer", new List<string> { "First name", "Last name", "City", "Phone number" });
+                                ConsoleMenu.Header("Want to select current client?");
+                                ConsoleMenu.MainMenu(new List<string> { "Yes", "No" });
+                                switch (Console.ReadKey().KeyChar)
+                                {
+                                    case '1':
+                                        rentFields["Customer"] = $"{customer.FirstName} {customer.LastName}";
+                                        break;
+                                    case '2':
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+                            case '2':
+                                customer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
+                                if (customer != null)
+                                {
+                                    rentFields["Customer"] = $"{customer.FirstName} {customer.LastName}";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case '2':
+                        Console.Clear();
+                        ConsoleMenu.Header("Car");
+                        ConsoleMenu.Menu(new List<string> { "Choose Car" });
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                car = Operation.Get<Car>(Operation.GetCar, "Enter Car Details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
+                                if (car.Status == CarRentStatus.InRent)
+                                {
+                                    Console.WriteLine("Car in rent! Try another car.");
+                                    car = null;
+                                }
+                                if (car != null)
+                                {
+                                    rentFields["Car"] = $"{car.BrandName} {car.ModelName}";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case '3':
+                        Console.Clear();
+                        ConsoleMenu.Header("Promo code");
+                        ConsoleMenu.Menu(new List<string> { "Enter promo code" });
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                discountCoupon = Operation.Get<DiscountCoupon>(Operation.GetPromoCode, "Enter promo code", new List<string> { "Coupon" });
+                                if (discountCoupon != null)
+                                {
+                                    rentFields["Promo code"] = $"Discount {discountCoupon.Discount}%";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case '4':
+                        Console.Clear();
+                        ConsoleMenu.Header("Start Date");
+                        ConsoleMenu.Menu(new List<string> { "Enter start date" });
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                Console.Clear();
+                                ConsoleMenu.Header("Start Date");
+                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Start Date" });
+                                startDate = DateTime.Parse(fields["Start Date"]);
+                                {
+                                    rentFields["Start date"] = $"Start date is {startDate}";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case '5':
+                        Console.Clear();
+                        ConsoleMenu.Header("Final Date");
+                        ConsoleMenu.Menu(new List<string> { "Enter final date" });
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case '1':
+                                Console.Clear();
+                                ConsoleMenu.Header("Start Date");
+                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Final Date" });
+                                finalDate = DateTime.Parse(fields["Final Date"]);
+                                {
+                                    rentFields["Final date"] = $"Final date is {finalDate}";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+        public static void EditRent()
+        {
+
+        }
+        public static void CloseRent()
+        {
+
+        }
+        public static void FindRent()
+        {
+
         }
     }
     public static class AdministrationConsoleController 
@@ -91,7 +264,7 @@ namespace ConsoleUI
                     {
                         case '1':
                             Operation.Create<Customer>(Operation.CreateCustomer, "New customer", new List<string> { "First name", "Last name", "City", "Phone number" });
-                            return;
+                            break;
                         case '2':
                             Customer editCustomer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
                             Operation.Edit<Customer>(Operation.EditCustomer, "Edit customer", editCustomer);
@@ -113,7 +286,7 @@ namespace ConsoleUI
                     {
                         case '1':
                             Operation.Create<Car>(Operation.CreateCar, "New car", new List<string> { "License plate", "Model", "Brand", "Color", "Year", "Price" });
-                            return;
+                            break;
                         case '2':
                             Car editCar = Operation.Get<Car>(Operation.GetCar, "Enter car details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
                             Operation.Edit<Car>(Operation.EditCar, "Edit car", editCar);
@@ -135,7 +308,7 @@ namespace ConsoleUI
                     {
                         case '1':
                             Operation.Create<DiscountCoupon>(Operation.CreateDiscountCoupon, "New promo code", new List<string> { "Coupon", "Discount" });
-                            return;
+                            break;
                         case '2':
                             DiscountCoupon editDiscountCoupon = Operation.Get<DiscountCoupon>(Operation.GetDiscountCoupon, "Enter promo code details", new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" });
                             Operation.Edit<DiscountCoupon>(Operation.EditDiscountCoupon, "Edit promo code", editDiscountCoupon);
@@ -335,6 +508,80 @@ namespace ConsoleUI
                 {
                     case '1':
                         return discountCoupons.FirstOrDefault();
+                    case '2':
+                        continue;
+                    case '3':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static DiscountCoupon GetPromoCode(Dictionary<string, string> fields)
+        {
+            while (true)
+            {
+                IDiscountCouponService discountCouponService = new DiscountCouponService();
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Clear();
+                ConsoleMenu.Header("Enter the Id of the required promo code");
+                fields["Id"] = null;
+                fields["Minimal discount"] = null;
+                fields["Maximal discount"] = null;
+                List<DiscountCoupon> discountCoupons = discountCouponService.GetDiscountCoupon(fields);
+                ConsoleMenu.Print<DiscountCoupon>(discountCoupons);
+                discountCoupons = discountCouponService.GetDiscountCoupon(new Dictionary<string, string>
+                {
+                    ["Id"] = Console.ReadLine(),
+                    ["Coupon"] = null,
+                    ["Minimal discount"] = null,
+                    ["Maximal discount"] = null
+                });
+                Console.Clear();
+                ConsoleMenu.Header("Want to select current promo code?");
+                ConsoleMenu.Menu(discountCoupons.FirstOrDefault().ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return discountCoupons.FirstOrDefault();
+                    case '2':
+                        continue;
+                    case '3':
+                        return null;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static Reservation GetReservation(Dictionary<string, string> fields)
+        {
+
+            while (true)
+            {
+                IReservationService reservationService = new ReservationService();
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Clear();
+                ConsoleMenu.Header("Enter the Id of the required reservation");
+                List<Reservation> reservations = reservationService.GetReservation(fields);
+                ConsoleMenu.Print<Reservation>(reservations);
+                reservations = reservationService.GetReservation(new Dictionary<string, string>
+                {
+                    ["Id"] = Console.ReadLine(),
+                    ["Car Id"] = null,
+                    ["Customer Id"] = null,
+                    ["DiscountCoupon Id"] = null,
+                    ["MinDate"] = null,
+                    ["MaxDate"] = null
+                });
+                Console.Clear();
+                ConsoleMenu.Header("Want to select current reservation?");
+                ConsoleMenu.Menu(reservations.FirstOrDefault().ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Yes", "No", "Back" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        return reservations.FirstOrDefault();
                     case '2':
                         continue;
                     case '3':

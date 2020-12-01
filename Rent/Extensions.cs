@@ -6,11 +6,40 @@ namespace Rent
 {
     public static class Extensions
     {
+        public static CarRentStatus ToCarRentStatus(this string value)
+        {
+            if (value != null)
+            {
+                return (CarRentStatus)Enum.Parse(typeof(CarRentStatus), value);
+            }
+            else
+            {
+                return CarRentStatus.Free;
+            }
+        }
         public static int? ToNullableInt(this string s)
         {
             int i;
             if (int.TryParse(s, out i)) return i;
             return null;
+        }
+        public static decimal? ToNullableDecimal(this string s)
+        {
+            decimal i;
+            if (decimal.TryParse(s, out i)) return i;
+            return null;
+        }
+        public static Dictionary<string, string> ToDictionary(this Reservation value)
+        {
+            Dictionary<string, string> reservationDictionary = new Dictionary<string, string>();
+            reservationDictionary["Id"] = value.Id.ToString();
+            reservationDictionary["Car Id"] = value.Car.Id.ToString();
+            reservationDictionary["Customer Id"] = value.Customer.Id.ToString();
+            reservationDictionary["Discount Coupon Id"] = value.DiscountCoupon.Id.ToString();
+            reservationDictionary["Start Date"] = value.StartDate.ToString();
+            reservationDictionary["Final Date"] = value.FinalDate.ToString();
+            reservationDictionary["Price"] = value.Price.ToString();
+            return reservationDictionary;
         }
         public static Dictionary<string, string> ToDictionary(this Customer value)
         {

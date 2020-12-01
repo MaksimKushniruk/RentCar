@@ -93,11 +93,12 @@ namespace ConsoleUI
                             Operation.Create<Customer>(Operation.CreateCustomer, "New customer", new List<string> { "First name", "Last name", "City", "Phone number" });
                             return;
                         case '2':
-                            Customer customer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
-                            Operation.Edit<Customer>(Operation.EditCustomer, "Edit customer", customer);
+                            Customer editCustomer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
+                            Operation.Edit<Customer>(Operation.EditCustomer, "Edit customer", editCustomer);
                             break;
                         case '3':
-                            // Удалить
+                            Customer deleteCustomer = Operation.Get<Customer>(Operation.GetCustomer, "Enter customer details", new List<string> { "Id", "First name", "Last name", "City", "Phone number" });
+                            Operation.Delete<Customer>(Operation.DeleteCustomer, "Delete customer", deleteCustomer);
                             break;
                         default:
                             break;
@@ -114,11 +115,12 @@ namespace ConsoleUI
                             Operation.Create<Car>(Operation.CreateCar, "New car", new List<string> { "License plate", "Model", "Brand", "Color", "Year", "Price" });
                             return;
                         case '2':
-                            Car car = Operation.Get<Car>(Operation.GetCar, "Enter car details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
-                            Operation.Edit<Car>(Operation.EditCar, "Edit car", car);
+                            Car editCar = Operation.Get<Car>(Operation.GetCar, "Enter car details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
+                            Operation.Edit<Car>(Operation.EditCar, "Edit car", editCar);
                             break;
                         case '3':
-                            // Удалить
+                            Car deleteCar = Operation.Get<Car>(Operation.GetCar, "Enter car details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
+                            Operation.Delete<Car>(Operation.DeleteCar, "Delete car", deleteCar);
                             break;
                         default:
                             break;
@@ -135,11 +137,12 @@ namespace ConsoleUI
                             Operation.Create<DiscountCoupon>(Operation.CreateDiscountCoupon, "New promo code", new List<string> { "Coupon", "Discount" });
                             return;
                         case '2':
-                            DiscountCoupon discountCoupon = Operation.Get<DiscountCoupon>(Operation.GetDiscountCoupon, "Enter promo code details", new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" });
-                            Operation.Edit<DiscountCoupon>(Operation.EditDiscountCoupon, "Edit promo code", discountCoupon);
+                            DiscountCoupon editDiscountCoupon = Operation.Get<DiscountCoupon>(Operation.GetDiscountCoupon, "Enter promo code details", new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" });
+                            Operation.Edit<DiscountCoupon>(Operation.EditDiscountCoupon, "Edit promo code", editDiscountCoupon);
                             break;
                         case '3':
-                            // Удалить
+                            DiscountCoupon deleteDiscountCoupon = Operation.Get<DiscountCoupon>(Operation.GetDiscountCoupon, "Enter promo code details", new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" });
+                            Operation.Delete<DiscountCoupon>(Operation.DeleteDiscountCoupon, "Delete promo code", deleteDiscountCoupon);
                             break;
                         default:
                             break;
@@ -155,6 +158,7 @@ namespace ConsoleUI
         public delegate T ObjectCreationHandler<T>(Dictionary<string, string> fields);
         public delegate T ObjectLookupHandler<T>(Dictionary<string, string> fields);
         public delegate T ObjectEditingHandler<T>(T value);
+        public delegate void ObjectDeletingHandler<T>(T item);
 
         // Method for creating objects
         //
@@ -411,6 +415,76 @@ namespace ConsoleUI
                         return promoCode;
                     case '2':
                         return null;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public static void Delete<T>(ObjectDeletingHandler<T> objectDeletingHandler, string headerText, T item)
+        {
+            Console.Clear();
+            ConsoleMenu.Header(headerText);
+            objectDeletingHandler.Invoke(item);
+        }
+        public static void DeleteCustomer(Customer customer)
+        {
+            while (true)
+            {
+                ICustomerService customerService = new CustomerService();
+                ConsoleMenu.Menu(customer.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Delete", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        customerService.DeleteCustomer((int)customer.Id);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Customer with Id {customer.Id} was deleted.");
+                        return;
+                    case '2':
+                        return;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static void DeleteCar(Car car)
+        {
+            while (true)
+            {
+                ICarService carService = new CarService();
+                ConsoleMenu.Menu(car.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Delete", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        carService.DeleteCar((int)car.Id);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Car with Id {car.Id} was deleted.");
+                        return;
+                    case '2':
+                        return;
+                    default:
+                        break;
+                }
+            }
+        }
+        public static void DeleteDiscountCoupon(DiscountCoupon discountCoupon)
+        {
+            while (true)
+            {
+                IDiscountCouponService discountCouponService = new DiscountCouponService();
+                ConsoleMenu.Menu(discountCoupon.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Delete", "Cancel" });
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        discountCouponService.DeleteDiscountCoupon((int)discountCoupon.Id);
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.WriteLine($"Promo code with Id {discountCoupon.Id} was deleted.");
+                        return;
+                    case '2':
+                        return;
                     default:
                         break;
                 }

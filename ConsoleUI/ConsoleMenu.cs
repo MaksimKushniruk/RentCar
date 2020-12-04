@@ -142,7 +142,11 @@ namespace ConsoleUI
                 Console.Write(pair.Key);
                 Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Key.Length) / 2));
                 Console.Write("|");
-                if (pair.Value.Length % 2 == 0)
+                if(pair.Value == null)
+                {
+                    Console.Write(new string(' ', ((Console.WindowWidth / 3) - 1) / 2));
+                }
+                else if (pair.Value.Length % 2 == 0)
                 {
                     Console.Write(new string(' ', (((Console.WindowWidth / 3) - pair.Value.Length) / 2) - 1));
                 }
@@ -151,7 +155,14 @@ namespace ConsoleUI
                     Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
                 }
                 Console.Write(pair.Value);
-                Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
+                if (pair.Value == null)
+                {
+                    Console.Write(new string(' ', ((Console.WindowWidth / 3) - 1) / 2));
+                }
+                else
+                {
+                    Console.Write(new string(' ', ((Console.WindowWidth / 3) - pair.Value.Length) / 2));
+                }
                 Console.WriteLine("|");
                 Console.WriteLine(new string('-', Console.WindowWidth));
                 Console.SetCursorPosition(Console.WindowWidth / 3 * 2 + 1, i * 2 + 1);

@@ -33,14 +33,14 @@ namespace Rent.Services
         }
         public Reservation UpdateReservation(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            List<Reservation> reservations = reservationRepository.GetReservation(new ReservationRequest { Id = id });
+            List <Reservation> reservations = reservationRepository.GetReservation(new ReservationRequest { Id = id });
                 reservations.FirstOrDefault().Car.Id = int.Parse(fieldsForUpdate["Car Id"]);
                 reservations.FirstOrDefault().Customer.Id = int.Parse(fieldsForUpdate["Customer Id"]);
                 reservations.FirstOrDefault().DiscountCoupon.Id = int.Parse(fieldsForUpdate["Discount Coupon Id"]);
                 reservations.FirstOrDefault().StartDate = DateTime.Parse(fieldsForUpdate["Start Date"]);
-                reservations.FirstOrDefault().FinalDate = DateTime.Parse(fieldsForUpdate["Final Date"]);
-                reservations.FirstOrDefault().Price = decimal.Parse(fieldsForUpdate["Price"]);
-            reservationRepository.UpdateReservation(reservations.FirstOrDefault());
+                reservations.FirstOrDefault().FinalDate = string.IsNullOrEmpty(fieldsForUpdate["Final Date"]) ? (DateTime?)null : DateTime.Parse(fieldsForUpdate["Final Date"]);
+                reservations.FirstOrDefault().Price = string.IsNullOrEmpty(fieldsForUpdate["Price"]) ? (decimal?)null : decimal.Parse(fieldsForUpdate["Price"]);
+                reservationRepository.UpdateReservation(reservations.FirstOrDefault());
             return reservations.FirstOrDefault();
         }
     }

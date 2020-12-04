@@ -67,17 +67,14 @@ namespace ConsoleUI
             rentFields.Add("Customer", null);
             rentFields.Add("Car", null);
             rentFields.Add("Promo code", null);
-            rentFields.Add("Start date", null);
-            rentFields.Add("Final date", null);
             Reservation reservation = null;
             Customer customer = null;
             Car car = null;
             DiscountCoupon discountCoupon = null;
-            DateTime? startDate = null;
-            DateTime? finalDate = null;
+            DateTime startDate;
             while (true)
             {
-                if(customer != null && car != null && discountCoupon != null && startDate != null && finalDate != null)
+                if(customer != null && car != null && discountCoupon != null)
                 {
                         Console.Clear();
                         ConsoleMenu.Header("Do you want to create new rent?");
@@ -87,12 +84,19 @@ namespace ConsoleUI
                         switch (Console.ReadKey().KeyChar)
                         {
                             case '1':
-                                IReservationService reservationService = new ReservationService();
-                                reservation = new Reservation(car, customer, discountCoupon, (DateTime)startDate, (DateTime)finalDate);
-                                int id = reservationService.CreateReservation(reservation);
-                                Console.SetCursorPosition(0, Console.CursorTop);
-                                Console.WriteLine($"New reservation successfully created with Id {id}");
-                                return;
+                            IReservationService reservationService = new ReservationService();
+                            ICarService carService = new CarService();
+                            startDate = DateTime.Now;
+                            reservation = new Reservation(car, customer, discountCoupon, startDate);
+                            int id = reservationService.CreateReservation(reservation);
+                            if (id > 0)
+                            {
+                                car.Status = CarRentStatus.InRent;
+                                carService.UpdateCar(car.Id, car.ToDictionary());
+                            }
+                            Console.SetCursorPosition(0, Console.CursorTop);
+                            Console.WriteLine($"New reservation successfully created with Id {id}");
+                            return;
                             case '2':
                                 break;
                             case '3':
@@ -178,44 +182,6 @@ namespace ConsoleUI
                                 break;
                         }
                         break;
-                    case '4':
-                        Console.Clear();
-                        ConsoleMenu.Header("Start Date");
-                        ConsoleMenu.Menu(new List<string> { "Enter start date" });
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                Console.Clear();
-                                ConsoleMenu.Header("Start Date");
-                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Start Date" });
-                                startDate = DateTime.Parse(fields["Start Date"]);
-                                {
-                                    rentFields["Start date"] = $"Start date is {startDate}";
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case '5':
-                        Console.Clear();
-                        ConsoleMenu.Header("Final Date");
-                        ConsoleMenu.Menu(new List<string> { "Enter final date" });
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                Console.Clear();
-                                ConsoleMenu.Header("Start Date");
-                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Final Date" });
-                                finalDate = DateTime.Parse(fields["Final Date"]);
-                                {
-                                    rentFields["Final date"] = $"Final date is {finalDate}";
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
                     default:
                         break;
                 }
@@ -228,14 +194,15 @@ namespace ConsoleUI
             Reservation reservation = Operation.Get<Reservation>(Operation.GetReservation, "Find Reservation", new List<string> { "Id", "Car Id", "Customer Id", "Discount Coupon Id", "MinDate", "MaxDate" });
             Customer customer = reservation.Customer;
             Car car = reservation.Car;
+            Car tryCar = null;
             DiscountCoupon discountCoupon = reservation.DiscountCoupon;
             DateTime? startDate = reservation.StartDate;
             DateTime? finalDate = reservation.FinalDate;
             rentFields.Add("Customer", $"{customer.FirstName} {customer.LastName}");
             rentFields.Add("Car", $"{car.BrandName} {car.ModelName}");
             rentFields.Add("Promo code", $"Discount {discountCoupon.Discount}%");
-            rentFields.Add("Start date", $"Start date is {startDate}");
-            rentFields.Add("Final date", $"Final date is {finalDate}");
+            rentFields.Add("Start Date", $"Starting date is {startDate}");
+            rentFields.Add("Final Date", $"Final date is {finalDate}");
             rentFields.Add("Finish Editing", null);
             while (true)
             {
@@ -284,15 +251,15 @@ namespace ConsoleUI
                         switch (Console.ReadKey().KeyChar)
                         {
                             case '1':
-                                car = Operation.Get<Car>(Operation.GetCar, "Enter Car Details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
-                                if (car.Status == CarRentStatus.InRent)
+                                tryCar = Operation.Get<Car>(Operation.GetCar, "Enter Car Details", new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" });
+                                if (tryCar.Status == CarRentStatus.InRent)
                                 {
                                     Console.WriteLine("Car in rent! Try another car.");
-                                    car = null;
+                                    tryCar = null;
                                 }
-                                if (car != null)
+                                if (tryCar != null)
                                 {
-                                    rentFields["Car"] = $"{car.BrandName} {car.ModelName}";
+                                    rentFields["Car"] = $"{tryCar.BrandName} {tryCar.ModelName}";
                                 }
                                 break;
                             default:
@@ -316,48 +283,22 @@ namespace ConsoleUI
                                 break;
                         }
                         break;
-                    case '4':
-                        Console.Clear();
-                        ConsoleMenu.Header("Start Date");
-                        ConsoleMenu.Menu(new List<string> { "Enter start date" });
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                Console.Clear();
-                                ConsoleMenu.Header("Start Date");
-                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Start Date" });
-                                startDate = DateTime.Parse(fields["Start Date"]);
-                                {
-                                    rentFields["Start date"] = $"Start date is {startDate}";
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case '5':
-                        Console.Clear();
-                        ConsoleMenu.Header("Final Date");
-                        ConsoleMenu.Menu(new List<string> { "Enter final date" });
-                        switch (Console.ReadKey().KeyChar)
-                        {
-                            case '1':
-                                Console.Clear();
-                                ConsoleMenu.Header("Start Date");
-                                Dictionary<string, string> fields = ConsoleMenu.InputData(new List<string> { "Final Date" });
-                                finalDate = DateTime.Parse(fields["Final Date"]);
-                                {
-                                    rentFields["Final date"] = $"Final date is {finalDate}";
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
                     case '6':
                         IReservationService reservationService = new ReservationService();
-                        reservation = new Reservation(reservation.Id, car, customer, discountCoupon, (DateTime)startDate, (DateTime)finalDate, reservation.Price);
-                        reservationService.UpdateReservation(reservation.Id, reservation.ToDictionary());
+                        if (tryCar != null)
+                        {
+                            ICarService carService = new CarService();
+                            car.Status = CarRentStatus.Free;
+                            tryCar.Status = CarRentStatus.InRent;
+                            reservation = new Reservation(reservation.Id, tryCar, customer, discountCoupon, (DateTime)startDate);
+                            carService.UpdateCar(car.Id, car.ToDictionary());
+                            carService.UpdateCar(tryCar.Id, tryCar.ToDictionary());
+                        }
+                        else
+                        {
+                            reservation = new Reservation(reservation.Id, car, customer, discountCoupon, (DateTime)startDate);
+                        }
+                        reservationService.UpdateReservation(reservation.Id.Value, reservation.ToDictionary());
                         Console.SetCursorPosition(0, Console.CursorTop);
                         Console.WriteLine($"Reservation successfully updated...         ");
                         return;
@@ -373,8 +314,10 @@ namespace ConsoleUI
             Customer customer = reservation.Customer;
             Car car = reservation.Car;
             DiscountCoupon discountCoupon = reservation.DiscountCoupon;
+            reservation.FinalDate = DateTime.Now;
             DateTime? startDate = reservation.StartDate;
             DateTime? finalDate = reservation.FinalDate;
+            reservation.Price = (((car.PricePerHour * (decimal)Math.Round(finalDate.Value.Subtract(startDate.Value).TotalHours, MidpointRounding.ToPositiveInfinity))) / 100) * (100 - discountCoupon.Discount);
             rentFields.Add("Customer", $"{customer.FirstName} {customer.LastName}");
             rentFields.Add("Car", $"{car.BrandName} {car.ModelName}");
             rentFields.Add("Promo code", $"Discount {discountCoupon.Discount}%");
@@ -384,17 +327,22 @@ namespace ConsoleUI
             {
                 Console.Clear();
                 ConsoleMenu.Header("Close Reservation");
-                ConsoleMenu.Menu(new List<string> { "Close", "Back"});
+                ConsoleMenu.Menu(reservation.ToDictionary());
+                ConsoleMenu.MainMenu(new List<string> { "Close", "Back"});
                 Console.Write("\nPlease make your choice to continue...");
                 switch (Console.ReadKey().KeyChar)
                 {
                     case '1':
                         IReservationService reservationService = new ReservationService();
-                        bool result = reservationService.DeleteReservation(reservation.Id);
+                        ICarService carService = new CarService();
+                        bool result = reservationService.DeleteReservation(reservation.Id.Value);
                         if (result)
                         {
-                            Console.SetCursorPosition(0, Console.CursorTop);
-                            Console.WriteLine("Reservation successfully closed...       ");
+                            car.Status = CarRentStatus.Free;
+                            carService.UpdateCar(car.Id, car.ToDictionary());
+                            Console.Clear();
+                            ConsoleMenu.Header("Close Reservation");
+                            Console.WriteLine("Reservation successfully closed...");
                         }
                         return;
                     case '2':

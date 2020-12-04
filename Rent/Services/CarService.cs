@@ -55,7 +55,7 @@ namespace Rent.Services
             cars.FirstOrDefault().Color = fieldsForUpdate["Color"];
             cars.FirstOrDefault().Year = Int32.Parse(fieldsForUpdate["Year"]);
             cars.FirstOrDefault().PricePerHour = decimal.Parse(fieldsForUpdate["Price per hour"]);
-            cars.FirstOrDefault().Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
+            cars.FirstOrDefault().Status = (CarRentStatus)Enum.Parse(typeof(CarRentStatus), fieldsForUpdate["Status"], false);
             carRepository.UpdateCar(cars.FirstOrDefault());
             return cars.FirstOrDefault();
         }

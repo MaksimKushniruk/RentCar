@@ -4,14 +4,34 @@ namespace Rent.Models
 {
     public class Reservation
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public Car Car { get; set; }
         public Customer Customer { get; set; }
         public DiscountCoupon DiscountCoupon { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FinalDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? FinalDate { get; set; }
         public decimal? Price { get; set; }
-        public Reservation(int id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal? price)
+        public Reservation(Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate)
+        {
+            Id = null;
+            Car = car;
+            Customer = customer;
+            DiscountCoupon = discountCoupon;
+            StartDate = startDate;
+            FinalDate = null;
+            Price = null;
+        }
+        public Reservation(int? id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate)
+        {
+            Id = id;
+            Car = car;
+            Customer = customer;
+            DiscountCoupon = discountCoupon;
+            StartDate = startDate;
+            FinalDate = null;
+            Price = null;
+        }
+        public Reservation(int? id, Car car, Customer customer, DiscountCoupon discountCoupon, DateTime startDate, DateTime finalDate, decimal? price)
         {
             Id = id;
             Car = car;

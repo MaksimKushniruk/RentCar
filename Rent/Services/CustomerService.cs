@@ -13,6 +13,11 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
+        /// <summary>
+        /// Creating Customer. Returns Created object with Id from database.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public Customer CreateCustomer(Dictionary<string, string> fields)
         {
             int id = CustomerRepository.AddCustomer(new Customer(fields["First name"], 
@@ -25,10 +30,20 @@ namespace Rent.Services
                                 fields["City"], 
                                 fields["Phone number"]);
         }
+        /// <summary>
+        /// Deleting Customer. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCustomer(int id)
         {
             return CustomerRepository.DeleteCustomer(id);
         }
+        /// <summary>
+        /// Searching Customer in database. Returns list with all found Customers.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public List<Customer> GetCustomer(Dictionary<string, string> fields)
         {
             return CustomerRepository.GetCustomer(new CustomerRequest(fields["Id"].ToNullableInt(), 
@@ -37,6 +52,12 @@ namespace Rent.Services
                                                                       fields["City"], 
                                                                       fields["Phone number"]));
         }
+        /// <summary>
+        /// Updating Customer. Returns updated object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fieldsForUpdate"></param>
+        /// <returns></returns>
         public Customer UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {
             List<Customer> customers = CustomerRepository.GetCustomer(new CustomerRequest { Id = id });

@@ -13,6 +13,11 @@ namespace Rent.Services
         {
             carRepository = new CarRepository();
         }
+        /// <summary>
+        /// Creating Car. Returns Created object with id from database.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public Car CreateCar(Dictionary<string, string> fields)
         {
             int id = carRepository.AddCar(new Car(fields["License plate"], 
@@ -29,10 +34,20 @@ namespace Rent.Services
                            Int32.Parse(fields["Year"]),
                            decimal.Parse(fields["Price"]));
         }
+        /// <summary>
+        /// Deleting Car. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCar(int id)
         {
             return carRepository.DeleteCar(id);
         }
+        /// <summary>
+        /// Searching Car. Returns list with all foun objects.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public List<Car> GetCar(Dictionary<string, string> fields)
         {
             return carRepository.GetCar(new CarRequest(fields["Id"].ToNullableInt(), 
@@ -45,7 +60,12 @@ namespace Rent.Services
                                                        fields["Maximal price"].ToNullableDecimal(), 
                                                        fields["Status"].ToCarRentStatus()));
         }
-        
+        /// <summary>
+        /// Updating Car. Return updated object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fieldsForUpdate"></param>
+        /// <returns></returns>
         public Car UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
             List<Car> cars = carRepository.GetCar(new CarRequest { Id = id });

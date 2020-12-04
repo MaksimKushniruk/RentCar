@@ -1,5 +1,4 @@
 ﻿using Rent.Models;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,6 +7,11 @@ namespace Rent.Repositories
 {
     public class DiscountCouponRepository : IDiscountCouponRepository
     {
+        /// <summary>
+        /// Adding object to database. Returns id of added DiscountCoupon.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public int AddDiscountCoupon(DiscountCoupon discountCoupon)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -23,7 +27,11 @@ namespace Rent.Repositories
                 return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
-
+        /// <summary>
+        /// Deleting DiscountCoupon from database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteDiscountCoupon(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -43,6 +51,11 @@ namespace Rent.Repositories
                 }
             }
         }
+        /// <summary>
+        /// Searching DiscountCoupon or DiscountCoupons in database. Returns all found DiscountCoupons.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request)
         {
             List<DiscountCoupon> discountCoupons = new List<DiscountCoupon>();
@@ -68,7 +81,11 @@ namespace Rent.Repositories
                 
             return discountCoupons;
         }
-
+        /// <summary>
+        /// Updating DiscountCoupon in database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public bool UpdateDiscountCoupon(DiscountCoupon discountCoupon)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))

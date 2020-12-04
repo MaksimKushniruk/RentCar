@@ -2,63 +2,82 @@
 using Rent.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 
 namespace Rent.Services
 {
     public class CarService : ICarService
     {
-        private ICarRepository CarRepository { get; }
+        private ICarRepository carRepository { get; }
         public CarService()
         {
-            CarRepository = new CarRepository();
+            carRepository = new CarRepository();
         }
-        public int CreateCar(string registrationNumber, string modelName, string brandName, string color, int year, decimal pricePerHour)
+        /// <summary>
+        /// Creating Car. Returns Created object with id from database.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public Car CreateCar(Dictionary<string, string> fields)
         {
-            return CarRepository.AddCar(new Car(registrationNumber, modelName, brandName, color, year, pricePerHour));
+            int id = carRepository.AddCar(new Car(fields["License plate"], 
+                                                  fields["Model"], 
+                                                  fields["Brand"], 
+                                                  fields["Color"], 
+                                                  Int32.Parse(fields["Year"]), 
+                                                  decimal.Parse(fields["Price"])));
+            return new Car(id,
+                           fields["License plate"],
+                           fields["Model"],
+                           fields["Brand"],
+                           fields["Color"],
+                           Int32.Parse(fields["Year"]),
+                           decimal.Parse(fields["Price"]));
         }
+        /// <summary>
+        /// Deleting Car. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCar(int id)
         {
-            return CarRepository.DeleteCar(id);
+            return carRepository.DeleteCar(id);
         }
-        public List<Car> GetCar(CarRequest request)
+        /// <summary>
+        /// Searching Car. Returns list with all foun objects.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public List<Car> GetCar(Dictionary<string, string> fields)
         {
-            return CarRepository.GetCar(request);
+            return carRepository.GetCar(new CarRequest(fields["Id"].ToNullableInt(), 
+                                                       fields["License plate"], 
+                                                       fields["Model"], 
+                                                       fields["Brand"], 
+                                                       fields["Color"], 
+                                                       fields["Year"].ToNullableInt(), 
+                                                       fields["Minimal price"].ToNullableDecimal(), 
+                                                       fields["Maximal price"].ToNullableDecimal(), 
+                                                       fields["Status"].ToCarRentStatus()));
         }
-        
-        public bool UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
+        /// <summary>
+        /// Updating Car. Return updated object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fieldsForUpdate"></param>
+        /// <returns></returns>
+        public Car UpdateCar(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            List<Car> cars = CarRepository.GetCar(new CarRequest { Id = id });
-            if (fieldsForUpdate.ContainsKey("RegistrationNumber"))
-            {
-                cars[0].RegistrationNumber = fieldsForUpdate["RegistrationNumber"];
-            }
-            if (fieldsForUpdate.ContainsKey("ModelName"))
-            {
-                cars[0].ModelName = fieldsForUpdate["ModelName"];
-            }
-            if (fieldsForUpdate.ContainsKey("BrandName"))
-            {
-                cars[0].BrandName = fieldsForUpdate["BrandName"];
-            }
-            if (fieldsForUpdate.ContainsKey("Color"))
-            {
-                cars[0].Color = fieldsForUpdate["Color"];
-            }
-            if (fieldsForUpdate.ContainsKey("Year"))
-            {
-                cars[0].Year = int.Parse(fieldsForUpdate["Year"]);
-            }
-            if (fieldsForUpdate.ContainsKey("PricePerHour"))
-            {
-                cars[0].PricePerHour = decimal.Parse(fieldsForUpdate["PricePerHour"]);
-            }
-            if (fieldsForUpdate.ContainsKey("Status"))
-            {
-                cars[0].Status = (CarRentStatus)int.Parse(fieldsForUpdate["Status"]);
-            }
-
-            return CarRepository.UpdateCar(cars[0]);
+            List<Car> cars = carRepository.GetCar(new CarRequest { Id = id });
+            cars.FirstOrDefault().LicensePlate = fieldsForUpdate["License plate"];
+            cars.FirstOrDefault().ModelName = fieldsForUpdate["Model"];
+            cars.FirstOrDefault().BrandName = fieldsForUpdate["Brand"];
+            cars.FirstOrDefault().Color = fieldsForUpdate["Color"];
+            cars.FirstOrDefault().Year = Int32.Parse(fieldsForUpdate["Year"]);
+            cars.FirstOrDefault().PricePerHour = decimal.Parse(fieldsForUpdate["Price per hour"]);
+            cars.FirstOrDefault().Status = (CarRentStatus)Enum.Parse(typeof(CarRentStatus), fieldsForUpdate["Status"], false);
+            carRepository.UpdateCar(cars.FirstOrDefault());
+            return cars.FirstOrDefault();
         }
     }
 }

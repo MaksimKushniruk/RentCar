@@ -2,44 +2,64 @@
 using Rent.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rent.Services
 {
     public class DiscountCouponService : IDiscountCouponService
     {
-        private IDiscountCouponRepository DiscountCouponRepository = new DiscountCouponRepository();
+        private IDiscountCouponRepository discountCouponRepository = new DiscountCouponRepository();
         public DiscountCouponService()
         {
-            DiscountCouponRepository = new DiscountCouponRepository();
+            discountCouponRepository = new DiscountCouponRepository();
         }
-
-        public int CreateDiscountCoupon(string coupon, int discount)
+        /// <summary>
+        /// Creating DiscountCoupon. Returns DiscountCoupon object.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public DiscountCoupon CreateDiscountCoupon(Dictionary<string, string> fields)
         {
-            return DiscountCouponRepository.AddDiscountCoupon(new DiscountCoupon(coupon, discount));
+            int id = discountCouponRepository.AddDiscountCoupon(new DiscountCoupon(fields["Coupon"], 
+                                                                                   Int32.Parse(fields["Discount"])));
+            return new DiscountCoupon(id, 
+                                      fields["Coupon"], 
+                                      Int32.Parse(fields["Discount"]));
         }
-
+        /// <summary>
+        ///  Deleting DiscountCoupon. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteDiscountCoupon(int id)
         {
-            return DiscountCouponRepository.DeleteDiscountCoupon(id);
+            return discountCouponRepository.DeleteDiscountCoupon(id);
         }
-
-        public List<DiscountCoupon> GetDiscountCoupon(DiscountCouponRequest request)
+        /// <summary>
+        /// Searching DiscountCoupon. Returns List<DiscountCoupon> with all found coupons.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public List<DiscountCoupon> GetDiscountCoupon(Dictionary<string, string> fields)
         {
-            return DiscountCouponRepository.GetDiscountCoupon(request);
+            return discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest(fields["Id"].ToNullableInt(),
+                                                                                        fields["Coupon"],
+                                                                                        fields["Minimal discount"].ToNullableInt(),
+                                                                                        fields["Maximal discount"].ToNullableInt()));
         }
-
-        public bool UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)
+        /// <summary>
+        /// Updating DiscountCoupon. Returns updated object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fieldsForUpdate"></param>
+        /// <returns></returns>
+        public DiscountCoupon UpdateDiscountCoupon(int id, Dictionary<string, string> fieldsForUpdate)
         {
-            List<DiscountCoupon> discountCoupons = DiscountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest { Id = id });
-            if (fieldsForUpdate.ContainsKey("Coupon"))
-            {
-                discountCoupons[0].Coupon = fieldsForUpdate["Coupon"];
-            }
-            if (fieldsForUpdate.ContainsKey("Discount"))
-            {
-                discountCoupons[0].Discount = int.Parse(fieldsForUpdate["Discount"]);
-            }
-            return DiscountCouponRepository.UpdateDiscountCoupon(discountCoupons[0]);
+            List<DiscountCoupon> discountCoupons = discountCouponRepository.GetDiscountCoupon(new DiscountCouponRequest { Id = id });
+            discountCoupons.FirstOrDefault().Coupon = fieldsForUpdate["Coupon"];
+            discountCoupons.FirstOrDefault().Discount = Int32.Parse(fieldsForUpdate["Discount"]);
+            discountCouponRepository.UpdateDiscountCoupon(discountCoupons.FirstOrDefault());
+            return discountCoupons.FirstOrDefault();
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Rent.Models;
 using Rent.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 
 namespace Rent.Services
 {
@@ -13,38 +12,60 @@ namespace Rent.Services
         {
             CustomerRepository = new CustomerRepository();
         }
-        public int CreateCustomer(string firstName, string lastName, string city, string phoneNumber)
+        /// <summary>
+        /// Creating Customer. Returns Created object with Id from database.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public Customer CreateCustomer(Dictionary<string, string> fields)
         {
-            return CustomerRepository.AddCustomer(new Customer(firstName, lastName, city, phoneNumber));
+            int id = CustomerRepository.AddCustomer(new Customer(fields["First name"], 
+                                                                 fields["Last name"], 
+                                                                 fields["City"], 
+                                                                 fields["Phone number"]));
+            return new Customer(id, 
+                                fields["First name"], 
+                                fields["Last name"], 
+                                fields["City"], 
+                                fields["Phone number"]);
         }
+        /// <summary>
+        /// Deleting Customer. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCustomer(int id)
         {
             return CustomerRepository.DeleteCustomer(id);
         }
-        public List<Customer> GetCustomer(CustomerRequest request)
+        /// <summary>
+        /// Searching Customer in database. Returns list with all found Customers.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public List<Customer> GetCustomer(Dictionary<string, string> fields)
         {
-            return CustomerRepository.GetCustomer(request);
+            return CustomerRepository.GetCustomer(new CustomerRequest(fields["Id"].ToNullableInt(), 
+                                                                      fields["First name"], 
+                                                                      fields["Last name"], 
+                                                                      fields["City"], 
+                                                                      fields["Phone number"]));
         }
-        public bool UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
+        /// <summary>
+        /// Updating Customer. Returns updated object.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fieldsForUpdate"></param>
+        /// <returns></returns>
+        public Customer UpdateCustomer(int id, Dictionary<string, string> fieldsForUpdate)           
         {
             List<Customer> customers = CustomerRepository.GetCustomer(new CustomerRequest { Id = id });
-            if (fieldsForUpdate.ContainsKey("FirstName"))
-            {
-                customers[0].FirstName = fieldsForUpdate["FirstName"];
-            }
-            if (fieldsForUpdate.ContainsKey("LastName"))
-            {
-                customers[0].LastName = fieldsForUpdate["LastName"];
-            }
-            if (fieldsForUpdate.ContainsKey("City"))
-            {
-                customers[0].City = fieldsForUpdate["City"];
-            }
-            if (fieldsForUpdate.ContainsKey("PhoneNumber"))
-            {
-                customers[0].PhoneNumber = fieldsForUpdate["PhoneNumber"];
-            }
-            return CustomerRepository.UpdateCustomer(customers[0]);
+            customers.FirstOrDefault().FirstName = fieldsForUpdate["First name"];
+            customers.FirstOrDefault().LastName = fieldsForUpdate["Last name"];
+            customers.FirstOrDefault().City = fieldsForUpdate["City"];
+            customers.FirstOrDefault().PhoneNumber = fieldsForUpdate["Phone number"];
+            CustomerRepository.UpdateCustomer(customers.FirstOrDefault());
+            return customers.FirstOrDefault();
         }
     }
 }

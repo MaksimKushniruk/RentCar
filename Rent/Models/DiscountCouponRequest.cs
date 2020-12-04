@@ -6,6 +6,9 @@ namespace Rent.Models
 {
     public class DiscountCouponRequest
     {
+        /// <summary>
+        /// Special object for requesting from UI.
+        /// </summary>
         public int? Id { get; set; }
         public string Coupon { get; set; }
         public int? MinDiscount { get; set; }

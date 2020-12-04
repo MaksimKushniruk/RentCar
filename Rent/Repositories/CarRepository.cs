@@ -8,6 +8,11 @@ namespace Rent.Repositories
 {
     public class CarRepository : ICarRepository
     {
+        /// <summary>
+        /// Adding object to database. Returns id of added Car.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public int AddCar(Car car)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -28,6 +33,11 @@ namespace Rent.Repositories
                 return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
+        /// <summary>
+        /// Deleting Car from database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCar(int id)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -47,7 +57,11 @@ namespace Rent.Repositories
                 }
             }
         }
-
+        /// <summary>
+        /// Searching Car or Cars in database. Returns all found Cars.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public List<Car> GetCar(CarRequest request)
         {
             List<Car> cars = new List<Car>();
@@ -82,6 +96,11 @@ namespace Rent.Repositories
             }
             return cars;
         }
+        /// <summary>
+        /// Updating Car in database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public bool UpdateCar(Car car)
         {
             using(SqlConnection connection = new SqlConnection(Constantes.connectionString))

@@ -8,6 +8,11 @@ namespace Rent.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+        /// <summary>
+        /// Adding object to database. Returns id of added Customer.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public int AddCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -25,6 +30,11 @@ namespace Rent.Repositories
                 return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
+        /// <summary>
+        /// Deleting Customer from database. Returns bool result of Customer.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteCustomer(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -44,6 +54,11 @@ namespace Rent.Repositories
                 }
             }
         }
+        /// <summary>
+        /// Searching Customer or Customers in database. Returns all found Customers.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public List<Customer> GetCustomer(CustomerRequest request)
         {
             List<Customer> customers = new List<Customer>();
@@ -71,6 +86,11 @@ namespace Rent.Repositories
             }
             return customers;
         }
+        /// <summary>
+        /// Updating Customer in database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public bool UpdateCustomer(Customer customer)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))

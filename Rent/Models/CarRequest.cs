@@ -4,6 +4,9 @@ namespace Rent.Models
 {
     public class CarRequest
     {
+        /// <summary>
+        /// Special object for requesting from UI.
+        /// </summary>
         public int? Id { get; set; }
         public string RegistrationNumber { get; set; }
         public string ModelName { get; set; }
@@ -16,18 +19,6 @@ namespace Rent.Models
         public CarRequest()
         {
 
-        }
-        public CarRequest(int? id, string registrationNumber, string modelName, string brandName, string color, int? year, decimal? minPrice, decimal? maxPrice)
-        {
-            Id = id;
-            RegistrationNumber = registrationNumber;
-            ModelName = modelName;
-            BrandName = brandName;
-            Color = color;
-            Year = year;
-            MinPrice = minPrice;
-            MaxPrice = maxPrice;
-            Status = CarRentStatus.Free;
         }
         public CarRequest(int? id, string registrationNumber, string modelName, string brandName, string color, int? year, decimal? minPrice, decimal? maxPrice, CarRentStatus carRentStatus)
         {

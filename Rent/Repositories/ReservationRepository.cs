@@ -8,6 +8,11 @@ namespace Rent.Repositories
 {
     class ReservationRepository : IReservationRepository
     {
+        /// <summary>
+        /// Adding object to database. Returns id of added reservation.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public int AddReservation(Reservation reservation)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -27,6 +32,11 @@ namespace Rent.Repositories
                 return command.Parameters["@Id"].Value.CastDbValue<int>();
             }
         }
+        /// <summary>
+        /// Deleting reservation from database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteReservation(int id)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))
@@ -46,6 +56,11 @@ namespace Rent.Repositories
                 }
             }
         }
+        /// <summary>
+        /// Searching reservation or reservations in database. Returns all found reservations.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public List<Reservation> GetReservation(ReservationRequest request)
         {
             List<Reservation> reservations = new List<Reservation>();
@@ -89,6 +104,11 @@ namespace Rent.Repositories
             }
             return reservations;
         }
+        /// <summary>
+        /// Updating reservation in database. Returns bool result of operation.
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public bool UpdateReservation(Reservation reservation)
         {
             using (SqlConnection connection = new SqlConnection(Constantes.connectionString))

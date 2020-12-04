@@ -4,6 +4,9 @@ namespace Rent.Models
 {
     public class ReservationRequest
     {
+        /// <summary>
+        /// Special object for requesting from UI.
+        /// </summary>
         public int? Id { get; set; }
         public int? CarId { get; set; }
         public int? CustomerId { get; set; }

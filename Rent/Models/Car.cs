@@ -2,6 +2,9 @@
 
 namespace Rent.Models
 {
+    /// <summary>
+    /// The base object Car. 
+    /// </summary>
     public class Car
     {
         public int Id { get; set; }
@@ -12,10 +15,9 @@ namespace Rent.Models
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
         public CarRentStatus Status { get; set; }
-        // Сделать конструктор через this, чтобы избежать повторения кода.
         public Car()
         {
-
+            // empty
         }
         public Car(string licensePlate, string modelName, string brandName, string color, int year, decimal pricePerHour)
         {

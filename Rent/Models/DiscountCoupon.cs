@@ -4,6 +4,9 @@ namespace Rent.Models
 {
     public class DiscountCoupon
     {
+        /// <summary>
+        /// The base object DiscountCoupon.
+        /// </summary>
         public int? Id { get; set; }
         public string Coupon { get; set; }
         public int? Discount { get; set; }

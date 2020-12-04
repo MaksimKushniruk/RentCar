@@ -1,6 +1,4 @@
-﻿using System;
-using Rent.Models;
-using System.Data;
+﻿using Rent.Models;
 using System.Collections.Generic;
 
 namespace Rent.Repositories

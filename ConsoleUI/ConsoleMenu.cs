@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rent.Models;
-using Rent.Services;
 using System.Linq;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// Clas for console menu generation.
+    /// </summary>
     public class ConsoleMenu
     {
+        /// <summary>
+        /// Header of the menu.
+        /// </summary>
+        /// <param name="message"></param>
         public static void Header(string message)
         {
             Console.WriteLine(new string('-', Console.WindowWidth));
@@ -15,7 +21,10 @@ namespace ConsoleUI
             Console.WriteLine(message);
             Console.WriteLine(new string('-', Console.WindowWidth));
         }
-
+        /// <summary>
+        /// Horizontal menu
+        /// </summary>
+        /// <param name="menu"></param>
         public static void MainMenu(List<string> menu)
         {
             for (int i = 0; i < menu.Count; i++)
@@ -39,7 +48,10 @@ namespace ConsoleUI
             }
             Console.WriteLine("\n" + new string('-', Console.WindowWidth));
         }
-
+        /// <summary>
+        /// Vertical menu
+        /// </summary>
+        /// <param name="menu"></param>
         public static void Menu(List<string> menu)
         {
             for (int i = 0; i < menu.Count; i++)
@@ -59,7 +71,10 @@ namespace ConsoleUI
                 Console.WriteLine(new string('-', Console.WindowWidth / 2));
             }
         }
-
+        /// <summary>
+        /// Composite horizontal menu.
+        /// </summary>
+        /// <param name="menu"></param>
         public static void Menu(Dictionary<string, string> menu)
         {
             int i = 1;
@@ -92,7 +107,11 @@ namespace ConsoleUI
                 i++;
             }
         }
-
+        /// <summary>
+        /// Menu for inputing data.
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> InputData(List<string> menu)
         {
             Dictionary<string, string> fields = new Dictionary<string, string>();
@@ -112,15 +131,17 @@ namespace ConsoleUI
                 Console.WriteLine("|");
                 Console.WriteLine(new string('-', Console.WindowWidth));
                 Console.SetCursorPosition(Console.WindowWidth / 2 + 1, i * 2 + 3);
-                // Валидировать
-                // TODO: to validate
                 string input = Console.ReadLine();
-                // проверить почему default а не null
                 fields[menu[i]] = string.IsNullOrEmpty(input) ? null : input;
                 Console.SetCursorPosition(0, i * 2 + 5);
             }
             return fields;
         }
+        /// <summary>
+        /// Menu for updating data.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Dictionary<string, string> UpdateData(Dictionary<string, string> fields)
         {
             for (int i = 0; i < fields.Count; i++)
@@ -172,7 +193,11 @@ namespace ConsoleUI
             }
             return fields;
         }
-
+        /// <summary>
+        /// Objects printer.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="listT"></param>
         public static void Print<T>(List<T> listT)
         {
             foreach (T t in listT)
@@ -197,17 +222,16 @@ namespace ConsoleUI
                 Console.WriteLine("\n" + new string('-', Console.WindowWidth));
             }
         }
+        /// <summary>
+        /// Reservation printer
+        /// </summary>
+        /// <param name="resevations"></param>
         public static void PrintReservation(List<Reservation> resevations)
         {
             foreach(Reservation reservation in resevations)
             {
                 Console.WriteLine($"{reservation.Id}\t{reservation.Car.Id} {reservation.Car.BrandName} {reservation.Car.ModelName}\t\t{reservation.Customer.Id} {reservation.Customer.FirstName} {reservation.Customer.LastName}\t{reservation.DiscountCoupon.Id} {reservation.DiscountCoupon.Discount}%\t{reservation.StartDate}\t{reservation.FinalDate}");
             }
-        }
-
-        public static string Printer(char symbol, int dividend, int size, int offset)
-        {
-            return new String(symbol, (((Console.WindowWidth / dividend) - size) / 2) - offset);
         }
     }
 }

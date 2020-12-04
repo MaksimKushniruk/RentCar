@@ -7,8 +7,14 @@ using Rent;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// Rent Controller. All actions with reservations are here.
+    /// </summary>
     public static class RentConsoleController
     {
+        /// <summary>
+        /// Main menu of rent controller.
+        /// </summary>
         public static void Menu()
         {
             while (true)
@@ -35,7 +41,9 @@ namespace ConsoleUI
                 }
             }
         }
-
+        /// <summary>
+        /// Creating reservation.
+        /// </summary>
         public static void CreateRent()
         {
             Dictionary<string, string> rentFields = new Dictionary<string, string>();
@@ -178,6 +186,9 @@ namespace ConsoleUI
             }
 
         }
+        /// <summary>
+        /// Editing reservation.
+        /// </summary>
         public static void EditRent()
         {
             Dictionary<string, string> rentFields = new Dictionary<string, string>();
@@ -302,6 +313,9 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Close reservation.
+        /// </summary>
         public static void CloseRent()
         {
             Dictionary<string, string> rentFields = new Dictionary<string, string>();

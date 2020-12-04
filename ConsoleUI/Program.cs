@@ -5,6 +5,9 @@ namespace ConsoleUI
 {
     class Program
     {
+        /// <summary>
+        /// Main method. Program will start here.
+        /// </summary>
         static void Main()
         {
             while (true)

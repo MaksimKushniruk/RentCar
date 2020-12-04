@@ -7,6 +7,9 @@ using Rent;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// All support operation are here.
+    /// </summary>
     public static class Operation
     {
         // Delegate 
@@ -14,17 +17,14 @@ namespace ConsoleUI
         public delegate T ObjectLookupHandler<T>(Dictionary<string, string> fields);
         public delegate T ObjectEditingHandler<T>(T value);
         public delegate void ObjectDeletingHandler<T>(T item);
-
-        // Method for creating objects
-        //
-        // New customer
-        // new List<string> { "First name", "Last name", "City", "Phone number" }
-        //
-        // New car
-        // "License plate", "Model", "Brand", "Color", "Year", "Price"
-        //
-        // New promo code
-        //  "Coupon", "Discount" 
+        /// <summary>
+        /// Method for creating objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectCreationHandler"></param>
+        /// <param name="headerText"></param>
+        /// <param name="fieldKeys"></param>
+        /// <returns></returns>
         public static T Create<T>(ObjectCreationHandler<T> objectCreationHandler, string headerText, List<string> fieldKeys)
         {
             while (true)
@@ -46,6 +46,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Method for creating Customer.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Customer CreateCustomer(Dictionary<string, string> fields)
         {
             ICustomerService customerService = new CustomerService();
@@ -54,6 +59,11 @@ namespace ConsoleUI
             Console.WriteLine($"New customer Id: {customer.Id}");
             return customer;
         }
+        /// <summary>
+        /// Method for creating Car.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Car CreateCar(Dictionary<string, string> fields)
         {
             ICarService carService = new CarService();
@@ -62,6 +72,11 @@ namespace ConsoleUI
             Console.WriteLine($"New car Id: {car.Id}");
             return car;
         }
+        /// <summary>
+        /// Method for creating DiscountCoupon.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static DiscountCoupon CreateDiscountCoupon(Dictionary<string, string> fields)
         {
             IDiscountCouponService discountCouponService = new DiscountCouponService();
@@ -70,20 +85,14 @@ namespace ConsoleUI
             Console.WriteLine($"New promo code Id: {discountCoupon.Id}");
             return discountCoupon;
         }
-
-        // Get Object
-        // Enter the data
-        // Enter customer details
-        // new List<string> { "Id", "First name", "Last name", "City", "Phone number" }
-        //
-        // Enter car details
-        // new List<string> { "Id", "License plate", "Model", "Brand", "Color", "Year", "Minimal price", "Maximal price", "Status" }
-        //
-        // Enter promo code details
-        // new List<string> { "Id", "Coupon", "Minimal discount", "Maximal discount" }
-        //
-        // Enter reservation details
-        // new List<string> { }
+        /// <summary>
+        /// Method for serching object in database.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectLookupHandler"></param>
+        /// <param name="headerText"></param>
+        /// <param name="fieldKeys"></param>
+        /// <returns></returns>
         public static T Get<T>(ObjectLookupHandler<T> objectLookupHandler, string headerText, List<string> fieldKeys)
         {
             while (true)
@@ -105,6 +114,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Searching Customer.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Customer GetCustomer(Dictionary<string, string> fields)
         {
             while (true)
@@ -141,6 +155,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Searching Car.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Car GetCar(Dictionary<string, string> fields)
         {
             while (true)
@@ -181,6 +200,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Searching DiscountCoupon for rent controller.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static DiscountCoupon GetDiscountCoupon(Dictionary<string, string> fields)
         {
             while (true)
@@ -217,6 +241,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Searching DiscountCoupon for administration controller.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static DiscountCoupon GetPromoCode(Dictionary<string, string> fields)
         {
             while (true)
@@ -258,6 +287,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Searching reservation.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static Reservation GetReservation(Dictionary<string, string> fields)
         {
 
@@ -299,19 +333,25 @@ namespace ConsoleUI
                 }
             }
         }
-
-        // Edit Objects
-        // Edit customer
-        // Edit car
-        // Edit promo code
-
+        /// <summary>
+        /// Method for editing objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectEditingHandler"></param>
+        /// <param name="headerText"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static T Edit<T>(ObjectEditingHandler<T> objectEditingHandler, string headerText, T value)
         {
             Console.Clear();
             ConsoleMenu.Header(headerText);
             return objectEditingHandler.Invoke(value);
         }
-
+        /// <summary>
+        /// Editing customer.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         public static Customer EditCustomer(Customer customer)
         {
             while (true)
@@ -333,6 +373,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Editing Car.
+        /// </summary>
+        /// <param name="car"></param>
+        /// <returns></returns>
         public static Car EditCar(Car car)
         {
             while (true)
@@ -354,6 +399,11 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Editing DiscountCoupon.
+        /// </summary>
+        /// <param name="discountCoupon"></param>
+        /// <returns></returns>
         public static DiscountCoupon EditDiscountCoupon(DiscountCoupon discountCoupon)
         {
             while (true)
@@ -375,12 +425,23 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Method for deleting object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectDeletingHandler"></param>
+        /// <param name="headerText"></param>
+        /// <param name="item"></param>
         public static void Delete<T>(ObjectDeletingHandler<T> objectDeletingHandler, string headerText, T item)
         {
             Console.Clear();
             ConsoleMenu.Header(headerText);
             objectDeletingHandler.Invoke(item);
         }
+        /// <summary>
+        /// Deleting Customer.
+        /// </summary>
+        /// <param name="customer"></param>
         public static void DeleteCustomer(Customer customer)
         {
             while (true)
@@ -402,6 +463,10 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Deleting Car.
+        /// </summary>
+        /// <param name="car"></param>
         public static void DeleteCar(Car car)
         {
             while (true)
@@ -423,6 +488,10 @@ namespace ConsoleUI
                 }
             }
         }
+        /// <summary>
+        /// Deleting DiscountCoupon.
+        /// </summary>
+        /// <param name="discountCoupon"></param>
         public static void DeleteDiscountCoupon(DiscountCoupon discountCoupon)
         {
             while (true)

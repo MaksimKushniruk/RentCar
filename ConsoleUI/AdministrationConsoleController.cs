@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Rent.Models;
-using Rent.Services;
-using Rent;
 
 namespace ConsoleUI
 {
+    /// <summary>
+    /// Administration Controller 
+    /// </summary>
     public static class AdministrationConsoleController
     {
+        /// <summary>
+        /// Main menu. All operations mostly using Operation class methods.
+        /// </summary>
         public static void Menu()
         {
             while (true)

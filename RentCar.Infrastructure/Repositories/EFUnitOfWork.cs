@@ -1,5 +1,7 @@
 ﻿using RentCar.DataAccess.EF;
 using RentCar.DataAccess.Interfaces;
+using RentCar.Infrastructure.Interfaces;
+using RentCar.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace RentCar.DataAccess.Repositories
         private CustomerRepository customerRepository;
         private CouponRepository couponRepository;
         private ReservationRepository reservationRepository;
+        private BrandRepository brandRepository;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -66,6 +69,18 @@ namespace RentCar.DataAccess.Repositories
                     reservationRepository = new ReservationRepository(db);
                 }
                 return reservationRepository;
+            }
+        }
+
+        public IBrandRepository Brands
+        {
+            get
+            {
+                if (brandRepository == null)
+                {
+                    brandRepository = new BrandRepository(db);
+                }
+                return brandRepository;
             }
         }
 

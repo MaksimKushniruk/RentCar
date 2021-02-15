@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RentCar.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace RentCar.DataAccess.Interfaces
         ICustomerRepository Customers { get; }
         ICouponRepository Coupons { get; }
         IReservationRepository Reservations { get; }
+        IBrandRepository Brands { get; }
         void Save();
     }
 }

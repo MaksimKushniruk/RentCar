@@ -15,6 +15,6 @@ namespace Infrastructure.Entities
 
         public DateTime StartDate { get; set; }
         public DateTime FinalDate { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace Infrastructure.Entities
         public string ModelName { get; set; }
         public string Color { get; set; }
         public int Year { get; set; }
-        public int PricePerHour { get; set; }
+        public decimal PricePerHour { get; set; }
         public CarRentStatus Status { get; set; }
 
         public int BrandId { get; set; }

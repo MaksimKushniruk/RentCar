@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentCar.DataAccess.Entities;
+using RentCar.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace RentCar.DataAccess.EF
     public class RentCarDbContext : DbContext
     {
         public DbSet<Car> Cars { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Reservation> Reservations { get; set; }

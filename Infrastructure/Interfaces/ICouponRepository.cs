@@ -8,6 +8,7 @@ namespace Infrastructure.Interfaces
     {
         IEnumerable<Coupon> GetAll();
         Coupon Get(int id);
+        Coupon GetByCode(string code);
         IEnumerable<Coupon> Find(Func<Coupon, bool> predicate);
         void Create(Coupon coupon);
         void Update(Coupon coupon);

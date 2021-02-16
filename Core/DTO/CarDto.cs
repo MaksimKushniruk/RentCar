@@ -11,9 +11,7 @@ namespace Core.DTO
         public string Color { get; set; }
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
-        public bool IsFree { get; set; }
-
-        public int BrandId { get; set; }
-        public BrandDto Brand { get; set; }
+        public CarRentStatusDto Status { get; set; }
+        public string Brand { get; set; }
     }
 }

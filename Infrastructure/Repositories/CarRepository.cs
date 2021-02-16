@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<Car> GetAll()
         {
-            return db.Cars.ToList();
+            return db.Cars.Include(c => c.Brand).ToList();
         }
 
         public Car Get(int id)
@@ -38,7 +39,7 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<Car> Find(Func<Car, bool> predicate)
         {
-            return db.Cars.Where(predicate).ToList();
+            return db.Cars.Include(c => c.Brand).Where(predicate).ToList();
         }
 
         public void Delete(int id)

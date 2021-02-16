@@ -26,6 +26,13 @@ namespace Infrastructure.Repositories
             return db.Coupons.Find(id);
         }
 
+        public Coupon GetByCode(string code)
+        {
+            // TODO: set CouponCode as Primary Key
+            // return db.Coupons.Find(code); 
+            return db.Coupons.FirstOrDefault(c => c.CouponCode == code);
+        }
+
         public void Create(Coupon coupon)
         {
             db.Coupons.Add(coupon);

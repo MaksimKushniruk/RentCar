@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Core.DTO
 {
-    public abstract class BaseEntityDto
+    public enum CarRentStatusDto
     {
-        public virtual int Id { get; set; }
+        Free = 0,
+        InRent = 1
     }
 }

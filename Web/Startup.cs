@@ -1,4 +1,6 @@
 using Infrastructure.EntityFramework;
+using Infrastructure.Interfaces;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +27,9 @@ namespace Web
         {
             // Database configure
             services.AddDbContext<RentCarDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // UnitOfWork registration
+            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
             services.AddControllersWithViews();
         }

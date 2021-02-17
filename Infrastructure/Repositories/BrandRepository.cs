@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<Brand> GetAll()
         {
-            return db.Brands.ToList();
+            return db.Brands.Include(b => b.Cars).ToList();
         }
 
         public Brand Get(int id)
         {
-            return db.Brands.Find(id);
+            return db.Brands.Include(b => b.Cars).FirstOrDefault(b => id == b.Id);
         }
 
         public void Create(Brand brand)
@@ -38,7 +39,7 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<Brand> Find(Func<Brand, bool> predicate)
         {
-            return db.Brands.Where(predicate).ToList();
+            return db.Brands.Include(b => b.Cars).Where(predicate).ToList();
         }
 
         public void Delete(int id)

@@ -31,7 +31,7 @@ namespace Core.Services
                     Year = car.Year,
                     PricePerHour = car.PricePerHour,
                     Status = (CarRentStatusDto)car.Status,
-                    Brand = car.Brand.Title
+                    BrandId = car.Brand.Id
                 });
             }
             return carDtos;
@@ -75,7 +75,7 @@ namespace Core.Services
                 Year = car.Year,
                 PricePerHour = car.PricePerHour,
                 Status = (CarRentStatusDto)car.Status,
-                Brand = car.Brand.Title
+                BrandId = car.Brand.Id
             };
         }
 
@@ -131,7 +131,7 @@ namespace Core.Services
             decimal? price = null;
             if (reservationDto.FinalDate != null)
             {
-                price = (decimal)reservationDto.FinalDate.Subtract(reservationDto.StartDate).TotalHours * reservationDto.Car.PricePerHour;
+                price = (decimal)reservationDto.FinalDate.Value.Subtract(reservationDto.StartDate).TotalHours * reservationDto.Car.PricePerHour;
             }
 
             Reservation reservation = new Reservation

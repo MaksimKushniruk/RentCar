@@ -1,0 +1,13 @@
+﻿@model IEnumerable<BrandViewModel>
+@{
+    ViewBag.Title = "Brands";
+}
+
+<a asp-action="create">Add New Brand</a>
+<table>
+    <tr><th>Id</th><th>Title</th></tr>
+    @foreach(var item in Model)
+    {
+        <tr><td>@item.Id</td><td>@item.Title</td></tr>
+    }
+</table>

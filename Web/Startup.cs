@@ -1,3 +1,5 @@
+using Core.Interfaces;
+using Core.Services;
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
@@ -30,6 +32,9 @@ namespace Web
 
             // adding UnitOfWork service
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+
+            // adding Entitys Services
+            services.AddScoped<IBrandService, BrandService>();
 
             services.AddControllersWithViews();
         }

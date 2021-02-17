@@ -11,16 +11,9 @@ namespace Infrastructure.EntityFramework
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
-        private readonly string connectionString;
-
-        public RentCarDbContext(string connectionString)
+        public RentCarDbContext(DbContextOptions<RentCarDbContext> options) : base(options) 
         {
-            this.connectionString = connectionString;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
-        {
-            builder.UseSqlServer(connectionString);
+            // empty
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

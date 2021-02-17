@@ -15,9 +15,9 @@ namespace Infrastructure.Repositories
         private ReservationRepository reservationRepository;
         private BrandRepository brandRepository;
 
-        public EFUnitOfWork(string connectionString)
+        public EFUnitOfWork(RentCarDbContext context)
         {
-            db = new RentCarDbContext(connectionString);
+            db = context;
         }
 
         public ICarRepository Cars

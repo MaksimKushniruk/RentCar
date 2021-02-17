@@ -28,7 +28,7 @@ namespace Web
             // Database configure
             services.AddDbContext<RentCarDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // UnitOfWork registration
+            // adding UnitOfWork service
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
             services.AddControllersWithViews();

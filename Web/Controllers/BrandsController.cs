@@ -154,5 +154,11 @@ namespace Web.Controllers
             }
             return NotFound();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            brandService.Dispoce();
+            base.Dispose(disposing);
+        }
     }
 }

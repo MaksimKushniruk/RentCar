@@ -13,7 +13,7 @@ namespace Infrastructure.EntityFramework
 
         public RentCarDbContext(DbContextOptions<RentCarDbContext> options) : base(options) 
         {
-            // empty
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

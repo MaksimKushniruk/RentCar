@@ -102,22 +102,8 @@ namespace Core.Services
                 throw new RentCarValidationException(String.Empty, "Brand is dont Found");
             }
             brand.Title = brandDto.Title;
-            brand.Cars.Clear();
-            foreach (CarDto carDto in brandDto.Cars)
-            {
-                brand.Cars.Add(new Car
-                {
-                    Id = carDto.Id,
-                    LicensePlate = carDto.LicensePlate,
-                    ModelName = carDto.ModelName,
-                    Color = carDto.Color,
-                    Year = carDto.Year,
-                    PricePerHour = carDto.PricePerHour,
-                    Status = (CarRentStatus)carDto.Status,
-                    BrandId = brand.Id
-                });
-            }
             _database.Brands.Update(brand);
+            _database.Save();
         }
 
         public void Delete(int? id)
@@ -125,6 +111,7 @@ namespace Core.Services
             if (id != null)
             {
                 _database.Brands.Delete(id.Value);
+                _database.Save();
             }
         }
 

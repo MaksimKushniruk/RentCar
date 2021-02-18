@@ -6,8 +6,16 @@
 <a asp-action="create">Add New Brand</a>
 <table>
     <tr><th>Id</th><th>Title</th></tr>
-    @foreach(var item in Model)
+    @foreach (var item in Model)
     {
-        <tr><td>@item.Id</td><td>@item.Title</td></tr>
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Title</td>
+            <td>
+                <a asp-controller="Brands" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-controller="Brands" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a asp-controller="Brands" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
     }
 </table>

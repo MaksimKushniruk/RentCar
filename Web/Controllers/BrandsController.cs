@@ -1,5 +1,6 @@
 ﻿using Core.DTO;
 using Core.Interfaces;
+using Core.Validation;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,12 @@ namespace Web.Controllers
         {
             IEnumerable<BrandDto> brandDtos = brandService.GetAll();
             List<BrandViewModel> brandViewModels = new List<BrandViewModel>();
-            foreach(var brandDto in brandDtos)
+            foreach (var brandDto in brandDtos)
             {
-                brandViewModels.Add(new BrandViewModel 
-                { 
-                    Id = brandDto.Id, 
-                    Title = brandDto.Title 
+                brandViewModels.Add(new BrandViewModel
+                {
+                    Id = brandDto.Id,
+                    Title = brandDto.Title
                 });
             }
             return View(brandViewModels);
@@ -50,12 +51,61 @@ namespace Web.Controllers
                     brandService.Create(brandDto);
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                catch (RentCarValidationException ex)
                 {
-                    ModelState.AddModelError(String.Empty, ex.Message);
+                    ModelState.AddModelError(ex.Property, ex.Message);
                 }
             }
             return View(model);
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id != null)
+            {
+                BrandDto brandDto = brandService.Get(id);
+                if (brandDto != null)
+                {
+                    return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id != null)
+            {
+                try
+                {
+                    BrandDto brandDto = brandService.Get(id);
+                    if (brandDto != null)
+                    {
+                        return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                    }
+                }
+                catch
+                {
+                    // empty
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(BrandViewModel model)
+        {
+            try
+            {
+                brandService.Edit(new BrandDto { Id = model.Id, Title = model.Title });
+                return RedirectToAction("Index");
+            }
+            catch (RentCarValidationException ex)
+            {
+                ModelState.AddModelError(ex.Property, ex.Message);
+                return View(model);
+            }
         }
     }
 }

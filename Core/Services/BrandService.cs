@@ -111,6 +111,7 @@ namespace Core.Services
             if (id != null)
             {
                 _database.Brands.Delete(id.Value);
+                _database.Save();
             }
         }
 

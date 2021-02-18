@@ -63,10 +63,17 @@ namespace Web.Controllers
         {
             if (id != null)
             {
-                BrandDto brandDto = brandService.Get(id);
-                if (brandDto != null)
+                try
                 {
-                    return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                    BrandDto brandDto = brandService.Get(id);
+                    if (brandDto != null)
+                    {
+                        return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                    }
+                }
+                catch
+                {
+                    // empty
                 }
             }
             return NotFound();
@@ -106,6 +113,46 @@ namespace Web.Controllers
                 ModelState.AddModelError(ex.Property, ex.Message);
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public IActionResult ConfirmDelete(int? id)
+        {
+            if (id != null)
+            {
+                try
+                {
+                    BrandDto brandDto = brandService.Get(id);
+                    if (brandDto != null)
+                    {
+                        return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                    }
+                }
+                catch
+                {
+                    // empty
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int? id)
+        {
+            if (id != null)
+            {
+                try
+                {
+                    brandService.Delete(id);
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    // empty
+                }
+            }
+            return NotFound();
         }
     }
 }

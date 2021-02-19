@@ -2,7 +2,6 @@
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,11 +34,6 @@ namespace Infrastructure.Repositories
         public void Update(Brand brand)
         {
             db.Brands.Update(brand);
-        }
-
-        public IEnumerable<Brand> Find(Func<Brand, bool> predicate)
-        {
-            return db.Brands.Include(b => b.Cars).Where(predicate).ToList();
         }
 
         public void Delete(int id)

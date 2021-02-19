@@ -37,11 +37,6 @@ namespace Infrastructure.Repositories
             db.Cars.Update(car);
         }
 
-        public IEnumerable<Car> Find(Func<Car, bool> predicate)
-        {
-            return db.Cars.Include(c => c.Brand).Where(predicate).ToList();
-        }
-
         public void Delete(int id)
         {
             Car car = db.Cars.Find(id);

@@ -12,6 +12,6 @@ namespace Core.Interfaces
         void Create(BrandDto brandDto);
         void Edit(BrandDto brandDto);
         void Delete(int? id);
-        void Dispoce();
+        void Dispose();
     }
 }

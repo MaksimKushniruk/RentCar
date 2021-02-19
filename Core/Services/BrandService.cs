@@ -36,7 +36,7 @@ namespace Core.Services
                         Year = car.Year,
                         PricePerHour = car.PricePerHour,
                         Status = (CarRentStatusDto)car.Status,
-                        BrandId = brand.Id
+                        Brand = new BrandDto { Id = car.Brand.Id}
                     });
                 }
                 brandDtos.Add(new BrandDto
@@ -73,7 +73,7 @@ namespace Core.Services
                     Year = car.Year,
                     PricePerHour = car.PricePerHour,
                     Status = (CarRentStatusDto)car.Status,
-                    BrandId = brand.Id
+                    Brand = new BrandDto { Id = car.Brand.Id }
                 });
             }
             return new BrandDto
@@ -99,7 +99,7 @@ namespace Core.Services
             Brand brand = _database.Brands.Get(brandDto.Id);
             if (brand == null)
             {
-                throw new RentCarValidationException(String.Empty, "Brand is dont Found");
+                throw new RentCarValidationException(String.Empty, "Brand is not Found");
             }
             brand.Title = brandDto.Title;
             _database.Brands.Update(brand);
@@ -115,7 +115,7 @@ namespace Core.Services
             }
         }
 
-        public void Dispoce()
+        public void Dispose()
         {
             _database.Dispose();
         }

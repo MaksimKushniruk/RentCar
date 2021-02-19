@@ -35,6 +35,7 @@ namespace Web
 
             // adding Entitys Services
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<ICarService, CarService>();
 
             services.AddControllersWithViews();
         }

@@ -31,7 +31,7 @@ namespace Core.Services
                     Year = car.Year,
                     PricePerHour = car.PricePerHour,
                     Status = (CarRentStatusDto)car.Status,
-                    BrandId = car.Brand.Id
+                    Brand = new BrandDto { Id = car.Brand.Id }
                 });
             }
             return carDtos;
@@ -75,7 +75,7 @@ namespace Core.Services
                 Year = car.Year,
                 PricePerHour = car.PricePerHour,
                 Status = (CarRentStatusDto)car.Status,
-                BrandId = car.Brand.Id
+                Brand = new BrandDto { Id = car.Brand.Id }
             };
         }
 

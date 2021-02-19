@@ -1,0 +1,24 @@
+﻿@model CarViewModel
+@{
+    ViewBag.Title = "Details";
+}
+<h3>Car</h3>
+<a asp-controller="Cars" asp-action="Index">All Cars</a>
+<dl>
+    <dt>Id</dt>
+    <dd>@Model.Id</dd>
+    <dt>License Plate</dt>
+    <dd>@Model.LicensePlate</dd>
+    <dt>Model Name</dt>
+    <dd>@Model.ModelName</dd>
+    <dt>Brand Nane</dt>
+    <dd>@Model.Brand.Title</dd>
+    <dt>Color</dt>
+    <dd>@Model.Color</dd>
+    <dt>Year</dt>
+    <dd>@Model.Year</dd>
+    <dt>Price Per Hour</dt>
+    <dd>@Model.PricePerHour</dd>
+    <dt>Status</dt>
+    <dd>@Model.Status</dd>
+</dl>

@@ -1,0 +1,38 @@
+﻿@model CarViewModel
+@{
+    ViewBag.Title = "Adding New Car";
+}
+
+<form asp-action="Create" asp-controller="Cars" method="post">
+    <div>
+        <label asp-for="LicensePlate">License Plate</label>
+        <input type="text" asp-for="LicensePlate" />
+    </div>
+    <div>
+        <label asp-for="ModelName">Model Name</label>
+        <input type="text" asp-for="ModelName" />
+    </div>
+    <div>
+        <label asp-for="Color">Color</label>
+        <input type="text" asp-for="Color" />
+    </div>
+    <div>
+        <label asp-for="Year">Year</label>
+        <input type="number" asp-for="Year" />
+    </div>
+    <div>
+        <label asp-for="PricePerHour">Price</label>
+        <input asp-for="PricePerHour" type="number" />
+    </div>
+    <div>
+        <label asp-for="Status">Status</label>
+        <select asp-for="Status" asp-items="@new SelectList(Enum.GetNames(typeof(CarStatus)))"></select>
+    </div>
+    <div>
+        <label asp-for="Brand.Id">Brand</label>
+        <select asp-for="Brand.Id" asp-items="ViewBag.Brands"></select>
+    </div>
+    <div>
+        <input type="submit" value="Create" />
+    </div>
+</form>

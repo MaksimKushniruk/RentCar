@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
 
         public Car Get(int id)
         {
-            return db.Cars.Find(id);
+            return db.Cars.Include(c => c.Brand).FirstOrDefault(c => c.Id == id);
         }
 
         public void Create(Car car)

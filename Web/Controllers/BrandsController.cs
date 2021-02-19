@@ -73,7 +73,7 @@ namespace Web.Controllers
                 }
                 catch
                 {
-                    // empty
+                    // TODO: Exception page
                 }
             }
             return NotFound();
@@ -157,7 +157,7 @@ namespace Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            brandService.Dispoce();
+            brandService.Dispose();
             base.Dispose(disposing);
         }
     }

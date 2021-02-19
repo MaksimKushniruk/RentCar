@@ -33,7 +33,7 @@ namespace Core.Services
                     Year = car.Year,
                     PricePerHour = car.PricePerHour,
                     Status = (CarRentStatusDto)car.Status,
-                    BrandId = car.Brand.Id
+                    Brand = new BrandDto { Id = car.BrandId, Title = car.Brand.Title }
                 });
             }
             return carDtos;
@@ -59,35 +59,39 @@ namespace Core.Services
                 Year = car.Year,
                 PricePerHour = car.PricePerHour,
                 Status = (CarRentStatusDto)car.Status,
-                BrandId = car.Brand.Id
+                Brand = new BrandDto { Id = car.BrandId, Title = car.Brand.Title }
             };
         }
         
         public void Create(CarDto carDto)
         {
-            Car car = new Car
+            Brand brand = _database.Brands.Get(carDto.Brand.Id);
+            if (brand != null)
             {
-                Id = carDto.Id,
-                LicensePlate = carDto.LicensePlate,
-                ModelName = carDto.ModelName,
-                Color = carDto.Color,
-                Year = carDto.Year,
-                PricePerHour = carDto.PricePerHour,
-                Status = (CarRentStatus)carDto.Status,
-                BrandId = carDto.BrandId,
-                Brand = new Brand { Id = carDto.BrandId }
+                Car car = new Car
+                {
+                    LicensePlate = carDto.LicensePlate,
+                    ModelName = carDto.ModelName,
+                    Color = carDto.Color,
+                    Year = carDto.Year,
+                    PricePerHour = carDto.PricePerHour,
+                    Status = (CarRentStatus)carDto.Status,
+                    Brand = brand
 
-            };
-            _database.Cars.Create(car);
-            _database.Save();
+                };
+                _database.Cars.Create(car);
+                _database.Save();
+            }
+            
         }
 
         public void Edit(CarDto carDto)
         {
             Car car = _database.Cars.Get(carDto.Id);
+            Brand brand = _database.Brands.Get(carDto.Brand.Id);
             if (car == null)
             {
-                throw new RentCarValidationException(String.Empty, "Car is dont Found");
+                throw new RentCarValidationException(String.Empty, "Car not found");
             }
             car.Id = carDto.Id;
             car.LicensePlate = carDto.LicensePlate;
@@ -96,9 +100,9 @@ namespace Core.Services
             car.Year = carDto.Year;
             car.PricePerHour = carDto.PricePerHour;
             car.Status = (CarRentStatus)carDto.Status;
-            car.BrandId = carDto.BrandId;
+            car.BrandId = carDto.Brand.Id;
             // TODO: Check saved data
-            car.Brand = new Brand { Id = carDto.BrandId };
+            car.Brand = brand;
             _database.Cars.Update(car);
             _database.Save();
         }

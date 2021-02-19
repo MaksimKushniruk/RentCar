@@ -14,6 +14,6 @@ namespace Web.Models
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
         public CarStatus Status { get; set; }
-        public int BrandId { get; set; }
+        public BrandViewModel Brand { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace Core.DTO
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
         public CarRentStatusDto Status { get; set; }
-        public int BrandId { get; set; }
+        public BrandDto Brand { get; set; }
     }
 }

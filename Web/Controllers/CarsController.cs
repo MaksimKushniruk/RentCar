@@ -2,6 +2,7 @@
 using Core.Interfaces;
 using Core.Validation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,11 @@ namespace Web.Controllers
     public class CarsController : Controller
     {
         private readonly ICarService carService;
-        public CarsController(ICarService carService)
+        private readonly IBrandService brandService;
+        public CarsController(ICarService carService, IBrandService brandService)
         {
             this.carService = carService;
+            this.brandService = brandService;
         }
 
         public IActionResult Index()
@@ -33,7 +36,7 @@ namespace Web.Controllers
                     Year = carDto.Year,
                     PricePerHour = carDto.PricePerHour,
                     Status = (CarStatus)carDto.Status,
-                    BrandId = carDto.BrandId
+                    Brand = new BrandViewModel { Id = carDto.Brand.Id, Title = carDto.Brand.Title }
                 });
             }
             return View(carViewModels);
@@ -42,6 +45,14 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            IEnumerable<BrandDto> brandDtos = brandService.GetAll();
+            List<BrandViewModel> brands = new List<BrandViewModel>();
+            foreach (BrandDto brandDto in brandDtos)
+            {
+                brands.Add(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+            }
+            // TODO: create "CreateCarViewModel", add field - List<BrandViewModel> Brands and replace ViewBag 
+            ViewBag.Brands = new SelectList(brands, "Id", "Title");
             return View();
         }
 
@@ -52,7 +63,7 @@ namespace Web.Controllers
             {
                 try
                 {
-                    CarDto carDto = new CarDto 
+                    CarDto carDto = new CarDto
                     {
                         Id = model.Id,
                         LicensePlate = model.LicensePlate,
@@ -61,7 +72,7 @@ namespace Web.Controllers
                         Year = model.Year,
                         PricePerHour = model.PricePerHour,
                         Status = (CarRentStatusDto)model.Status,
-                        BrandId = model.BrandId
+                        Brand = new BrandDto { Id = model.Brand.Id }
                     };
                     carService.Create(carDto);
                     return RedirectToAction("Index");
@@ -83,7 +94,7 @@ namespace Web.Controllers
                     CarDto carDto = carService.Get(id);
                     if (carDto != null)
                     {
-                        return View(new CarViewModel 
+                        return View(new CarViewModel
                         {
                             Id = carDto.Id,
                             LicensePlate = carDto.LicensePlate,
@@ -92,7 +103,7 @@ namespace Web.Controllers
                             Year = carDto.Year,
                             PricePerHour = carDto.PricePerHour,
                             Status = (CarStatus)carDto.Status,
-                            BrandId = carDto.BrandId
+                            Brand = new BrandViewModel { Id = carDto.Brand.Id, Title = carDto.Brand.Title }
                         });
                     }
                 }
@@ -111,10 +122,18 @@ namespace Web.Controllers
             {
                 try
                 {
+                    IEnumerable<BrandDto> brandDtos = brandService.GetAll();
+                    List<BrandViewModel> brands = new List<BrandViewModel>();
+                    foreach (BrandDto brandDto in brandDtos)
+                    {
+                        brands.Add(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                    }
+                    // TODO: create "CreateCarViewModel", add field - List<BrandViewModel> Brands and replace ViewBag 
+                    ViewBag.Brands = new SelectList(brands, "Id", "Title");
                     CarDto carDto = carService.Get(id);
                     if (carDto != null)
                     {
-                        return View(new CarViewModel 
+                        return View(new CarViewModel
                         {
                             Id = carDto.Id,
                             LicensePlate = carDto.LicensePlate,
@@ -123,7 +142,7 @@ namespace Web.Controllers
                             Year = carDto.Year,
                             PricePerHour = carDto.PricePerHour,
                             Status = (CarStatus)carDto.Status,
-                            BrandId = carDto.BrandId
+                            Brand = new BrandViewModel { Id = carDto.Brand.Id, Title = carDto.Brand.Title }
                         });
                     }
                 }
@@ -140,7 +159,15 @@ namespace Web.Controllers
         {
             try
             {
-                carService.Edit(new CarDto 
+                IEnumerable<BrandDto> brandDtos = brandService.GetAll();
+                List<BrandViewModel> brands = new List<BrandViewModel>();
+                foreach (BrandDto brandDto in brandDtos)
+                {
+                    brands.Add(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
+                }
+                // TODO: create "CreateCarViewModel", add field - List<BrandViewModel> Brands and replace ViewBag 
+                ViewBag.Brands = new SelectList(brands, "Id", "Title");
+                carService.Edit(new CarDto
                 {
                     Id = model.Id,
                     LicensePlate = model.LicensePlate,
@@ -149,7 +176,7 @@ namespace Web.Controllers
                     Year = model.Year,
                     PricePerHour = model.PricePerHour,
                     Status = (CarRentStatusDto)model.Status,
-                    BrandId = model.BrandId
+                    Brand = new BrandDto { Id = model.Brand.Id }
                 });
                 return RedirectToAction("Index");
             }
@@ -171,7 +198,7 @@ namespace Web.Controllers
                     CarDto carDto = carService.Get(id);
                     if (carDto != null)
                     {
-                        return View(new CarViewModel 
+                        return View(new CarViewModel
                         {
                             Id = carDto.Id,
                             LicensePlate = carDto.LicensePlate,
@@ -180,7 +207,7 @@ namespace Web.Controllers
                             Year = carDto.Year,
                             PricePerHour = carDto.PricePerHour,
                             Status = (CarStatus)carDto.Status,
-                            BrandId = carDto.BrandId
+                            Brand = new BrandViewModel { Id = carDto.Brand.Id, Title = carDto.Brand.Title }
                         });
                     }
                 }

@@ -10,7 +10,7 @@ namespace Infrastructure.Interfaces
         Task<IEnumerable<Reservation>> GetAllAsync();
         Task<Reservation> GetAsync(int id);
         Task CreateAsync(Reservation reservation);
-        Task UpdateAsync(Reservation reservation);
-        Task DeleteAsync(int id);
+        void Update(Reservation reservation);
+        void Delete(int id);
     }
 }

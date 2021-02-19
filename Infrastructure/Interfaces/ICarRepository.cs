@@ -10,7 +10,7 @@ namespace Infrastructure.Interfaces
         Task<IEnumerable<Car>> GetAllAsync();
         Task<Car> GetAsync(int id);
         Task CreateAsync(Car car);
-        Task UpdateAsync(Car car);
-        Task DeleteAsync(int id);
+        void Update(Car car);
+        void Delete(int id);
     }
 }

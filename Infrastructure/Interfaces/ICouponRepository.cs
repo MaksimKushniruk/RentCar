@@ -11,7 +11,7 @@ namespace Infrastructure.Interfaces
         Task<Coupon> GetAsync(int id);
         Task<Coupon> GetByCodeAsync(string code);
         Task CreateAsync(Coupon coupon);
-        Task UpdateAsync(Coupon coupon);
-        Task DeleteAsync(int id);
+        void Update(Coupon coupon);
+        void Delete(int id);
     }
 }

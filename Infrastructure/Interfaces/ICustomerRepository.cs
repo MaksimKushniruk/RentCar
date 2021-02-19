@@ -10,7 +10,7 @@ namespace Infrastructure.Interfaces
         Task<IEnumerable<Customer>> GetAllAsync();
         Task<Customer> GetAsync(int id);
         Task CreateAsync(Customer customer);
-        Task UpdateAsync(Customer customer);
-        Task DeleteAsync(int id);
+        void Update(Customer customer);
+        void Delete(int id);
     }
 }

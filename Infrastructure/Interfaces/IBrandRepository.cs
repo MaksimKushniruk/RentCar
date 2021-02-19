@@ -10,7 +10,7 @@ namespace Infrastructure.Interfaces
         Task<IEnumerable<Brand>> GetAllAsync();
         Task<Brand> GetAsync(int id);
         Task CreateAsync(Brand brand);
-        Task UpdateAsync(Brand brand);
-        Task DeleteAsync(int id);
+        void Update(Brand brand);
+        void Delete(int id);
     }
 }

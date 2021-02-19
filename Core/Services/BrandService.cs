@@ -5,6 +5,7 @@ using Infrastructure.Entities;
 using Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Core.Services
 {
@@ -17,9 +18,9 @@ namespace Core.Services
         }
 
         // TODO: Use Automapper
-        public IEnumerable<BrandDto> GetAll()
+        public async Task<IEnumerable<BrandDto>> GetAll()
         {
-            IEnumerable<Brand> brands = _database.Brands.GetAll();
+            IEnumerable<Brand> brands = await _database.Brands.GetAllAsync();
             List<BrandDto> brandDtos = new List<BrandDto>();
             foreach(Brand brand in brands)
             {

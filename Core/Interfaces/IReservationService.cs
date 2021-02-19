@@ -2,17 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
     public interface IReservationService
     {
-        IEnumerable<CarDto> GetAllCars();
-        IEnumerable<CustomerDto> GetAllCustomers();
-        CustomerDto GetCutomer(int? id);
-        CarDto GetCar(int? id);
-        CouponDto GetCoupon(string couponCode);
-        void MakeReservation(ReservationDto reservationDto);
+        Task<IEnumerable<ReservationDto>> GetAllAsync();
+        Task<ReservationDto> GetAsync(int? id);
+        Task CreateAsync(ReservationDto reservationDto);
+        void Edit(ReservationDto reservationDto);
+        void Delete(int? id);
         void Dispose();
     }
 }

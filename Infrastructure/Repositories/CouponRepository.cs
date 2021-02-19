@@ -1,9 +1,11 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -16,34 +18,29 @@ namespace Infrastructure.Repositories
             db = context;
         }
 
-        public IEnumerable<Coupon> GetAll()
+        public async Task<IEnumerable<Coupon>> GetAllAsync()
         {
-            return db.Coupons.ToList();
+            return await db.Coupons.ToListAsync();
         }
 
-        public Coupon Get(int id)
+        public async Task<Coupon> GetAsync(int id)
         {
-            return db.Coupons.FirstOrDefault(c => c.Id == id);
+            return await db.Coupons.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Coupon GetByCode(string code)
+        public async Task<Coupon> GetByCodeAsync(string code)
         {
-            return db.Coupons.FirstOrDefault(c => c.CouponCode == code);
+            return await db.Coupons.FirstOrDefaultAsync(c => c.CouponCode == code);
         }
 
-        public void Create(Coupon coupon)
+        public async Task CreateAsync(Coupon coupon)
         {
-            db.Coupons.Add(coupon);
+            await db.Coupons.AddAsync(coupon);
         }
 
         public void Update(Coupon coupon)
         {
             db.Coupons.Update(coupon);
-        }
-
-        public IEnumerable<Coupon> Find(Func<Coupon, bool> predicate)
-        {
-            return db.Coupons.Where(predicate).ToList();
         }
 
         public void Delete(int id)

@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Infrastructure.Entities
 {
     public class Car : BaseEntity
@@ -12,5 +14,11 @@ namespace Infrastructure.Entities
 
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
+
+        public List<Reservation> Reservations { get; set; }
+        public Car()
+        {
+            Reservations = new List<Reservation>();
+        }
     }
 }

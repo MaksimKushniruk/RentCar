@@ -6,6 +6,8 @@ using Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using System.Linq;
 
 namespace Core.Services
 {
@@ -17,101 +19,63 @@ namespace Core.Services
             _database = unitOfWork;
         }
 
-        // TODO: Use Automapper
-        public async Task<IEnumerable<BrandDto>> GetAll()
+        // TODO: Use DI for Automapper
+        public async Task<IEnumerable<BrandDto>> GetAllAsync()
         {
-            IEnumerable<Brand> brands = await _database.Brands.GetAllAsync();
-            List<BrandDto> brandDtos = new List<BrandDto>();
-            foreach(Brand brand in brands)
-            {
-                List<CarDto> carDtos = new List<CarDto>();
-                foreach(Car car in brand.Cars)
-                {
-                    carDtos.Add(new CarDto
-                    {
-                        Id = car.Id,
-                        LicensePlate = car.LicensePlate,
-                        ModelName = car.ModelName,
-                        Color = car.Color,
-                        Year = car.Year,
-                        PricePerHour = car.PricePerHour,
-                        Status = (CarRentStatusDto)car.Status,
-                        Brand = new BrandDto { Id = car.Brand.Id}
-                    });
-                }
-                brandDtos.Add(new BrandDto
-                {
-                    Id = brand.Id,
-                    Title = brand.Title,
-                    Cars = carDtos
-                });
-            }
-            return brandDtos;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Brand, BrandDto>()).CreateMapper();
+            return mapper.Map<IEnumerable<Brand>, IEnumerable<BrandDto>>(await _database.Brands.GetAllAsync());
         }
 
-        // TODO: Use Automapper
-        public BrandDto Get(int? id)
+        //TODO: Test automapper
+        public async Task<BrandDto> GetAsync(int? id)
         {
             if (id == null)
             {
                 throw new RentCarValidationException(String.Empty, "Id is not set");
             }
-            Brand brand = _database.Brands.Get(id.Value);
+            Brand brand = await _database.Brands.GetAsync(id.Value);
             if (brand == null)
             {
                 throw new RentCarValidationException(String.Empty, "Brand is not found");
             }
-            List<CarDto> carDtos = new List<CarDto>();
-            foreach (Car car in brand.Cars)
+            var mapper = new MapperConfiguration(cfg =>
             {
-                carDtos.Add(new CarDto
-                {
-                    Id = car.Id,
-                    LicensePlate = car.LicensePlate,
-                    ModelName = car.ModelName,
-                    Color = car.Color,
-                    Year = car.Year,
-                    PricePerHour = car.PricePerHour,
-                    Status = (CarRentStatusDto)car.Status,
-                    Brand = new BrandDto { Id = car.Brand.Id }
-                });
-            }
-            return new BrandDto
-            {
-                Id = brand.Id,
-                Title = brand.Title,
-                Cars = carDtos
-            };
+                cfg.CreateMap<Car, CarDto>()
+                    .ForMember(c => c.Reservations, c => c.Ignore());
+                cfg.CreateMap<Brand, BrandDto>()
+                    .ForMember(b => b.Cars, src => src.MapFrom(b => b.Cars));
+            }).CreateMapper();
+            return mapper.Map<Brand, BrandDto>(brand);
         }
 
-        public void Create(BrandDto brandDto)
+        public async Task CreateAsync(BrandDto brandDto)
         {
             Brand brand = new Brand
             {
                 Title = brandDto.Title
             };
-            _database.Brands.Create(brand);
-            _database.Save();
+            await _database.Brands.CreateAsync(brand);
+            await _database.SaveAsync();
         }
 
-        public void Edit(BrandDto brandDto)
+        public async Task EditAsync(BrandDto brandDto)
         {
-            Brand brand = _database.Brands.Get(brandDto.Id);
+            Brand brand = await _database.Brands.GetAsync(brandDto.Id);
             if (brand == null)
             {
                 throw new RentCarValidationException(String.Empty, "Brand is not found");
             }
             brand.Title = brandDto.Title;
             _database.Brands.Update(brand);
-            _database.Save();
+            await _database.SaveAsync();
         }
 
-        public void Delete(int? id)
+        public async Task DeleteAsync(int? id)
         {
             if (id != null)
             {
                 _database.Brands.Delete(id.Value);
-                _database.Save();
+                await _database.SaveAsync();
             }
         }
 

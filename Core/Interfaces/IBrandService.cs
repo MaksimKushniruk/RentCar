@@ -11,8 +11,8 @@ namespace Core.Interfaces
         Task<IEnumerable<BrandDto>> GetAllAsync();
         Task<BrandDto> GetAsync(int? id);
         Task CreateAsync(BrandDto brandDto);
-        void Edit(BrandDto brandDto);
-        void Delete(int? id);
+        Task EditAsync(BrandDto brandDto);
+        Task DeleteAsync(int? id);
         void Dispose();
     }
 }

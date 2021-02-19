@@ -59,7 +59,7 @@ namespace Core.Services
             Brand brand = _database.Brands.Get(id.Value);
             if (brand == null)
             {
-                throw new RentCarValidationException(String.Empty, "Brand is don't found");
+                throw new RentCarValidationException(String.Empty, "Brand is not found");
             }
             List<CarDto> carDtos = new List<CarDto>();
             foreach (Car car in brand.Cars)
@@ -99,7 +99,7 @@ namespace Core.Services
             Brand brand = _database.Brands.Get(brandDto.Id);
             if (brand == null)
             {
-                throw new RentCarValidationException(String.Empty, "Brand is not Found");
+                throw new RentCarValidationException(String.Empty, "Brand is not found");
             }
             brand.Title = brandDto.Title;
             _database.Brands.Update(brand);

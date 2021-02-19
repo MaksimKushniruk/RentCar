@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Interfaces
 {
@@ -11,6 +12,6 @@ namespace Infrastructure.Interfaces
         ICouponRepository Coupons { get; }
         IReservationRepository Reservations { get; }
         IBrandRepository Brands { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

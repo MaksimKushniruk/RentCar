@@ -1,15 +1,16 @@
 ﻿using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Interfaces
 {
     public interface ICarRepository
     {
-        IEnumerable<Car> GetAll();
-        Car Get(int id);
-        void Create(Car car);
-        void Update(Car car);
-        void Delete(int id);
+        Task<IEnumerable<Car>> GetAllAsync();
+        Task<Car> GetAsync(int id);
+        Task CreateAsync(Car car);
+        Task UpdateAsync(Car car);
+        Task DeleteAsync(int id);
     }
 }

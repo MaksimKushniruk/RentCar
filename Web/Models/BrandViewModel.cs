@@ -9,5 +9,10 @@ namespace Web.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public List<CarViewModel> Cars { get; set; }
+        public BrandViewModel()
+        {
+            Cars = new List<CarViewModel>();
+        }
     }
 }

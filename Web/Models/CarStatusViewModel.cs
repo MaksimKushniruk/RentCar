@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public enum CarStatus
+    public enum CarStatusViewModel
     {
         [Display(Name = "Free")]
         Free = 0,

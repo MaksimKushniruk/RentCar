@@ -6,5 +6,9 @@ namespace Infrastructure.Entities
     {
         public string Title { get; set; }
         public List<Car> Cars { get; set; }
+        public Brand()
+        {
+            Cars = new List<Car>();
+        }
     }
 }

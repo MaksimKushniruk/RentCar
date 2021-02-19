@@ -8,7 +8,6 @@ namespace Infrastructure.Interfaces
     {
         IEnumerable<Car> GetAll();
         Car Get(int id);
-        IEnumerable<Car> Find(Func<Car, bool> predicate);
         void Create(Car car);
         void Update(Car car);
         void Delete(int id);

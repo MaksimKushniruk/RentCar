@@ -13,5 +13,10 @@ namespace Core.DTO
         public decimal PricePerHour { get; set; }
         public CarRentStatusDto Status { get; set; }
         public BrandDto Brand { get; set; }
+        public List<ReservationDto> Reservations { get; set; }
+        public CarDto()
+        {
+            Reservations = new List<ReservationDto>();
+        }
     }
 }

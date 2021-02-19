@@ -15,5 +15,10 @@ namespace Web.Models
         public decimal PricePerHour { get; set; }
         public CarStatus Status { get; set; }
         public BrandViewModel Brand { get; set; }
+        public List<ReservationViewModel> Reservations { get; set; }
+        public CarViewModel()
+        {
+            Reservations = new List<ReservationViewModel>();
+        }
     }
 }

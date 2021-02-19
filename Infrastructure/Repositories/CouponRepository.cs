@@ -23,13 +23,11 @@ namespace Infrastructure.Repositories
 
         public Coupon Get(int id)
         {
-            return db.Coupons.Find(id);
+            return db.Coupons.FirstOrDefault(c => c.Id == id);
         }
 
         public Coupon GetByCode(string code)
         {
-            // TODO: set CouponCode as Primary Key
-            // return db.Coupons.Find(code); 
             return db.Coupons.FirstOrDefault(c => c.CouponCode == code);
         }
 

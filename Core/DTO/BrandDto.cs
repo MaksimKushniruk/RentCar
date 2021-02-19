@@ -8,5 +8,9 @@ namespace Core.DTO
     {
         public string Title { get; set; }
         public List<CarDto> Cars { get; set; }
+        public BrandDto()
+        {
+            Cars = new List<CarDto>();
+        }
     }
 }

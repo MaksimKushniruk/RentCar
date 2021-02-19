@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.DTO
+namespace Infrastructure.Entities
 {
-    public enum CarRentStatusDto
+    public enum CarStatus
     {
         Free = 0,
         InRent = 1

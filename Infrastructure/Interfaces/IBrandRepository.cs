@@ -8,7 +8,6 @@ namespace Infrastructure.Interfaces
     {
         IEnumerable<Brand> GetAll();
         Brand Get(int id);
-        IEnumerable<Brand> Find(Func<Brand, bool> predicate);
         void Create(Brand brand);
         void Update(Brand brand);
         void Delete(int id);

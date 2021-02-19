@@ -8,5 +8,10 @@ namespace Core.DTO
     {
         public string CouponCode { get; set; }
         public int Discount { get; set; }
+        public List<ReservationDto> Reservations { get; set; }
+        public CouponDto()
+        {
+            Reservations = new List<ReservationDto>();
+        }
     }
 }

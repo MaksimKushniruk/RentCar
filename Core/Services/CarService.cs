@@ -48,7 +48,7 @@ namespace Core.Services
             Car car = _database.Cars.Get(id.Value);
             if (car == null)
             {
-                throw new RentCarValidationException(String.Empty, "Car is don't found");
+                throw new RentCarValidationException(String.Empty, "Car is not found");
             }
             return new CarDto
             {
@@ -91,7 +91,7 @@ namespace Core.Services
             Brand brand = _database.Brands.Get(carDto.Brand.Id);
             if (car == null)
             {
-                throw new RentCarValidationException(String.Empty, "Car not found");
+                throw new RentCarValidationException(String.Empty, "Car is not found");
             }
             car.Id = carDto.Id;
             car.LicensePlate = carDto.LicensePlate;

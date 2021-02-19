@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -17,19 +18,19 @@ namespace Infrastructure.Repositories
             db = context;
         }
 
-        public IEnumerable<Car> GetAll()
+        public async Task<IEnumerable<Car>> GetAllAsync()
         {
-            return db.Cars.Include(c => c.Brand).ToList();
+            return await db.Cars.Include(c => c.Brand).ToListAsync();
         }
 
-        public Car Get(int id)
+        public async Task<Car> GetAsync(int id)
         {
-            return db.Cars.Include(c => c.Brand).FirstOrDefault(c => c.Id == id);
+            return await db.Cars.Include(c => c.Brand).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public void Create(Car car)
+        public async Task CreateAsync(Car car)
         {
-            db.Cars.Add(car);
+            await db.Cars.AddAsync(car);
         }
 
         public void Update(Car car)

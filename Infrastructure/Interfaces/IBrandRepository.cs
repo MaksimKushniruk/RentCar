@@ -1,14 +1,15 @@
 ﻿using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Interfaces
 {
     public interface IBrandRepository
     {
-        IEnumerable<Brand> GetAll();
-        Brand Get(int id);
-        void Create(Brand brand);
+        Task<IEnumerable<Brand>> GetAllAsync();
+        Task<Brand> GetAsync(int id);
+        Task CreateAsync(Brand brand);
         void Update(Brand brand);
         void Delete(int id);
     }

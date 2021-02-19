@@ -1,9 +1,11 @@
 ﻿using Infrastructure.Entities;
 using Infrastructure.EntityFramework;
 using Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -16,29 +18,24 @@ namespace Infrastructure.Repositories
             db = context;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return db.Customers.ToList();
+            return await db.Customers.ToListAsync();
         }
 
-        public Customer Get(int id)
+        public async Task<Customer> GetAsync(int id)
         {
-            return db.Customers.Find(id);
+            return await db.Customers.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public void Create(Customer customer)
+        public async Task CreateAsync(Customer customer)
         {
-            db.Customers.Add(customer);
+            await db.Customers.AddAsync(customer);
         }
 
         public void Update(Customer customer)
         {
             db.Customers.Update(customer);
-        }
-
-        public IEnumerable<Customer> Find(Func<Customer, bool> predicate)
-        {
-            return db.Customers.Where(predicate).ToList();
         }
 
         public void Delete(int id)

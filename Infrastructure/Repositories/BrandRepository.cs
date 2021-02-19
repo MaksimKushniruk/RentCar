@@ -4,6 +4,7 @@ using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -16,19 +17,19 @@ namespace Infrastructure.Repositories
             db = context;
         }
 
-        public IEnumerable<Brand> GetAll()
+        public async Task<IEnumerable<Brand>> GetAllAsync()
         {
-            return db.Brands.Include(b => b.Cars).ToList();
+            return await db.Brands.Include(b => b.Cars).ToListAsync();
         }
 
-        public Brand Get(int id)
+        public async Task<Brand> GetAsync(int id)
         {
-            return db.Brands.Include(b => b.Cars).FirstOrDefault(b => id == b.Id);
+            return await db.Brands.Include(b => b.Cars).FirstOrDefaultAsync(b => id == b.Id);
         }
 
-        public void Create(Brand brand)
+        public async Task CreateAsync(Brand brand)
         {
-            db.Brands.Add(brand);
+            await db.Brands.AddAsync(brand);
         }
 
         public void Update(Brand brand)

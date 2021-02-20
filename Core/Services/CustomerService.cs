@@ -6,6 +6,8 @@ using Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Core.Services
 {
@@ -17,81 +19,68 @@ namespace Core.Services
             _database = unitOfWork;
         }
 
-        // TOTO: Use Automapper
-        public IEnumerable<CustomerDto> GetAll()
+        public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
-            IEnumerable<Customer> customers = _database.Customers.GetAll();
-            List<CustomerDto> customerDtos = new List<CustomerDto>();
-            foreach(Customer customer in customers)
+            var mapper = new MapperConfiguration(cfg =>
             {
-                customerDtos.Add(new CustomerDto
-                {
-                    Id = customer.Id,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    City = customer.City,
-                    PhoneNumber = customer.PhoneNumber
-                });
-            }
-            return customerDtos;
+                cfg.CreateMap<Customer, CustomerDto>()
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
+            }).CreateMapper();
+            return mapper.Map<IEnumerable<Customer>, IEnumerable<CustomerDto>>(await _database.Customers.GetAllAsync());
         }
 
-        public CustomerDto Get(int? id)
+        public async Task<CustomerDto> GetAsync(int? id)
         {
             if (id == null)
             {
                 throw new RentCarValidationException(String.Empty, "Id is not set");
             }
-            Customer customer = _database.Customers.Get(id.Value);
+            Customer customer = await _database.Customers.GetAsync(id.Value);
             if (customer == null)
             {
                 throw new RentCarValidationException(String.Empty, "Customer is not found");
             }
-            return new CustomerDto
+            var mapper = new MapperConfiguration(cfg =>
             {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                City = customer.City,
-                PhoneNumber = customer.PhoneNumber
-            };
+                cfg.CreateMap<Customer, CustomerDto>()
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
+            }).CreateMapper();
+            return mapper.Map<Customer, CustomerDto>(customer);
         }
 
-        public void Create(CustomerDto customerDto)
+        public async Task CreateAsync(CustomerDto customerDto)
         {
-            Customer customer = new Customer
+            var mapper = new MapperConfiguration(cfg =>
             {
-                Id = customerDto.Id,
-                FirstName = customerDto.FirstName,
-                LastName = customerDto.LastName,
-                City = customerDto.City,
-                PhoneNumber = customerDto.PhoneNumber
-            };
-            _database.Customers.Create(customer);
-            _database.Save();
+                cfg.CreateMap<CustomerDto, Customer>()
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
+            }).CreateMapper();
+            await _database.Customers.CreateAsync(mapper.Map<CustomerDto, Customer>(customerDto));
+            await _database.SaveAsync();
         }
 
-        public void Edit(CustomerDto customerDto)
+        public async Task EditAsync(CustomerDto customerDto)
         {
-            Customer customer = _database.Customers.Get(customerDto.Id);
+            Customer customer = await _database.Customers.GetAsync(customerDto.Id);
             if (customer == null)
             {
                 throw new RentCarValidationException(String.Empty, "Customer is not found");
             }
-            customer.FirstName = customerDto.FirstName;
-            customer.LastName = customerDto.LastName;
-            customer.City = customerDto.City;
-            customer.PhoneNumber = customerDto.PhoneNumber;
-            _database.Customers.Update(customer);
-            _database.Save();
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<CustomerDto, Customer>()
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
+            }).CreateMapper();
+            _database.Customers.Update(mapper.Map<CustomerDto, Customer>(customerDto));
+            await _database.SaveAsync();
         }
 
-        public void Delete(int? id)
+        public async Task DeleteAsync(int? id)
         {
             if (id != null)
             {
                 _database.Customers.Delete(id.Value);
-                _database.Save();
+                await _database.SaveAsync();
             }
         }
 

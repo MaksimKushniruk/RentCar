@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
     public interface ICustomerService
     {
-        IEnumerable<CustomerDto> GetAll();
-        CustomerDto Get(int? id);
-        void Create(CustomerDto customerDto);
-        void Edit(CustomerDto customerDto);
-        void Delete(int? id);
+        Task<IEnumerable<CustomerDto>> GetAllAsync();
+        Task<CustomerDto> GetAsync(int? id);
+        Task CreateAsync(CustomerDto customerDto);
+        Task EditAsync(CustomerDto customerDto);
+        Task DeleteAsync(int? id);
         void Dispose();
     }
 }

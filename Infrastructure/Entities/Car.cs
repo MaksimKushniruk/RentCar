@@ -10,7 +10,7 @@ namespace Infrastructure.Entities
         public string Color { get; set; }
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
-        public CarRentStatus Status { get; set; }
+        public CarStatus Status { get; set; }
 
         public int BrandId { get; set; }
         public Brand Brand { get; set; }

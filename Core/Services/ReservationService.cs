@@ -16,69 +16,6 @@ namespace Core.Services
         {
             _database = unitOfWork;
         }
-        public IEnumerable<CarDto> GetAllCars()
-        {
-            IEnumerable<Car> cars = _database.Cars.GetAll();
-            List<CarDto> carDtos = new List<CarDto>();
-            foreach (Car car in cars)
-            {
-                carDtos.Add(new CarDto
-                {
-                    Id = car.Id,
-                    LicensePlate = car.LicensePlate,
-                    ModelName = car.ModelName,
-                    Color = car.Color,
-                    Year = car.Year,
-                    PricePerHour = car.PricePerHour,
-                    Status = (CarRentStatusDto)car.Status,
-                    Brand = new BrandDto { Id = car.Brand.Id }
-                });
-            }
-            return carDtos;
-        }
-
-        public IEnumerable<CustomerDto> GetAllCustomers()
-        {
-            IEnumerable<Customer> customers = _database.Customers.GetAll();
-            List<CustomerDto> customerDtos = new List<CustomerDto>();
-            foreach (Customer customer in customers)
-            {
-                customerDtos.Add(new CustomerDto
-                {
-                    Id = customer.Id,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    City = customer.City,
-                    PhoneNumber = customer.PhoneNumber
-                });
-            }
-            return customerDtos;
-        }
-
-        public CarDto GetCar(int? id)
-        {
-            if (id == null)
-            {
-                throw new RentCarValidationException(String.Empty, "Id is not set");
-            }
-            Car car = _database.Cars.Get(id.Value);
-            if (car == null)
-            {
-                throw new RentCarValidationException(String.Empty, "Car is don't found");
-            }
-            return new CarDto
-            {
-                Id = car.Id,
-                LicensePlate = car.LicensePlate,
-                ModelName = car.ModelName,
-                Color = car.Color,
-                Year = car.Year,
-                PricePerHour = car.PricePerHour,
-                Status = (CarRentStatusDto)car.Status,
-                Brand = new BrandDto { Id = car.Brand.Id }
-            };
-        }
-
         public CouponDto GetCoupon(string couponCode)
         {
             if (couponCode == null)

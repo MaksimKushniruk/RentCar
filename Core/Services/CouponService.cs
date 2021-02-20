@@ -48,6 +48,25 @@ namespace Core.Services
             return mapper.Map<Coupon, CouponDto>(coupon);
         }
 
+        public async Task<CouponDto> GetByCodeAsync(string code)
+        {
+            if (String.IsNullOrWhiteSpace(code))
+            {
+                throw new RentCarValidationException(String.Empty, "Code is not set");
+            }
+            Coupon coupon = await _database.Coupons.GetByCodeAsync(code);
+            if (coupon == null)
+            {
+                throw new RentCarValidationException(String.Empty, "Coupon is not found");
+            }
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Coupon, CouponDto>()
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
+            }).CreateMapper();
+            return mapper.Map<Coupon, CouponDto>(coupon);
+        }
+
         public async Task CreateASync(CouponDto couponDto)
         {
             var mapper = new MapperConfiguration(cfg =>

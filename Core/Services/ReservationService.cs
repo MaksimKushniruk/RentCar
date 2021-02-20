@@ -6,6 +6,8 @@ using Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Core.Services
 {
@@ -16,72 +18,98 @@ namespace Core.Services
         {
             _database = unitOfWork;
         }
-        public CouponDto GetCoupon(string couponCode)
+
+        public async Task<IEnumerable<ReservationDto>> GetAllAsync()
         {
-            if (couponCode == null)
+            var mapper = new MapperConfiguration(cfg =>
             {
-                throw new RentCarValidationException(String.Empty, "Coupon Code is not set");
-            }
-            Coupon coupon = _database.Coupons.GetByCode(couponCode);
-            if (coupon == null)
-            {
-                throw new RentCarValidationException(String.Empty, "Coupon is don't found");
-            }
-            return new CouponDto
-            {
-                Id = coupon.Id,
-                CouponCode = coupon.CouponCode,
-                Discount = coupon.Discount
-            };
+                cfg.CreateMap<Customer, CustomerDto>();
+                cfg.CreateMap<Brand, BrandDto>();
+                cfg.CreateMap<Car, CarDto>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                cfg.CreateMap<Coupon, CouponDto>();
+                cfg.CreateMap<Reservation, ReservationDto>()
+                    .ForMember(dst => dst.Customer, opt => opt.MapFrom(src => src.Customer))
+                    .ForMember(dst => dst.Car, opt => opt.MapFrom(src => src.Car))
+                    .ForMember(dst => dst.Coupon, opt => opt.MapFrom(src => src.Coupon));
+            }).CreateMapper();
+            return mapper.Map<IEnumerable<Reservation>, IEnumerable<ReservationDto>>(await _database.Reservations.GetAllAsync());
         }
 
-        public CustomerDto GetCutomer(int? id)
+        public async Task<ReservationDto> GetAsync(int? id)
         {
             if (id == null)
             {
                 throw new RentCarValidationException(String.Empty, "Id is not set");
             }
-            Customer customer = _database.Customers.Get(id.Value);
-            if (customer == null)
+            Reservation reservation = await _database.Reservations.GetAsync(id.Value);
+            if (reservation == null)
             {
-                throw new RentCarValidationException(String.Empty, "Customer is don't found");
+                throw new RentCarValidationException(String.Empty, "Reservation is not found");
             }
-            return new CustomerDto
+            var mapper = new MapperConfiguration(cfg =>
             {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                City = customer.City,
-                PhoneNumber = customer.PhoneNumber
-            };
+                cfg.CreateMap<Customer, CustomerDto>();
+                cfg.CreateMap<Brand, BrandDto>();
+                cfg.CreateMap<Car, CarDto>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                cfg.CreateMap<Coupon, CouponDto>();
+                cfg.CreateMap<Reservation, ReservationDto>()
+                    .ForMember(dst => dst.Customer, opt => opt.MapFrom(src => src.Customer))
+                    .ForMember(dst => dst.Car, opt => opt.MapFrom(src => src.Car))
+                    .ForMember(dst => dst.Coupon, opt => opt.MapFrom(src => src.Coupon));
+            }).CreateMapper();
+            return mapper.Map<Reservation, ReservationDto>(reservation);
         }
 
-        public void MakeReservation(ReservationDto reservationDto)
+        public async Task CreateAsync(ReservationDto reservationDto)
         {
-            Car car = _database.Cars.Get(reservationDto.CarId);
-            if (car == null)
+            var mapper = new MapperConfiguration(cfg =>
             {
-                throw new RentCarValidationException(String.Empty, "Car is don't found");
-            }
+                cfg.CreateMap<CustomerDto, Customer>();
+                cfg.CreateMap<BrandDto, Brand>();
+                cfg.CreateMap<CarDto, Car>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                cfg.CreateMap<CouponDto, Coupon>();
+                cfg.CreateMap<ReservationDto, Reservation>()
+                    .ForMember(dst => dst.Customer, opt => opt.MapFrom(src => src.Customer))
+                    .ForMember(dst => dst.Car, opt => opt.MapFrom(src => src.Car))
+                    .ForMember(dst => dst.Coupon, opt => opt.MapFrom(src => src.Coupon));
+            }).CreateMapper();
+            await _database.Reservations.CreateAsync(mapper.Map<ReservationDto, Reservation>(reservationDto));
+            await _database.SaveAsync();
+        }
 
-            // Math the price
-            decimal? price = null;
-            if (reservationDto.FinalDate != null)
+        public async Task EditAsync(ReservationDto reservationDto)
+        {
+            Reservation reservation = await _database.Reservations.GetAsync(reservationDto.Id);
+            if (reservation == null)
             {
-                price = (decimal)reservationDto.FinalDate.Value.Subtract(reservationDto.StartDate).TotalHours * reservationDto.Car.PricePerHour;
+                throw new RentCarValidationException(String.Empty, "Reservation is not found");
             }
-
-            Reservation reservation = new Reservation
+            var mapper = new MapperConfiguration(cfg =>
             {
-                CustomerId = reservationDto.Customer.Id,
-                CarId = reservationDto.Car.Id,
-                CouponId = reservationDto.Coupon.Id,
-                StartDate = reservationDto.StartDate,
-                FinalDate = reservationDto.FinalDate,
-                Price = price
-            };
-            _database.Reservations.Create(reservation);
-            _database.Save();
+                cfg.CreateMap<CustomerDto, Customer>();
+                cfg.CreateMap<BrandDto, Brand>();
+                cfg.CreateMap<CarDto, Car>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                cfg.CreateMap<CouponDto, Coupon>();
+                cfg.CreateMap<ReservationDto, Reservation>()
+                    .ForMember(dst => dst.Customer, opt => opt.MapFrom(src => src.Customer))
+                    .ForMember(dst => dst.Car, opt => opt.MapFrom(src => src.Car))
+                    .ForMember(dst => dst.Coupon, opt => opt.MapFrom(src => src.Coupon));
+            }).CreateMapper();
+            _database.Reservations.Update(mapper.Map<ReservationDto, Reservation>(reservationDto));
+            await _database.SaveAsync();
+        }
+
+        public async Task DeleteAsync(int? id)
+        {
+            if (id != null)
+            {
+                _database.Reservations.Delete(id.Value);
+                await _database.SaveAsync();
+            }
         }
 
         public void Dispose()

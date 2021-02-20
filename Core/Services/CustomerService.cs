@@ -19,7 +19,6 @@ namespace Core.Services
             _database = unitOfWork;
         }
 
-        // TOTO: Use Automapper
         public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
             var mapper = new MapperConfiguration(cfg =>

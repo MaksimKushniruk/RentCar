@@ -11,8 +11,8 @@ namespace Core.Interfaces
         Task<IEnumerable<CarDto>> GetAllAsync();
         Task<CarDto> GetAsync(int? id);
         Task CreateAsync(CarDto carDto);
-        void Edit(CarDto carDto);
-        void Delete(int? id);
+        Task EditAsync(CarDto carDto);
+        Task DeleteAsync(int? id);
         void Dispoce();
     }
 }

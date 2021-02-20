@@ -6,6 +6,8 @@ using Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Core.Services
 {
@@ -17,102 +19,71 @@ namespace Core.Services
             _database = unitOfWork;
         }
 
-        // TODO: Use Automapper
-        public IEnumerable<CarDto> GetAll()
+        public async Task<IEnumerable<CarDto>> GetAllAsync()
         {
-            IEnumerable<Car> cars = _database.Cars.GetAll();
-            List<CarDto> carDtos = new List<CarDto>();
-            foreach (Car car in cars)
-            {
-                carDtos.Add(new CarDto
-                {
-                    Id = car.Id,
-                    LicensePlate = car.LicensePlate,
-                    ModelName = car.ModelName,
-                    Color = car.Color,
-                    Year = car.Year,
-                    PricePerHour = car.PricePerHour,
-                    Status = (CarRentStatusDto)car.Status,
-                    Brand = new BrandDto { Id = car.BrandId, Title = car.Brand.Title }
-                });
-            }
-            return carDtos;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Car, CarDto>()).CreateMapper();
+            return mapper.Map<IEnumerable<Car>, IEnumerable<CarDto>>(await _database.Cars.GetAllAsync());
         }
 
-        public CarDto Get(int? id)
+        public async Task<CarDto> GetAsync(int? id)
         {
             if (id == null)
             {
                 throw new RentCarValidationException(String.Empty, "Id is not set");
             }
-            Car car = _database.Cars.Get(id.Value);
+            Car car = await _database.Cars.GetAsync(id.Value);
             if (car == null)
             {
                 throw new RentCarValidationException(String.Empty, "Car is not found");
             }
-            return new CarDto
+            var mapper = new MapperConfiguration(cfg =>
             {
-                Id = car.Id,
-                LicensePlate = car.LicensePlate,
-                ModelName = car.ModelName,
-                Color = car.Color,
-                Year = car.Year,
-                PricePerHour = car.PricePerHour,
-                Status = (CarRentStatusDto)car.Status,
-                Brand = new BrandDto { Id = car.BrandId, Title = car.Brand.Title }
-            };
+                cfg.CreateMap<Brand, BrandDto>()
+                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
+                cfg.CreateMap<Car, CarDto>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(car => car.Brand));
+            }).CreateMapper();
+            return mapper.Map<Car, CarDto>(car);
         }
         
-        public void Create(CarDto carDto)
+        public async Task CreateAsync(CarDto carDto)
         {
-            Brand brand = _database.Brands.Get(carDto.Brand.Id);
-            if (brand != null)
+            var mapper = new MapperConfiguration(cfg =>
             {
-                Car car = new Car
-                {
-                    LicensePlate = carDto.LicensePlate,
-                    ModelName = carDto.ModelName,
-                    Color = carDto.Color,
-                    Year = carDto.Year,
-                    PricePerHour = carDto.PricePerHour,
-                    Status = (CarRentStatus)carDto.Status,
-                    Brand = brand
-
-                };
-                _database.Cars.Create(car);
-                _database.Save();
-            }
-            
+                cfg.CreateMap<BrandDto, Brand>()
+                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
+                cfg.CreateMap<CarDto, Car>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+            }).CreateMapper();
+            await _database.Cars.CreateAsync(mapper.Map<CarDto, Car>(carDto));
+            await _database.SaveAsync();
         }
 
-        public void Edit(CarDto carDto)
+        public async Task EditAsync(CarDto carDto)
         {
-            Car car = _database.Cars.Get(carDto.Id);
-            Brand brand = _database.Brands.Get(carDto.Brand.Id);
+            Car car = await _database.Cars.GetAsync(carDto.Id);
             if (car == null)
             {
                 throw new RentCarValidationException(String.Empty, "Car is not found");
             }
-            car.Id = carDto.Id;
-            car.LicensePlate = carDto.LicensePlate;
-            car.ModelName = carDto.ModelName;
-            car.Color = carDto.Color;
-            car.Year = carDto.Year;
-            car.PricePerHour = carDto.PricePerHour;
-            car.Status = (CarRentStatus)carDto.Status;
-            car.BrandId = carDto.Brand.Id;
-            // TODO: Check saved data
-            car.Brand = brand;
+            var mapper = new MapperConfiguration( cfg => 
+            {
+                cfg.CreateMap<BrandDto, Brand>()
+                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
+                cfg.CreateMap<CarDto, Car>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+            }).CreateMapper();
+            car = mapper.Map<CarDto, Car>(carDto);
             _database.Cars.Update(car);
-            _database.Save();
+            await _database.SaveAsync();
         }
 
-        public void Delete(int? id)
+        public async Task DeleteAsync(int? id)
         {
             if (id != null)
             {
                 _database.Cars.Delete(id.Value);
-                _database.Save();
+                await _database.SaveAsync();
             }
         }
 

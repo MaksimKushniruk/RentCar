@@ -41,9 +41,9 @@ namespace Core.Services
             var mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Car, CarDto>()
-                    .ForMember(c => c.Reservations, c => c.Ignore());
+                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
                 cfg.CreateMap<Brand, BrandDto>()
-                    .ForMember(b => b.Cars, src => src.MapFrom(b => b.Cars));
+                    .ForMember(dst => dst.Cars, src => src.MapFrom(brand => brand.Cars));
             }).CreateMapper();
             return mapper.Map<Brand, BrandDto>(brand);
         }

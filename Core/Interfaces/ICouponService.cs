@@ -11,8 +11,8 @@ namespace Core.Interfaces
         Task<IEnumerable<CouponDto>> GetAllAsync();
         Task<CouponDto> GetAsync(int? id);
         Task CreateASync(CouponDto couponDto);
-        void Edit(CouponDto couponDto);
-        void Delete(int? id);
+        Task EditAsync(CouponDto couponDto);
+        Task DeleteAsync(int? id);
         void Dispose();
     }
 }

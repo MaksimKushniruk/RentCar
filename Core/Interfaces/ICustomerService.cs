@@ -11,8 +11,8 @@ namespace Core.Interfaces
         Task<IEnumerable<CustomerDto>> GetAllAsync();
         Task<CustomerDto> GetAsync(int? id);
         Task CreateASync(CustomerDto customerDto);
-        void Edit(CustomerDto customerDto);
-        void Delete(int? id);
+        Task EditAsync(CustomerDto customerDto);
+        Task DeleteAsync(int? id);
         void Dispose();
     }
 }

@@ -22,7 +22,11 @@ namespace Core.Services
         // TODO: Use DI for Automapper
         public async Task<IEnumerable<BrandDto>> GetAllAsync()
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Brand, BrandDto>()).CreateMapper();
+            var mapper = new MapperConfiguration(cfg => 
+            {
+                cfg.CreateMap<Brand, BrandDto>()
+                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
+            }).CreateMapper();
             return mapper.Map<IEnumerable<Brand>, IEnumerable<BrandDto>>(await _database.Brands.GetAllAsync());
         }
 

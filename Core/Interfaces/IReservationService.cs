@@ -11,8 +11,8 @@ namespace Core.Interfaces
         Task<IEnumerable<ReservationDto>> GetAllAsync();
         Task<ReservationDto> GetAsync(int? id);
         Task CreateAsync(ReservationDto reservationDto);
-        void Edit(ReservationDto reservationDto);
-        void Delete(int? id);
+        Task EditAsync(ReservationDto reservationDto);
+        Task DeleteAsync(int? id);
         void Dispose();
     }
 }

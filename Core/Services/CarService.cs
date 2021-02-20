@@ -21,7 +21,13 @@ namespace Core.Services
 
         public async Task<IEnumerable<CarDto>> GetAllAsync()
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Car, CarDto>()).CreateMapper();
+            var mapper = new MapperConfiguration(cfg => 
+            {
+                cfg.CreateMap<Brand, BrandDto>()
+                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
+                cfg.CreateMap<Car, CarDto>()
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(car => car.Brand));
+            }).CreateMapper();
             return mapper.Map<IEnumerable<Car>, IEnumerable<CarDto>>(await _database.Cars.GetAllAsync());
         }
 

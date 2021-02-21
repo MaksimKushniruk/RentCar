@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Brand>> GetAllAsync()
         {
-            return await db.Brands.Include(b => b.Cars).ToListAsync();
+            return await db.Brands.Include(b => b.Cars).AsNoTracking().ToListAsync();
         }
 
         public async Task<Brand> GetAsync(int id)

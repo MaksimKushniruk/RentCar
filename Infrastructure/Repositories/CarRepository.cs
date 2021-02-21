@@ -20,12 +20,12 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Car>> GetAllAsync()
         {
-            return await db.Cars.Include(c => c.Brand).ToListAsync();
+            return await db.Cars.AsNoTracking().Include(c => c.Brand).AsNoTracking().ToListAsync();
         }
 
         public async Task<Car> GetAsync(int id)
         {
-            return await db.Cars.Include(c => c.Brand).FirstOrDefaultAsync(c => c.Id == id);
+            return await db.Cars.AsNoTracking().Include(c => c.Brand).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task CreateAsync(Car car)

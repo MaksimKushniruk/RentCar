@@ -26,7 +26,7 @@ namespace Core.Services
                 cfg.CreateMap<Brand, BrandDto>()
                     .ForMember(dst => dst.Cars, opt => opt.Ignore());
                 cfg.CreateMap<Car, CarDto>()
-                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(car => car.Brand));
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
             }).CreateMapper();
             return mapper.Map<IEnumerable<Car>, IEnumerable<CarDto>>(await _database.Cars.GetAllAsync());
         }

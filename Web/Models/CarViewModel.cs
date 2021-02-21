@@ -13,7 +13,7 @@ namespace Web.Models
         public string Color { get; set; }
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
-        public CarStatus Status { get; set; }
+        public CarStatusViewModel Status { get; set; }
         public BrandViewModel Brand { get; set; }
         public List<ReservationViewModel> Reservations { get; set; }
         public CarViewModel()

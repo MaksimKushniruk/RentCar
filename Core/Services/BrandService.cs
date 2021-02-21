@@ -30,7 +30,6 @@ namespace Core.Services
             return mapper.Map<IEnumerable<Brand>, IEnumerable<BrandDto>>(await _database.Brands.GetAllAsync());
         }
 
-        //TODO: Test automapper
         public async Task<BrandDto> GetAsync(int? id)
         {
             if (id == null)

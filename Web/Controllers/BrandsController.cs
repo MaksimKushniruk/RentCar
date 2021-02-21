@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
+using AutoMapper;
 
 namespace Web.Controllers
 {
@@ -18,20 +19,16 @@ namespace Web.Controllers
             this.brandService = brandService;
         }
 
-        // TODO: Use Automapper
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<BrandDto> brandDtos = brandService.GetAll();
-            List<BrandViewModel> brandViewModels = new List<BrandViewModel>();
-            foreach (var brandDto in brandDtos)
+            IEnumerable<BrandDto> brandDtos = await brandService.GetAllAsync();
+            var mapper = new MapperConfiguration(cfg =>
             {
-                brandViewModels.Add(new BrandViewModel
-                {
-                    Id = brandDto.Id,
-                    Title = brandDto.Title
-                });
-            }
-            return View(brandViewModels);
+                cfg.CreateMap<CarDto, CarViewModel>();
+                cfg.CreateMap<BrandDto, BrandViewModel>()
+                    .ForMember(dst => dst.Cars, opt => opt.MapFrom(src => src.Cars));
+            }).CreateMapper();
+            return View(mapper.Map<IEnumerable<BrandDto>, IEnumerable<BrandViewModel>>(brandDtos));
         }
 
         [HttpGet]
@@ -41,14 +38,13 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BrandViewModel model)
+        public async Task<IActionResult> Create(BrandViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    BrandDto brandDto = new BrandDto { Title = model.Title };
-                    brandService.Create(brandDto);
+                    await brandService.CreateAsync(new BrandDto { Title = model.Title });
                     return RedirectToAction("Index");
                 }
                 catch (RentCarValidationException ex)
@@ -59,13 +55,13 @@ namespace Web.Controllers
             return View(model);
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id != null)
             {
                 try
                 {
-                    BrandDto brandDto = brandService.Get(id);
+                    BrandDto brandDto = await brandService.GetAsync(id);
                     if (brandDto != null)
                     {
                         return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
@@ -80,13 +76,13 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id != null)
             {
                 try
                 {
-                    BrandDto brandDto = brandService.Get(id);
+                    BrandDto brandDto = await brandService.GetAsync(id);
                     if (brandDto != null)
                     {
                         return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
@@ -101,11 +97,11 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(BrandViewModel model)
+        public async Task<IActionResult> Edit(BrandViewModel model)
         {
             try
             {
-                brandService.Edit(new BrandDto { Id = model.Id, Title = model.Title });
+                await brandService.EditAsync(new BrandDto { Id = model.Id, Title = model.Title });
                 return RedirectToAction("Index");
             }
             catch (RentCarValidationException ex)
@@ -117,13 +113,13 @@ namespace Web.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public IActionResult ConfirmDelete(int? id)
+        public async Task<IActionResult> ConfirmDelete(int? id)
         {
             if (id != null)
             {
                 try
                 {
-                    BrandDto brandDto = brandService.Get(id);
+                    BrandDto brandDto = await brandService.GetAsync(id);
                     if (brandDto != null)
                     {
                         return View(new BrandViewModel { Id = brandDto.Id, Title = brandDto.Title });
@@ -138,13 +134,13 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id != null)
             {
                 try
                 {
-                    brandService.Delete(id);
+                    await brandService.DeleteAsync(id);
                     return RedirectToAction("Index");
                 }
                 catch

@@ -1,31 +1,31 @@
-﻿using Core.Interfaces;
+﻿using Core.DTO;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.DTO;
 using Web.Models;
 using Core.Validation;
 
 namespace Web.Controllers
 {
-    public class CustomersController : Controller
+    public class CouponsController : Controller
     {
-        private readonly ICustomerService customerService;
-        public CustomersController(ICustomerService customerService)
+        private readonly ICouponService couponService;
+        public CouponsController(ICouponService couponService)
         {
-            this.customerService = customerService;
+            this.couponService = couponService;
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<CustomerDto> customerDtos = await customerService.GetAllAsync();
+            IEnumerable<CouponDto> couponDtos = await couponService.GetAllAsync();
             var mapper = new MapperConfiguration(cfg =>
-                cfg.CreateMap<CustomerDto, CustomerViewModel>())
+                cfg.CreateMap<CouponDto, CouponViewModel>())
                     .CreateMapper();
-            return View(mapper.Map<IEnumerable<CustomerDto>, IEnumerable<CustomerViewModel>>(customerDtos));
+            return View(mapper.Map<IEnumerable<CouponDto>, IEnumerable<CouponViewModel>>(couponDtos));
         }
 
         [HttpGet]
@@ -35,16 +35,16 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CustomerViewModel model)
+        public async Task<IActionResult> Create(CouponViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var mapper = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<CustomerViewModel, CustomerDto>())
+                        cfg.CreateMap<CouponViewModel, CouponDto>())
                             .CreateMapper();
-                    await customerService.CreateAsync(mapper.Map<CustomerViewModel, CustomerDto>(model));
+                    await couponService.CreateAsync(mapper.Map<CouponViewModel, CouponDto>(model));
                     return RedirectToAction("Index");
                 }
                 catch (RentCarValidationException ex)
@@ -61,13 +61,13 @@ namespace Web.Controllers
             {
                 try
                 {
-                    CustomerDto customerDto = await customerService.GetAsync(id);
+                    CouponDto couponDto = await couponService.GetAsync(id);
                     var mapper = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<CustomerDto, CustomerViewModel>())
+                        cfg.CreateMap<CouponDto, CouponViewModel>())
                             .CreateMapper();
-                    if (customerDto != null)
+                    if (couponDto != null)
                     {
-                        return View(mapper.Map<CustomerDto, CustomerViewModel>(customerDto));
+                        return View(mapper.Map<CouponDto, CouponViewModel>(couponDto));
                     }
                 }
                 catch
@@ -85,13 +85,13 @@ namespace Web.Controllers
             {
                 try
                 {
-                    CustomerDto customerDto = await customerService.GetAsync(id);
-                    var mapper = new MapperConfiguration(cfg => 
-                        cfg.CreateMap<CustomerDto, CustomerViewModel>())
+                    CouponDto couponDto = await couponService.GetAsync(id);
+                    var mapper = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<CouponDto, CouponViewModel>())
                             .CreateMapper();
-                    if(customerDto != null)
+                    if (couponDto != null)
                     {
-                        return View(mapper.Map<CustomerDto, CustomerViewModel>(customerDto));
+                        return View(mapper.Map<CouponDto, CouponViewModel>(couponDto));
                     }
                 }
                 catch
@@ -103,14 +103,14 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CustomerViewModel model)
+        public async Task<IActionResult> Edit(CouponViewModel model)
         {
             try
             {
-                var mapper = new MapperConfiguration(cfg => 
-                    cfg.CreateMap<CustomerViewModel, CustomerDto>())
+                var mapper = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<CouponViewModel, CouponDto>())
                         .CreateMapper();
-                await customerService.EditAsync(mapper.Map<CustomerViewModel, CustomerDto>(model));
+                await couponService.EditAsync(mapper.Map<CouponViewModel, CouponDto>(model));
                 return RedirectToAction("Index");
             }
             catch (RentCarValidationException ex)
@@ -128,13 +128,13 @@ namespace Web.Controllers
             {
                 try
                 {
-                    CustomerDto customerDto = await customerService.GetAsync(id);
-                    var mapper = new MapperConfiguration(cfg => 
-                        cfg.CreateMap<CustomerDto, CustomerViewModel>())
+                    CouponDto couponDto = await couponService.GetAsync(id);
+                    var mapper = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<CouponDto, CouponViewModel>())
                             .CreateMapper();
-                    if (customerDto != null)
+                    if (couponDto != null)
                     {
-                        return View(mapper.Map<CustomerDto, CustomerViewModel>(customerDto));
+                        return View(mapper.Map<CouponDto, CouponViewModel>(couponDto));
                     }
                 }
                 catch
@@ -152,7 +152,7 @@ namespace Web.Controllers
             {
                 try
                 {
-                    await customerService.DeleteAsync(id);
+                    await couponService.DeleteAsync(id);
                     return RedirectToAction("Index");
                 }
                 catch
@@ -165,7 +165,7 @@ namespace Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            customerService.Dispose();
+            couponService.Dispose();
             base.Dispose(disposing);
         }
     }

@@ -1,0 +1,26 @@
+﻿@model CustomerViewModel
+@{
+    ViewBag.Title = "Remove Customer";
+}
+
+<div>
+    <dl>
+        <dt>Id</dt>
+        <dd>@Model.Id</dd>
+        <dt>First Name</dt>
+        <dd>@Model.FirstName</dd>
+        <dt>Last Name</dt>
+        <dd>@Model.LastName</dd>
+        <dt>City</dt>
+        <dd>@Model.City</dd>
+        <dt>Phone Number</dt>
+        <dd>@Model.PhoneNumber</dd>
+    </dl>
+    <div>
+        <form asp-controller="Customers" asp-action="Delete" method="post">
+            <div>
+                <input type="submit" value="Delete" />
+            </div>
+        </form>
+    </div>
+</div>

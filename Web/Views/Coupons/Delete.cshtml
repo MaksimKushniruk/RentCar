@@ -1,0 +1,22 @@
+﻿@model CouponViewModel
+@{
+    ViewBag.Title = "Remove Coupon";
+}
+
+<div>
+    <dl>
+        <dt>Id</dt>
+        <dd>@Model.Id</dd>
+        <dt>Code</dt>
+        <dd>@Model.CouponCode</dd>
+        <dt>Discount</dt>
+        <dd>@Model.Discount</dd>
+    </dl>
+    <div>
+        <form asp-controller="Coupons" asp-action="Delete" method="post">
+            <div>
+                <input type="submit" value="Delete" />
+            </div>
+        </form>
+    </div>
+</div>

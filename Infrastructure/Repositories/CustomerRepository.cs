@@ -20,12 +20,12 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return await db.Customers.ToListAsync();
+            return await db.Customers.AsNoTracking().ToListAsync();
         }
 
         public async Task<Customer> GetAsync(int id)
         {
-            return await db.Customers.FirstOrDefaultAsync(c => c.Id == id);
+            return await db.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task CreateAsync(Customer customer)

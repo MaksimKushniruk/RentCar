@@ -1,0 +1,14 @@
+﻿@model CouponViewModel
+@{
+    ViewBag.Title = "Details";
+}
+<h3>Customer</h3>
+<a asp-controller="Coupons" asp-action="Index">All Coupons</a>
+<dl>
+    <dt>Id</dt>
+    <dd>@Model.Id</dd>
+    <dt>Code</dt>
+    <dd>@Model.CouponCode</dd>
+    <dt>Discount</dt>
+    <dd>@Model.Discount</dd>
+</dl>

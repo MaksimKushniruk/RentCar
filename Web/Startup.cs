@@ -36,6 +36,9 @@ namespace Web
             // adding Entitys Services
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICouponService, CouponService>();
+            services.AddScoped<IReservationService, ReservationService>();
 
             services.AddControllersWithViews();
         }

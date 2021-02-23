@@ -1,9 +1,13 @@
-﻿@{ 
+﻿@model IEnumerable<CarViewModel>
+@{ 
     ViewBag.Title = "Home Page";
 }
-<h2>Main</h2>
-<a asp-controller="Brands" asp-action="Index">Brands</a>
-<a asp-controller="Cars" asp-action="Index">Cars</a>
-<a asp-controller="Customers" asp-action="Index">Customers</a>
-<a asp-controller="Coupons" asp-action="Index">Coupons</a>
-<a asp-controller="Reservations" asp-action="Index">Reservations</a>
+<div class="row mt-5 mb-2">
+    @foreach(var item in Model){
+    <div class="col-lg-4">
+        <img src="~/img/image-not-found.jpg" class="img-thumbnail" alt="Car">
+        <h3>@item.Brand.Title</h3>
+        <h4>@item.ModelName</h4>
+    </div>
+    }
+</div>

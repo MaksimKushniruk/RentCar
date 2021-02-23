@@ -31,10 +31,10 @@ namespace Web.Controllers
             return View(mapper.Map<IEnumerable<ReservationDto>, IEnumerable<ReservationViewModel>>(reservationDtos));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> Create()
+        //{
 
-        }
+        //}
     }
 }

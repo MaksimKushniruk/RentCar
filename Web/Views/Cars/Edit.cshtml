@@ -3,36 +3,41 @@
     ViewBag.Title = "Edit Car";
 }
 
-<form method="post" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id">
-    <div>
-        <label asp-for="LicensePlate">License Plate</label>
-        <input type="text" asp-for="LicensePlate" />
+<form class="row g-3" method="post" asp-controller="Cars" asp-action="Edit" asp-route-id="@Model.Id">
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label" asp-for="ModelName">Model Name</label>
+            <input class="form-control" type="text" asp-for="ModelName" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" asp-for="Brand.Id">Brand</label>
+            <select class="form-select" asp-for="Brand.Id" asp-items="ViewBag.Brands"></select>
+        </div>
     </div>
     <div>
-        <label asp-for="ModelName">Model Name</label>
-        <input type="text" asp-for="ModelName" />
+        <div class="col-2">
+            <label class="form-label" asp-for="LicensePlate">License Plate</label>
+            <input class="form-control" type="text" asp-for="LicensePlate" />
+        </div>
+        <div class="col-2">
+            <label class="form-label" asp-for="Color">Color</label>
+            <input class="form-control" type="text" asp-for="Color" />
+        </div>
+        <div class="col-2">
+            <label class="form-label" asp-for="Year">Year</label>
+            <input class="form-control" type="number" asp-for="Year" />
+        </div>
+        <div class="col-2">
+            <label class="form-label" asp-for="PricePerHour">Price</label>
+            <input class="form-control" asp-for="PricePerHour" type="number" />
+        </div>
+        <div class="col-2">
+            <label class="form-label" asp-for="Status">Status</label>
+            <select class="form-select" asp-for="Status" asp-items="@new SelectList(Enum.GetNames(typeof(CarStatusViewModel)))"></select>
+        </div>
     </div>
-    <div>
-        <label asp-for="Color">Color</label>
-        <input type="text" asp-for="Color" />
-    </div>
-    <div>
-        <label asp-for="Year">Year</label>
-        <input type="number" asp-for="Year" />
-    </div>
-    <div>
-        <label asp-for="PricePerHour">Price</label>
-        <input asp-for="PricePerHour" type ="text"/>
-    </div>
-    <div>
-        <label asp-for="Status">Status</label>
-        <select asp-for="Status" asp-items="@new SelectList(Enum.GetNames(typeof(CarStatusViewModel)))"></select>
-    </div>
-    <div>
-        <label asp-for="Brand.Id">Brand</label>
-        <select asp-for="Brand.Id" asp-items="ViewBag.Brands"></select>
-    </div>
-    <div>
-        <input type="submit" value="Apply" />
+    <div class="col-md-12">
+        <button class="btn btn-success" type="submit">Apply</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
     </div>
 </form>

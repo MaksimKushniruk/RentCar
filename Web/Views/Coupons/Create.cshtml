@@ -3,16 +3,17 @@
     ViewBag.Title = "Adding New Coupon";
 }
 
-<form asp-controller="Coupons" asp-action="Create" method="post">
-    <div>
-        <label asp-for="CouponCode">Code</label>
-        <input asp-for="CouponCode" type="text" />
+<form class="row g-3" asp-controller="Coupons" asp-action="Create" method="post">
+    <div class="col-md-3">
+        <label class="form-label" asp-for="CouponCode">Code</label>
+        <input class="form-control" asp-for="CouponCode" type="text" />
     </div>
-    <div>
-        <label asp-for="Discount">Discount</label>
-        <input asp-for="Discount" type="number" />
+    <div class="col-md-3">
+        <label class="form-label" asp-for="Discount">Discount</label>
+        <input class="form-control" asp-for="Discount" type="number" />
     </div>
-    <div>
-        <input type="submit" value="Create" />
+    <div class="col-md-12">
+        <button class="btn btn-success" type="submit">Create</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
     </div>
 </form>

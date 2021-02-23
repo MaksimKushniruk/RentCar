@@ -3,28 +3,36 @@
     ViewBag.Title = "Customers";
 }
 
-<a asp-controller="Customers" asp-action="Create">Add New Customer</a>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>City</th>
-        <th>Phone Number</th>
-    </tr>
-    @foreach (var item in Model)
-    {
+<a class="btn btn-success" asp-controller="Customers" asp-action="Create">Add New Customer</a>
+<table class="table table-striped">
+    <thead>
         <tr>
-            <td>@item.Id</td>
-            <td>@item.FirstName</td>
-            <td>@item.LastName</td>
-            <td>@item.City</td>
-            <td>@item.PhoneNumber</td>
-            <td>
-                <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a asp-controller="Customers" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-controller="Customers" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>City</th>
+            <th>Phone Number</th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.City</td>
+                <td>@item.PhoneNumber</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-primary" asp-controller="Customers" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-controller="Customers" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+
+    </tfoot>
 </table>

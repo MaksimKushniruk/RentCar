@@ -1,12 +1,13 @@
 ﻿@model BrandViewModel
-@{ 
+@{
     ViewBag.Title = "Details";
 }
-<h3>Car Brand</h3>
-<a asp-controller="Brands" asp-action="Index">All Brands</a>
+
+<a class="btn btn-sm btn-primary" asp-action="Index">Back</a>
+<h3>Brand</h3>
 <dl>
     <dt>Id</dt>
     <dd>@Model.Id</dd>
-    <dt>Title</dt>
+    <dt>Code</dt>
     <dd>@Model.Title</dd>
 </dl>

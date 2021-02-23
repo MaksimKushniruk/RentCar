@@ -3,19 +3,30 @@
     ViewBag.Title = "Brands";
 }
 
-<a asp-action="create">Add New Brand</a>
-<table>
-    <tr><th>Id</th><th>Title</th></tr>
-    @foreach (var item in Model)
-    {
+<a class="btn btn-success" asp-controller="Brands" asp-action="Create">Add New Brand</a>
+<table class="table table-striped">
+    <thead>
         <tr>
-            <td>@item.Id</td>
-            <td>@item.Title</td>
-            <td>
-                <a asp-controller="Brands" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a asp-controller="Brands" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-controller="Brands" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            <th>Id</th>
+            <th>Title</th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-controller="Brands" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-primary" asp-controller="Brands" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-controller="Brands" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        
+    </tfoot>
 </table>

@@ -13,6 +13,7 @@ namespace Infrastructure.EntityFramework
 
         public RentCarDbContext(DbContextOptions<RentCarDbContext> options) : base(options) 
         {
+            // Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

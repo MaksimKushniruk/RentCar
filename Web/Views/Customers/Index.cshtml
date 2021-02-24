@@ -24,7 +24,7 @@
                 <td>@item.LastName</td>
                 <td>@item.City</td>
                 <td>@item.PhoneNumber</td>
-                <td>
+                <td class="text-md-end">
                     <a class="btn btn-sm btn-primary" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     <a class="btn btn-sm btn-primary" asp-controller="Customers" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-sm btn-danger" asp-controller="Customers" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

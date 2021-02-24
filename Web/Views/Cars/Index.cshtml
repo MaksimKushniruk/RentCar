@@ -30,7 +30,7 @@
                 <td>@item.Year</td>
                 <td>@item.PricePerHour</td>
                 <td>@item.Status</td>
-                <td>
+                <td class="text-md-end">
                     <a class="btn btn-sm btn-primary" asp-controller="Cars" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     <a class="btn btn-sm btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-sm btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

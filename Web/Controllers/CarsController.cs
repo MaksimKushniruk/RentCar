@@ -9,6 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Web.Controllers
 {
@@ -16,8 +19,10 @@ namespace Web.Controllers
     {
         private readonly ICarService carService;
         private readonly IBrandService brandService;
-        public CarsController(ICarService carService, IBrandService brandService)
+        private readonly IWebHostEnvironment app;
+        public CarsController(ICarService carService, IBrandService brandService, IWebHostEnvironment appEnvironment)
         {
+            app = appEnvironment;
             this.carService = carService;
             this.brandService = brandService;
         }
@@ -52,6 +57,22 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.Image != null)
+                {
+                    string path = "/img/" + model.ModelName + ".jpg";
+                    int i = 0;
+                    while(new FileInfo(app.WebRootPath + path).Exists)
+                    {
+                        i++;
+                        path = "/img/" + model.ModelName + i + ".jpg";
+                    }
+
+                    using (FileStream fs = new FileStream(app.WebRootPath + path, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(fs);
+                    }
+                    model.ImagePath = path;
+                }
                 try
                 {
                     var mapper = new MapperConfiguration(cfg =>
@@ -133,6 +154,23 @@ namespace Web.Controllers
         {
             try
             {
+                if (model.Image != null)
+                {
+                    string path = "/img/" + model.ModelName + ".jpg";
+                    int i = 0;
+                    while (new FileInfo(app.WebRootPath + path).Exists)
+                    {
+                        i++;
+                        path = "/img/" + model.ModelName + i + ".jpg";
+                    }
+
+                    using (FileStream fs = new FileStream(app.WebRootPath + path, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(fs);
+                    }
+                    model.ImagePath = path;
+                }
+
                 IEnumerable<BrandDto> brandDtos = await brandService.GetAllAsync();
                 var brandMapper = new MapperConfiguration(cfg =>
                     cfg.CreateMap<BrandDto, BrandViewModel>())
@@ -189,6 +227,12 @@ namespace Web.Controllers
             {
                 try
                 {
+                    CarDto carDto = await carService.GetAsync(id);
+                    FileInfo image = new FileInfo(app.WebRootPath + carDto.ImagePath);
+                    if (image.Exists)
+                    {
+                        image.Delete();
+                    }
                     await carService.DeleteAsync(id);
                     return RedirectToAction("Index");
                 }

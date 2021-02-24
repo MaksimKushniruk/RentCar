@@ -18,7 +18,7 @@
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Title</td>
-                <td>
+                <td class="text-md-end">
                     <a class="btn btn-sm btn-primary" asp-controller="Brands" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     <a class="btn btn-sm btn-primary" asp-controller="Brands" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-sm btn-danger" asp-controller="Brands" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

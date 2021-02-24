@@ -5,7 +5,7 @@
 
 <h2 class="h2">New Car</h2>
 <hr />
-<form class="row g-3" asp-action="Create" asp-controller="Cars" method="post">
+<form class="row g-3" asp-action="Create" asp-controller="Cars" method="post" enctype="multipart/form-data">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
@@ -34,6 +34,10 @@
         <div class="col-2">
             <label class="form-label" asp-for="PricePerHour">Price</label>
             <input class="form-control" asp-for="PricePerHour" type="number" />
+        </div>
+        <div class="col-3">
+            <label class="form-label" asp-for="Image">Image</label>
+            <input class="form-control form-control-sm" asp-for="Image" type="file">
         </div>
         <div class="col-2">
             <label class="form-label" asp-for="Status">Status</label>

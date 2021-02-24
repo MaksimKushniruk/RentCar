@@ -12,6 +12,7 @@ namespace Core.DTO
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
         public CarStatusDto Status { get; set; }
+        public string Image { get; set; }
         public BrandDto Brand { get; set; }
         public List<ReservationDto> Reservations { get; set; }
         public CarDto()

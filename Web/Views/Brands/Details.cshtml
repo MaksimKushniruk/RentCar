@@ -1,13 +1,26 @@
 ﻿@model BrandViewModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Brand";
 }
-
-<a class="btn btn-sm btn-primary" asp-action="Index">Back</a>
-<h3>Brand</h3>
-<dl>
-    <dt>Id</dt>
-    <dd>@Model.Id</dd>
-    <dt>Code</dt>
-    <dd>@Model.Title</dd>
-</dl>
+<div>
+    <h2 class="h2">Brand Details</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Id</td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td>@Model.Title</td>
+            </tr>
+        </tbody>
+        <tfoot> </tfoot>
+    </table>
+</div>
+<a class="btn btn-primary" asp-action="Index">Back</a>

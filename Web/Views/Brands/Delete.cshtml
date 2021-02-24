@@ -1,19 +1,31 @@
 ﻿@model BrandViewModel
 @{
-    ViewBag.Title = "Remove Brand";
+    ViewBag.Title = "Remove Brand?";
 }
-
-
-<h3>Brand</h3>
-<dl>
-    <dt>Id</dt>
-    <dd>@Model.Id</dd>
-    <dt>Code</dt>
-    <dd>@Model.Title</dd>
-</dl>
+<div>
+    <h2 class="h2">Remove Brand?</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Id</td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td>@Model.Title</td>
+            </tr>
+        </tbody>
+        <tfoot> </tfoot>
+    </table>
+</div>
 <form asp-controller="Brands" asp-action="Delete" method="post">
     <div>
-        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
-        <button class="btn btn-sm btn-primary" asp-action="Index">Cancel</button>
+        <input class="btn btn-danger" type="submit" value="Delete" />
+        <a class="btn btn-primary" asp-action="Index">Cancel</a>
     </div>
 </form>

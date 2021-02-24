@@ -5,9 +5,31 @@
 <div class="row mt-5 mb-2">
     @foreach(var item in Model){
     <div class="col-lg-4">
+        <p class="h4">@item.Brand.Title @item.ModelName</p>
         <img src="@item.ImagePath" class="img-thumbnail" alt="@item.Brand.Title @item.ModelName">
-        <h3>@item.Brand.Title</h3>
-        <h4>@item.ModelName</h4>
+        <div>
+            <a class="btn btn-sm btn-success" asp-controller="Reservations" asp-action="Create" asp-route-id="@item.Id">Rent</a>
+            <a class="btn btn-sm btn-primary" data-bs-toggle="collapse" href="#@item.Brand.Title-@item.ModelName-@item.Id" role="button" aria-expanded="false" aria-controls="@item.Brand.Title-@item.ModelName-@item.Id">Details</a>
+
+            <div class="collapse" id="@item.Brand.Title-@item.ModelName-@item.Id">
+                <div class="card card-body">
+                    <table class="table-sm">
+                        <tr>
+                            <th>Color</th>
+                            <td>@item.Color</td>
+                        </tr>
+                        <tr>
+                            <th>Year</th>
+                            <td>@item.Year</td>
+                        </tr>
+                        <tr>
+                            <th>Price per hour</th>
+                            <td>@item.PricePerHour</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     }
 </div>

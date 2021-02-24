@@ -3,6 +3,7 @@
     ViewBag.Title = "Adding New Car";
 }
 
+<h2 class="h2">New Car</h2>
 <form class="row g-3" asp-action="Create" asp-controller="Cars" method="post">
     <div class="row">
         <div class="col-md-3">
@@ -39,5 +40,6 @@
     <div class="col-md-12">
         <button class="btn btn-success" type="submit">Create</button>
         <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-primary" asp-action="Index">Back</button>
     </div>
 </form>

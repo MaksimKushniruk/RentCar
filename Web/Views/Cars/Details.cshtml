@@ -2,23 +2,50 @@
 @{
     ViewBag.Title = "Details";
 }
-<h3>Car</h3>
-<a asp-controller="Cars" asp-action="Index">All Cars</a>
-<dl>
-    <dt>Id</dt>
-    <dd>@Model.Id</dd>
-    <dt>License Plate</dt>
-    <dd>@Model.LicensePlate</dd>
-    <dt>Model Name</dt>
-    <dd>@Model.ModelName</dd>
-    <dt>Brand Name</dt>
-    <dd>@Model.Brand.Title</dd>
-    <dt>Color</dt>
-    <dd>@Model.Color</dd>
-    <dt>Year</dt>
-    <dd>@Model.Year</dd>
-    <dt>Price Per Hour</dt>
-    <dd>@Model.PricePerHour</dd>
-    <dt>Status</dt>
-    <dd>@Model.Status</dd>
-</dl>
+<div>
+    <h2 class="h2">Car Details</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <th>License Plate</th>
+                <td>@Model.LicensePlate</td>
+            </tr>
+            <tr>
+                <th>Model Name</th>
+                <td>@Model.ModelName</td>
+            </tr>
+            <tr>
+                <th>Brand Name</th>
+                <td>@Model.Brand.Title</td>
+            </tr>
+            <tr>
+                <th>Color</th>
+                <td>@Model.Color</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>@Model.Year</td>
+            </tr>
+            <tr>
+                <th>Price Per Hour</th>
+                <td>@Model.PricePerHour</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>@Model.Status</td>
+            </tr>
+        </tbody>
+        <tfoot> </tfoot>
+    </table>
+</div>
+
+<a class="btn btn-primary" asp-action="Index">Back</a>

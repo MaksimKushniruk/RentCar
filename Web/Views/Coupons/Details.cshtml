@@ -2,13 +2,29 @@
 @{
     ViewBag.Title = "Details";
 }
-<h3>Customer</h3>
-<a asp-controller="Coupons" asp-action="Index">All Coupons</a>
-<dl>
-    <dt>Id</dt>
-    <dd>@Model.Id</dd>
-    <dt>Code</dt>
-    <dd>@Model.CouponCode</dd>
-    <dt>Discount</dt>
-    <dd>@Model.Discount</dd>
-</dl>
+<div>
+    <h2 class="h2">Coupon Details</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>@Model.CouponCode</td>
+            </tr>
+            <tr>
+                <th>Discount</th>
+                <td>@Model.Discount</td>
+            </tr>
+        </tbody>
+        <tfoot> </tfoot>
+    </table>
+</div>
+<a class="btn btn-primary" asp-action="Index">Back</a>

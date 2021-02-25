@@ -20,12 +20,12 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Coupon>> GetAllAsync()
         {
-            return await db.Coupons.ToListAsync();
+            return await db.Coupons.AsNoTracking().ToListAsync();
         }
 
         public async Task<Coupon> GetAsync(int id)
         {
-            return await db.Coupons.FirstOrDefaultAsync(c => c.Id == id);
+            return await db.Coupons.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Coupon> GetByCodeAsync(string code)

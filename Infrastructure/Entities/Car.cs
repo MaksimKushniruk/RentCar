@@ -11,6 +11,7 @@ namespace Infrastructure.Entities
         public int Year { get; set; }
         public decimal PricePerHour { get; set; }
         public CarStatus Status { get; set; }
+        public string ImagePath { get; set; }
 
         public int BrandId { get; set; }
         public Brand Brand { get; set; }

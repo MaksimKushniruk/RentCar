@@ -1,0 +1,32 @@
+﻿@model CustomerViewModel
+@{
+    ViewBag.Title = "Edit Customer";
+}
+
+<h2 class="h2">Edit Customer</h2>
+<hr />
+<form class="row g-3" asp-controller="Customers" , asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <div class="col-md-3">
+        <label class="form-label" asp-for="FirstName">First Name</label>
+        <input class="form-control" asp-for="FirstName" type="text" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" asp-for="LastName">Last Name</label>
+        <input class="form-control" asp-for="LastName" type="text" />
+    </div>
+    <div>
+        <div class="col-2">
+            <label class="form-label" asp-for="PhoneNumber">Phone Number</label>
+            <input class="form-control" asp-for="PhoneNumber" type="text" />
+        </div>
+        <div class="col-2">
+            <label class="form-label" asp-for="City">City</label>
+            <input class="form-control" asp-for="City" type="text" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-success" type="submit">Apply</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-primary" asp-action="Index">Back</button>
+    </div>
+</form>

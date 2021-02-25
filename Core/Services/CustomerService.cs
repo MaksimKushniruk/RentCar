@@ -40,11 +40,9 @@ namespace Core.Services
             {
                 throw new RentCarValidationException(String.Empty, "Customer is not found");
             }
-            var mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Customer, CustomerDto>()
-                    .ForMember(dst => dst.Reservations, opt => opt.Ignore());
-            }).CreateMapper();
+            var mapper = new MapperConfiguration(cfg => 
+                cfg.CreateMap<Customer, CustomerDto>())
+                    .CreateMapper();
             return mapper.Map<Customer, CustomerDto>(customer);
         }
 

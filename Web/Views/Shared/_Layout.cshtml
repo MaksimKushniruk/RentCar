@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Rent Car</a>
+
+                <div class="collapse navbar-collapse" id="rent-car-navbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" aria-current="page" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-administrate" data-bs-toggle="dropdown" aria-expanded="false">Administrate</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown-administrate">
+                                <li><a class="dropdown-item dropdown-menu-dark" asp-controller="Customers" asp-action="Index">Customers</a></li>
+                                <li><a class="dropdown-item dropdown-menu-dark" asp-controller="Cars" asp-action="Index">Cars</a></li>
+                                <li><a class="dropdown-item dropdown-menu-dark" asp-controller="Coupons" asp-action="Index">Coupons</a></li>
+                                <li><a class="dropdown-item dropdown-menu-dark" asp-controller="Brands" asp-action="Index">Brands</a></li>
+                                <li><a class="dropdown-item dropdown-menu-dark" asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form>
+                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-5">
+        @RenderBody()
+    </div>
+    <footer class="container">
+        <p class="float-end"><a href="#">Back to top</a></p>
+        <p>© 2021–2021 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -67,7 +67,7 @@ namespace Core.Services
             return mapper.Map<Coupon, CouponDto>(coupon);
         }
 
-        public async Task CreateASync(CouponDto couponDto)
+        public async Task CreateAsync(CouponDto couponDto)
         {
             var mapper = new MapperConfiguration(cfg =>
             {

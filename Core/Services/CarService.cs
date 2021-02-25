@@ -26,7 +26,7 @@ namespace Core.Services
                 cfg.CreateMap<Brand, BrandDto>()
                     .ForMember(dst => dst.Cars, opt => opt.Ignore());
                 cfg.CreateMap<Car, CarDto>()
-                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(car => car.Brand));
+                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
             }).CreateMapper();
             return mapper.Map<IEnumerable<Car>, IEnumerable<CarDto>>(await _database.Cars.GetAllAsync());
         }
@@ -44,10 +44,8 @@ namespace Core.Services
             }
             var mapper = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Brand, BrandDto>()
-                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
-                cfg.CreateMap<Car, CarDto>()
-                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(car => car.Brand));
+                cfg.CreateMap<Brand, BrandDto>();
+                cfg.CreateMap<Car, CarDto>();
             }).CreateMapper();
             return mapper.Map<Car, CarDto>(car);
         }
@@ -56,10 +54,9 @@ namespace Core.Services
         {
             var mapper = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<BrandDto, Brand>()
-                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
                 cfg.CreateMap<CarDto, Car>()
-                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                .ForMember(dst => dst.BrandId, opt => opt.MapFrom(src => src.Brand.Id))
+                .ForMember(dst => dst.Brand, opt => opt.Ignore());
             }).CreateMapper();
             await _database.Cars.CreateAsync(mapper.Map<CarDto, Car>(carDto));
             await _database.SaveAsync();
@@ -74,10 +71,9 @@ namespace Core.Services
             }
             var mapper = new MapperConfiguration( cfg => 
             {
-                cfg.CreateMap<BrandDto, Brand>()
-                    .ForMember(dst => dst.Cars, opt => opt.Ignore());
                 cfg.CreateMap<CarDto, Car>()
-                    .ForMember(dst => dst.Brand, opt => opt.MapFrom(src => src.Brand));
+                    .ForMember(dst => dst.BrandId, opt => opt.MapFrom(src => src.Brand.Id))
+                    .ForMember(dst => dst.Brand, opt => opt.Ignore());
             }).CreateMapper();
             car = mapper.Map<CarDto, Car>(carDto);
             _database.Cars.Update(car);

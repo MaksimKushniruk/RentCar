@@ -1,0 +1,22 @@
+﻿@model CouponViewModel
+@{
+    ViewBag.Title = "Edit Coupon";
+}
+
+<h2 class="h2">Edit Coupon</h2>
+<hr />
+<form class="row g-3" asp-controller="Coupons" , asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <div class="col-md-3">
+        <label class="form-label" asp-for="CouponCode">Code</label>
+        <input class="form-control" asp-for="CouponCode" type="text" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" asp-for="Discount">Discount</label>
+        <input class="form-control" asp-for="Discount" type="number" />
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-success" type="submit">Apply</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-primary" asp-action="Index">Back</button>
+    </div>
+</form>

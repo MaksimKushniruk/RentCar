@@ -1,14 +1,18 @@
 ﻿@model BrandViewModel
-@{ 
+@{
     ViewBag.Title = "Adding New Brand";
 }
 
-<form asp-action="create" asp-controller="brands" method="post">
-    <div>
-        <label asp-for="Title">Title</label>
-        <input type="text" asp-for="Title" />
+<h2 class="h2">New Brand</h2>
+<hr />
+<form class="row g-3" asp-action="Create" asp-controller="Brands" method="post">
+    <div class="col-md-3">
+        <label class="form-label" asp-for="Title">Title</label>
+        <input class="form-control" type="text" asp-for="Title" />
     </div>
     <div>
-        <input type="submit" value="Create" />
+        <button class="btn btn-success" type="submit">Create</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-primary" asp-action="Index">Back</button>
     </div>
 </form>

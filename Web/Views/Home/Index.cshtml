@@ -8,7 +8,7 @@
         <p class="h4">@item.Brand.Title @item.ModelName</p>
         <img src="@item.ImagePath" class="img-thumbnail" alt="@item.Brand.Title @item.ModelName">
         <div>
-            <a class="btn btn-sm btn-success" asp-controller="Reservations" asp-action="Create" asp-route-id="@item.Id">Rent</a>
+            <a class="btn btn-sm btn-success" asp-controller="Reservations" asp-action="Create" asp-route-carId="@item.Id">Rent</a>
             <a class="btn btn-sm btn-primary" data-bs-toggle="collapse" href="#@item.Brand.Title-@item.ModelName-@item.Id" role="button" aria-expanded="false" aria-controls="@item.Brand.Title-@item.ModelName-@item.Id">Details</a>
 
             <div class="collapse" id="@item.Brand.Title-@item.ModelName-@item.Id">

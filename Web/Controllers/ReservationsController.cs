@@ -13,8 +13,14 @@ namespace Web.Controllers
     public class ReservationsController : Controller
     {
         private readonly IReservationService reservationService;
-        public ReservationsController(IReservationService reservationService)
+        private readonly ICarService carService;
+        private readonly ICustomerService customerService;
+        private readonly ICouponService couponService;
+        public ReservationsController(IReservationService reservationService, ICarService carService, ICustomerService customerService, ICouponService couponService)
         {
+            this.couponService = couponService;
+            this.customerService = customerService;
+            this.carService = carService;
             this.reservationService = reservationService;
         }
 
@@ -30,11 +36,5 @@ namespace Web.Controllers
             }).CreateMapper();
             return View(mapper.Map<IEnumerable<ReservationDto>, IEnumerable<ReservationViewModel>>(reservationDtos));
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> Create()
-        //{
-
-        //}
     }
 }

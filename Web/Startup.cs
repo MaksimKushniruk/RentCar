@@ -34,11 +34,12 @@ namespace Web
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
             // adding Entitys Services
-            services.AddScoped<IBrandService, BrandService>();
-            services.AddScoped<ICarService, CarService>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<ICouponService, CouponService>();
-            services.AddScoped<IReservationService, ReservationService>();
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ICouponService, CouponService>();
+            services.AddTransient<IReservationService, ReservationService>();
+            services.AddTransient<ICartService, CartService>();
 
             services.AddControllersWithViews();
         }

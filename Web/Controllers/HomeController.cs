@@ -7,16 +7,25 @@ using AutoMapper;
 using Core.Interfaces;
 using Core.DTO;
 using Web.Models;
+using Microsoft.AspNetCore.Http;
+using Core.Validation;
 
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
+        // переменная юзернейм, которая будет использоваться как идентификатор корзины в бд
+        private string _username = null;
+
+
+
         // TODO: logger, error page without caching 
         private readonly ICarService carService;
-        public HomeController(ICarService carService)
+        private readonly ICartService cartService;
+        public HomeController(ICarService carService, ICartService cartService)
         {
             this.carService = carService;
+            this.cartService = cartService;
         }
         public async Task<IActionResult> Index()
         {
@@ -26,6 +35,34 @@ namespace Web.Controllers
                 cfg.CreateMap<BrandDto, BrandViewModel>();
                 cfg.CreateMap<CarDto, CarViewModel>();
             }).CreateMapper();
+
+            // "cart" вынести в константу
+            if (Request.Cookies.ContainsKey("cart"))
+            {
+                _username = Request.Cookies["cart"];
+            }
+            if (_username == null)
+            {
+                _username = Guid.NewGuid().ToString();
+                // устанавливаем 2 параметра кук 1. То, что куки необходимы для приложения, 2. То, что куки будут "жить" 10 дней
+                var options = new CookieOptions { IsEssential = true, Expires = DateTime.Today.AddDays(10) };
+                // отправляем куки
+                Response.Cookies.Append("cart", _username, options);
+            }
+
+            try
+            {
+                CartDto cartDto = await cartService.GetAsync(_username);
+            }
+            catch (RentCarValidationException ex)
+            {
+                await cartService.CreateAsync(new CartDto { Username = _username });
+            }
+
+
+
+
+            // продолжение метода
             return View(mapper.Map<IEnumerable<CarDto>, IEnumerable<CarViewModel>>(carDtos));
         }
     }

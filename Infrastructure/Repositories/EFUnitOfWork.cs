@@ -15,6 +15,7 @@ namespace Infrastructure.Repositories
         private CouponRepository couponRepository;
         private ReservationRepository reservationRepository;
         private BrandRepository brandRepository;
+        private CartRepository cartRepository;
 
         public EFUnitOfWork(RentCarDbContext context)
         {
@@ -78,6 +79,18 @@ namespace Infrastructure.Repositories
                     brandRepository = new BrandRepository(db);
                 }
                 return brandRepository;
+            }
+        }
+
+        public ICartRepository Carts
+        {
+            get
+            {
+                if(cartRepository == null)
+                {
+                    cartRepository = new CartRepository(db);
+                }
+                return cartRepository;
             }
         }
 

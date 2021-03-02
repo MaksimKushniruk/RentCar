@@ -12,6 +12,7 @@ namespace Infrastructure.Interfaces
         ICouponRepository Coupons { get; }
         IReservationRepository Reservations { get; }
         IBrandRepository Brands { get; }
+        ICartRepository Carts { get; }
         Task SaveAsync();
     }
 }

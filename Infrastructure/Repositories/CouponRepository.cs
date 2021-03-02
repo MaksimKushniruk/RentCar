@@ -30,7 +30,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Coupon> GetByCodeAsync(string code)
         {
-            return await db.Coupons.FirstOrDefaultAsync(c => c.CouponCode == code);
+            return await db.Coupons.AsNoTracking().FirstOrDefaultAsync(c => c.CouponCode == code);
         }
 
         public async Task CreateAsync(Coupon coupon)

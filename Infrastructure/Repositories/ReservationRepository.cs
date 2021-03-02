@@ -20,21 +20,21 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Reservation>> GetAllAsync()
         {
-            return await db.Reservations
-                .Include(r => r.Customer)
+            return await db.Reservations.AsNoTracking()
+                .Include(r => r.Customer).AsNoTracking()
                 .Include(r => r.Car)
-                    .ThenInclude(c => c.Brand)
-                .Include(r => r.Coupon)
+                    .ThenInclude(c => c.Brand).AsNoTracking()
+                .Include(r => r.Coupon).AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Reservation> GetAsync(int id)
         {
             return await db.Reservations
-                .Include(r => r.Customer)
+                .Include(r => r.Customer).AsNoTracking()
                 .Include(r => r.Car)
-                    .ThenInclude(c => c.Brand)
-                .Include(r => r.Coupon)
+                    .ThenInclude(c => c.Brand).AsNoTracking()
+                .Include(r => r.Coupon).AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 

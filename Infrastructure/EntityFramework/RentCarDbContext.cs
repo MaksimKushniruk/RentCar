@@ -10,6 +10,7 @@ namespace Infrastructure.EntityFramework
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Cart> Carts { get; set; }
 
         public RentCarDbContext(DbContextOptions<RentCarDbContext> options) : base(options) 
         {
@@ -19,7 +20,7 @@ namespace Infrastructure.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // empty for now
+            builder.Entity<Cart>().HasAlternateKey(c => c.Username);
         }
     }
 }

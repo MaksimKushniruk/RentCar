@@ -36,7 +36,7 @@ namespace Web.Controllers
                 cfg.CreateMap<CarDto, CarViewModel>();
             }).CreateMapper();
 
-            // "cart" вынести в константу
+            // "cart" to Constante
             if (Request.Cookies.ContainsKey("cart"))
             {
                 _username = Request.Cookies["cart"];
@@ -44,9 +44,7 @@ namespace Web.Controllers
             if (_username == null)
             {
                 _username = Guid.NewGuid().ToString();
-                // устанавливаем 2 параметра кук 1. То, что куки необходимы для приложения, 2. То, что куки будут "жить" 10 дней
                 var options = new CookieOptions { IsEssential = true, Expires = DateTime.Today.AddDays(10) };
-                // отправляем куки
                 Response.Cookies.Append("cart", _username, options);
             }
 

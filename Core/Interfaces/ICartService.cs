@@ -12,7 +12,7 @@ namespace Core.Interfaces
         Task<CartDto> GetAsync(string username);
         Task CreateAsync(CartDto cartDto);
         Task EditAsync(CartDto cartDto);
-        Task DeleteAsync(int? id);
+        Task DeleteAsync(string username);
         void Dispose();
     }
 }

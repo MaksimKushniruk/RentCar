@@ -240,6 +240,11 @@ namespace Web.Controllers
                 reservationDto.Customer = await customerService.GetAsync(model.Customer.Id);
                 reservationDto.Coupon = await couponService.GetAsync(model.Coupon.Id);
 
+                if (Request.Cookies.ContainsKey("cart"))
+                {
+                    await cartService.DeleteAsync(Request.Cookies["cart"]);
+                }
+
                 try
                 {
                     await reservationService.CreateAsync(reservationDto);

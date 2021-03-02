@@ -12,6 +12,6 @@ namespace Infrastructure.Interfaces
         Task<Cart> GetAsync(string username);
         Task CreateAsync(Cart cart);
         void Update(Cart cart);
-        void Delete(int id);
+        Task Delete(string username);
     }
 }

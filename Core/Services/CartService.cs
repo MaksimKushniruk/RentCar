@@ -91,11 +91,11 @@ namespace Core.Services
             await _database.SaveAsync();
         }
 
-        public async Task DeleteAsync(int? id)
+        public async Task DeleteAsync(string username)
         {
-            if (id != null)
+            if (!String.IsNullOrEmpty(username))
             {
-                _database.Carts.Delete(id.Value);
+                _database.Carts.Delete(username);
                 await _database.SaveAsync();
             }
         }

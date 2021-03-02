@@ -47,9 +47,9 @@ namespace Infrastructure.Repositories
             db.Carts.Update(cart);
         }
 
-        public void Delete(int id)
+        public async Task Delete(string username)
         {
-            Cart cart = db.Carts.Find(id);
+            Cart cart = await db.Carts.FirstOrDefaultAsync(c => c.Username == username);
             if (cart != null)
             {
                 db.Carts.Remove(cart);

@@ -1,0 +1,18 @@
+﻿@model BrandViewModel
+@{
+    ViewBag.Title = "Edit Brand";
+}
+
+<h2 class="h2">Edit Brand</h2>
+<hr />
+<form class="row g-3" method="post" asp-controller="Brands" asp-action="Edit" asp-route-id="@Model.Id">
+    <div class="col-md-3">
+        <label class="form-label" asp-for="Title">Title</label>
+        <input class="form-control" type="text" asp-for="Title" />
+    </div>
+    <div>
+        <button class="btn btn-success" type="submit">Apply</button>
+        <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-primary" asp-action="Index">Back</button>
+    </div>
+</form>

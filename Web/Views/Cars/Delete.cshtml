@@ -1,0 +1,57 @@
+﻿@model CarViewModel
+@{
+    ViewBag.Title = "Remove Car";
+}
+<div>
+    <h2 class="h2">Remove Car?</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="col-4">Id</th>
+                <td class="col-4">@Model.Id</td>
+                <td rowspan="9" class="col-4"><img src="@Model.ImagePath" class="img-thumbnail" alt="@Model.Brand.Title @Model.ModelName"></td>
+            </tr>
+            <tr>
+                <th class="col-4">License Plate</th>
+                <td class="col-4">@Model.LicensePlate</td>
+            </tr>
+            <tr>
+                <th class="col-4">Model Name</th>
+                <td class="col-4">@Model.ModelName</td>
+            </tr>
+            <tr>
+                <th class="col-4">Brand Name</th>
+                <td class="col-4">@Model.Brand.Title</td>
+            </tr>
+            <tr>
+                <th class="col-4">Color</th>
+                <td class="col-4">@Model.Color</td>
+            </tr>
+            <tr>
+                <th class="col-4">Year</th>
+                <td class="col-4">@Model.Year</td>
+            </tr>
+            <tr>
+                <th class="col-4">Price Per Hour</th>
+                <td class="col-4">@Model.PricePerHour</td>
+            </tr>
+            <tr>
+                <th class="col-4">Status</th>
+                <td class="col-4">@Model.Status</td>
+            </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<form asp-controller="Cars" asp-action="Delete" method="post">
+    <div>
+        <input class="btn btn-danger" type="submit" value="Delete" />
+        <a class="btn btn-primary" asp-action="Index">Cancel</a>
+    </div>
+</form>

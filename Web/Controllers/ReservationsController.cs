@@ -193,12 +193,19 @@ namespace Web.Controllers
             CartViewModel cartViewModel = mapper.Map<CartDto, CartViewModel>(await cartService.GetAsync(_username));
             if (!String.IsNullOrWhiteSpace(code))
             {
-                mapper = new MapperConfiguration(cfg =>
+                try
                 {
-                    cfg.CreateMap<CouponDto, CouponViewModel>();
-                }).CreateMapper();
-                CouponViewModel couponViewModel = mapper.Map<CouponDto, CouponViewModel>(await couponService.GetByCodeAsync(code));
-                cartViewModel.Coupon = couponViewModel;
+                    mapper = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<CouponDto, CouponViewModel>();
+                    }).CreateMapper();
+                    CouponViewModel couponViewModel = mapper.Map<CouponDto, CouponViewModel>(await couponService.GetByCodeAsync(code));
+                    cartViewModel.Coupon = couponViewModel;
+                }
+                catch (RentCarValidationException ex)
+                {
+                    ModelState.AddModelError(ex.Property, ex.Message);
+                }
             }
 
             mapper = new MapperConfiguration(cfg =>
@@ -240,14 +247,16 @@ namespace Web.Controllers
                 reservationDto.Customer = await customerService.GetAsync(model.Customer.Id);
                 reservationDto.Coupon = await couponService.GetAsync(model.Coupon.Id);
 
-                if (Request.Cookies.ContainsKey("cart"))
-                {
-                    await cartService.DeleteAsync(Request.Cookies["cart"]);
-                }
+                
 
                 try
                 {
                     await reservationService.CreateAsync(reservationDto);
+
+                    if (Request.Cookies.ContainsKey("cart"))
+                    {
+                        await cartService.DeleteAsync(Request.Cookies["cart"]);
+                    }
                     return RedirectToAction("Index");
                 }
                 catch(RentCarValidationException ex)

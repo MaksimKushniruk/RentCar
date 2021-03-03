@@ -72,8 +72,19 @@ namespace Core.Services
                     .ForMember(dst => dst.CouponId, opt => opt.MapFrom(src => src.Coupon.Id))
                     .ForMember(dst => dst.Coupon, opt => opt.Ignore());
             }).CreateMapper();
-            await _database.Reservations.CreateAsync(mapper.Map<ReservationDto, Reservation>(reservationDto));
-            await _database.SaveAsync();
+
+            if (reservationDto.Car.Status == CarStatusDto.Free)
+            {
+                reservationDto.Car.Status = CarStatusDto.InRent;
+                _database.Cars.Update(mapper.Map<CarDto, Car>(reservationDto.Car));
+                await _database.Reservations.CreateAsync(mapper.Map<ReservationDto, Reservation>(reservationDto));
+                await _database.SaveAsync();
+            }
+            else
+            {
+                throw new RentCarValidationException("Car", "Car already in rent");
+            }
+
         }
 
         public async Task EditAsync(ReservationDto reservationDto)

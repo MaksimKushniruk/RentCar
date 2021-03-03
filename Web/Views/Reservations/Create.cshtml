@@ -6,7 +6,8 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-6 mb-3">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="col-md-6">
         <label for="#" class="form-label fs-5">Car</label>
         <div class="input-group">
             <a class="btn btn-primary" asp-controller="Reservations" asp-action="SelectCar" formmethod="get">Select</a>
@@ -16,6 +17,9 @@
             <span class="input-group-text">$</span>
         </div>
     </div>
+    <div class="col-md-4 mt-5">
+        <span asp-validation-for="Car"></span>
+    </div>
     <div class="w-100"></div>
     <div class="col-md-6 mb-3">
         <label for="#" class="form-label fs-5">Customer</label>
@@ -24,7 +28,11 @@
             <input class="form-control" asp-for="Customer.FirstName" type="text" placeholder="First Name" readonly />
             <input class="form-control" asp-for="Customer.LastName" type="text" placeholder="Last Name" readonly />
             <input class="form-control" asp-for="Customer.PhoneNumber" type="text" placeholder="Phone Nubmer" readonly />
+            <span asp-validation-for="Customer"></span>
         </div>
+    </div>
+    <div class="col-md-4 mt-5">
+        <span asp-validation-for="Customer"></span>
     </div>
     <div class="w-100"></div>
     <form class="col-md-4 mb-3" asp-controller="Reservations" asp-action="GetCoupon" method="post">
@@ -34,8 +42,12 @@
             <input class="form-control" asp-for="Coupon.CouponCode" name="code" type="text" placeholder="Coupon Code" />
             <input class="form-control" asp-for="Coupon.Discount" type="text" placeholder="Discount" readonly />
             <span class="input-group-text">%</span>
+            <span asp-validation-for="Coupon"></span>
         </div>
     </form>
+    <div class="col-md-4 mt-5">
+        <span asp-validation-for="Coupon"></span>
+    </div>
     <div class="w-100"></div>
     <form asp-controller="Reservations" asp-action="Create" method="post">
         <input type="hidden" asp-for="Car.Id" />
@@ -45,6 +57,7 @@
             <label for="#" class="form-label fs-5">Start Date</label>
             <div class="input-group">
                 <input class="form-control" asp-for="StartDate" type="datetime-local" value="@DateTime.Now" />
+                <span asp-validation-for="StartDate"></span>
             </div>
         </div>
         <div class="w-100"></div>
@@ -52,21 +65,14 @@
             <label for="#" class="form-label fs-5">Final Date</label>
             <div class="input-group">
                 <input class="form-control" asp-for="FinalDate" type="datetime-local" />
+
+                <span asp-validation-for="FinalDate"></span>
             </div>
         </div>
         <div class="w-100"></div>
-        @*<div class="col-md-3 mb-3">
-            <label for="#" class="form-label fs-5">Total Price</label>
-            <div class="input-group">
-                <input class="form-control" asp-for="Price" type="text" placeholder="Total Price" readonly />
-                <span class="input-group-text">$</span>
-            </div>
-        </div>*@
-        <div class="w-100"></div>
         <div class="col-md-12">
             <button class="btn btn-success" type="submit">Create</button>
-            <button class="btn btn-danger" type="reset">Reset</button>
-            <button class="btn btn-primary" asp-action="Index">Back</button>
+            <button class="btn btn-primary" asp-controller="Home" asp-action="Index">Cancel</button>
         </div>
     </form>
 </div>

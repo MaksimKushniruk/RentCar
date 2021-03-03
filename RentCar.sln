@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rent", "Rent\Rent.csproj", "{681CF54D-7517-4A83-A580-9728FB11CF2F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{358750FF-5180-41DF-8B69-D60803297C5F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RentCar.UI", "RentCar.UI", "{911DAB6C-A817-40DA-B34B-9D4D4AAC9313}"
@@ -15,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{92709748-6DF8-415C-94CD-8026175BAADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{EDFB6609-CAC8-4EAE-8926-3B4A2F2B1CF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{EDFB6609-CAC8-4EAE-8926-3B4A2F2B1CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{681CF54D-7517-4A83-A580-9728FB11CF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{681CF54D-7517-4A83-A580-9728FB11CF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{681CF54D-7517-4A83-A580-9728FB11CF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{681CF54D-7517-4A83-A580-9728FB11CF2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{358750FF-5180-41DF-8B69-D60803297C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{358750FF-5180-41DF-8B69-D60803297C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{358750FF-5180-41DF-8B69-D60803297C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU

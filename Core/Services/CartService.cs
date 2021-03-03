@@ -95,7 +95,7 @@ namespace Core.Services
         {
             if (!String.IsNullOrEmpty(username))
             {
-                _database.Carts.Delete(username);
+                await _database.Carts.Delete(username);
                 await _database.SaveAsync();
             }
         }
